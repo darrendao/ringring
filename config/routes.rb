@@ -16,7 +16,9 @@ Ringring::Application.routes.draw do
   resources :call_escalation do
     collection do
       get 'attempt_call'
-      get 'hello_world'
+      post 'attempt_call'
+      post 'screen_for_machine'
+      post 'complete_call'
     end
   end
 
