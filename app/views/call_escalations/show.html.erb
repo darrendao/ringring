@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @call_escalation.name %>
+</p>
+
+<p>
+  <b>Number:</b>
+  <%= @call_escalation.number %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%= @call_escalation.position %>
+</p>
+
+
+<%= link_to 'Edit', edit_call_escalation_path(@call_escalation) %> |
+<%= link_to 'Back', call_escalations_path %>

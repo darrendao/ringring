@@ -1,0 +1,33 @@
+<h1>Listing call_escalations</h1>
+
+<ul id="call_escalations"> <% @call_escalations.each do |call_escalation| %>
+  <li id="call_escalation_<%= call_escalation.id %>" class="ui-state-default ui-corner-all">
+    <span class="ui-icon ui-icon-arrow-4" style="display:inline-block"></span>
+    <%= call_escalation.name + " | " + call_escalation.number  %> | <%= link_to 'Delete', call_escalation, :confirm => 'Are you sure?', :method => :delete %>
+  </li>
+<% end %></ul>
+<%= link_to 'New Entry', new_call_escalation_path %>
+
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+   $('#call_escalations').sortable({
+       axis: 'y',
+       dropOnEmpty: false,
+       cursor: 'crosshair',
+       items: 'li',
+       opacity: 0.4,
+       scroll: true,
+       update: function(){
+          $.ajax({
+              type: 'post',
+              data: $('#call_escalations').sortable('serialize'),
+              dataType: 'script',
+              complete: function(request){
+                 $('#call_escalations').effect('highlight');
+              },
+                 url: '/call_escalations/sort'})
+              }
+          });
+     });
+<% end %>

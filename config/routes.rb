@@ -1,4 +1,14 @@
 Ringring::Application.routes.draw do
+  resources :call_escalations do
+    collection do 
+      post 'sort'
+      get 'attempt_call'
+      post 'attempt_call'
+      post 'screen_for_machine'
+      post 'complete_call'
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -12,15 +22,6 @@ Ringring::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-
-  resources :call_escalation do
-    collection do
-      get 'attempt_call'
-      post 'attempt_call'
-      post 'screen_for_machine'
-      post 'complete_call'
-    end
-  end
 
   # Sample resource route with options:
   #   resources :products do
