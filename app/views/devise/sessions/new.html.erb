@@ -1,0 +1,30 @@
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">Sign in</h2>
+</div>
+<div class="clear"></div>
+
+<div class="grid_4">
+<div class="block" id="login-forms">
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  <fieldset class="login">
+  <br/>
+  <p><%= f.label :login %>
+  <%= f.text_field :login %></p>
+
+  <p><%= f.label :password %>
+  <%= f.password_field :password %></p>
+
+  <% if devise_mapping.rememberable? -%>
+    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
+  <% end -%>
+
+  <%= f.submit "Sign in", :class => "login button" %>
+  <br/>
+  <br/>
+  </fieldset>
+<% end %>
+
+<%= render "links" %>
+</div>
+</div>

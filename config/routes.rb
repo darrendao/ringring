@@ -1,5 +1,12 @@
 Ringring::Application.routes.draw do
-  resources :call_escalations do
+  resources :roles
+
+  devise_for :users
+
+  resources :users
+  resources :call_escalations
+
+  resources :twilio_call_escalations do
     collection do 
       post 'sort'
       get 'attempt_call'
@@ -65,4 +72,5 @@ Ringring::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+  root :to => "call_escalations#index"
 end

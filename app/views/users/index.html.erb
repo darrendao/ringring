@@ -1,0 +1,37 @@
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">Listing Users</h2>
+</div>
+<div class="clear"></div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Phone number</th>
+    <th>Roles</th>
+    <th></th>
+  </tr>
+  </thead>
+
+<tbody>
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.username %></td>
+    <td><%= user.first_name %></td>
+    <td><%= user.last_name %></td>
+    <td><%= user.phone_number %></td>
+    <td><%= user.roles_names %></td>
+    <td><%= link_to 'Show', user %>
+        | <%= link_to 'Edit', edit_user_path(user) %>
+        | <%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New User', new_user_path %>

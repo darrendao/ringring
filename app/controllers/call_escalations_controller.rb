@@ -1,4 +1,7 @@
 class CallEscalationsController < ApplicationController
+  before_filter :authenticate_user!
+  load_and_authorize_resource
+
   # GET /call_escalations
   # GET /call_escalations.json
   def index
@@ -95,8 +98,6 @@ class CallEscalationsController < ApplicationController
     @call_escalations = CallEscalation.all
     @number_index = params[:number_index].to_i || 0
     dialCallStatus = params[:DialCallStatus] || ""
-
-    logger.info "number index is #{@number_index}"
 
     if dialCallStatus != "completed" && @number_index < @call_escalations.size
       return
