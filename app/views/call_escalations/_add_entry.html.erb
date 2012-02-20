@@ -1,0 +1,6 @@
+<%= form_tag '/call_escalations/add_entry', :method => :post, :remote => true do %>
+  <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
+  User: <%= select_tag "user_id", options_for_select(user_array)%>
+  <%= submit_tag "Add" %>
+  | <%= link_to_function 'Cancel', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
+<% end %>

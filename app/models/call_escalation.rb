@@ -1,3 +1,4 @@
 class CallEscalation < ActiveRecord::Base
-  default_scope :order => "position"
+  belongs_to :user
+  default_scope :order => 'position'
 end

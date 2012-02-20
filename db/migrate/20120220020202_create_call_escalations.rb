@@ -1,11 +1,12 @@
 class CreateCallEscalations < ActiveRecord::Migration
-  def change
+  def up
     create_table :call_escalations do |t|
-      t.string :name
-      t.string :number
+      t.integer :user_id, :null => false
       t.integer :position
-
-      t.timestamps
     end
+  end
+
+  def down
+    drop_table :call_escalations
   end
 end

@@ -6,14 +6,17 @@
 </div>
 <div class="clear"></div>
 
-<ul id="call_escalations"> <% @call_escalations.each do |call_escalation| %>
-  <li id="call_escalation_<%= call_escalation.id %>" class="ui-state-default ui-corner-all">
-    <span class="ui-icon ui-icon-arrow-4" style="display:inline-block"></span>
-    <%= call_escalation.name + " | " + call_escalation.number  %> | <%= link_to 'Delete', call_escalation, :confirm => 'Are you sure?', :method => :delete %>
-  </li>
-<% end %></ul>
-<%= link_to 'New Entry', new_call_escalation_path %>
-
+<div class="grid_16">
+<div id="call_escalations">
+  <%= render :partial => 'call_escalations' %>
+</div>
+<div id="add_entry" style="display:none">
+  <%= render :partial => 'add_entry' %>
+</div>
+<div id="add_entry_link">
+  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addentry").html_safe , "$('#add_entry').show(); $('#add_entry_link').hide()" %>
+</div>
+</div>
 
 <%= javascript_tag do %>
 $(document).ready(function(){

@@ -1,7 +1,7 @@
 <Response>
     <Dial action="attempt_call.xml?number_index=<%= @number_index+1 %>" callerId="<%= @caller_id %>">
         <Number url="screen_for_machine.xml">
-        <%= @call_escalations[@number_index].number %>
+        <%= @call_escalations[@number_index].user.phone_number %>
         </Number>
     </Dial>
 </Response>

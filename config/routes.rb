@@ -4,11 +4,15 @@ Ringring::Application.routes.draw do
   devise_for :users
 
   resources :users
-  resources :call_escalations
+  resources :call_escalations do
+    collection do 
+      post 'sort'
+      post 'add_entry'
+    end
+  end
 
   resources :twilio_call_escalations do
     collection do 
-      post 'sort'
       get 'attempt_call'
       post 'attempt_call'
       post 'screen_for_machine'

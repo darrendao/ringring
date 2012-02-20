@@ -93,6 +93,15 @@ class CallEscalationsController < ApplicationController
     render :nothing => true
   end
 
+  def add_entry
+    user = User.find(params[:user_id])
+    CallEscalation.create(:user_id => user.id)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   def attempt_call
     @caller_id = "+16198003326"
     @call_escalations = CallEscalation.all
