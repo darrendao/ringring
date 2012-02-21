@@ -1,5 +1,6 @@
 Ringring::Application.routes.draw do
   resources :roles
+  resources :ecv
 
   devise_for :users
 
