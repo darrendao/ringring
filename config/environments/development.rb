@@ -34,4 +34,11 @@ Ringring::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Ideally we should be able to just do this. However, Rails 3.1+ has been hardcoded to ignore
+  # development env when forcing ssl
+  # config.to_prepare { Devise::SessionsController.force_ssl }
+  # config.to_prepare { Devise::RegistrationsController.force_ssl }
+  config.to_prepare { Devise::SessionsController.before_filter :force_ssl if AppConfig.use_ssl}
+  config.to_prepare { Devise::RegistrationsController.before_filter :force_ssl if AppConfig.use_ssl}
 end

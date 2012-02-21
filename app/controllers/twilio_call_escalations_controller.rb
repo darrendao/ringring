@@ -1,4 +1,6 @@
 class TwilioCallEscalationsController < ApplicationController
+  before_filter :force_ssl if AppConfig.use_ssl
+  
   # FIXME: should only accept requests from twilio
   def attempt_call
     @caller_id = "+16198003326"

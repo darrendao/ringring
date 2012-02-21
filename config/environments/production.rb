@@ -15,7 +15,7 @@ Ringring::Application.configure do
   config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs
   config.assets.digest = true
@@ -64,4 +64,9 @@ Ringring::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  # config.to_prepare { Devise::SessionsController.force_ssl }
+  # config.to_prepare { Devise::RegistrationsController.force_ssl }
+  config.to_prepare { Devise::SessionsController.before_filter :force_ssl if AppConfig.use_ssl}
+  config.to_prepare { Devise::RegistrationsController.before_filter :force_ssl if AppConfig.use_ssl}
 end

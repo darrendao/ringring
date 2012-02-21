@@ -1,0 +1,9 @@
+common: &common
+  use_ssl: true
+
+development:
+  <<: *common
+  use_ssl: false
+
+production:
+  <<: *common

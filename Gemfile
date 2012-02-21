@@ -25,7 +25,7 @@ end
 gem 'jquery-rails'
 gem 'acts_as_list'
 gem 'devise'
-gem "devise_ldap_authenticatable"
+gem 'devise_ldap_authenticatable'
 gem 'cancan'
 
 # To use ActiveModel has_secure_password
