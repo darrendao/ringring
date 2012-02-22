@@ -32,6 +32,7 @@ class Ability
     elsif user.role? :moderator
       can :manage, CallEscalation
     else
+      can :update, User, :id => user.id
       can :read, :all
     end
   end
