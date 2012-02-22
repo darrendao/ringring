@@ -66,6 +66,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     multi_json (1.0.4)
+    mysql2 (0.3.11)
     net-ldap (0.2.2)
     orm_adapter (0.0.6)
     polyglot (0.3.3)
@@ -131,6 +132,7 @@ DEPENDENCIES
   execjs
   jquery-rails
   json
+  mysql2
   rails (= 3.2.1)
   sass-rails (~> 3.2.3)
   sqlite3
