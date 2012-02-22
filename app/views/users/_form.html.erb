@@ -14,16 +14,14 @@
     <%= f.label :username %><br />
     <%= f.text_field :username %>
   </div>
-  <% if @current_method == "new" %>
-    <div class="field">
-      <%= f.label :password %><br />
-      <%= f.password_field :password %>
-    </div>
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation %>
-    </div>
-  <% end %>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
   <div class="field">
     <%= f.label :first_name %><br />
     <%= f.text_field :first_name %>
