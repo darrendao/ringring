@@ -1,0 +1,23 @@
+<h1>Listing call_lists</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @call_lists.each do |call_list| %>
+  <tr>
+    <td><%= call_list.name %></td>
+    <td><%= link_to 'Show', call_list %></td>
+    <td><%= link_to 'Edit', edit_call_list_path(call_list) %></td>
+    <td><%= link_to 'Destroy', call_list, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Call list', new_call_list_path %>

@@ -32,7 +32,24 @@ class Ability
     elsif user.role? :moderator
       can :manage, CallEscalation
     else
+      # User can create new call_list, and edit call_lists that they own
+      can :create, CallList
+      can :manage, CallList do |call_list|
+        call_list.owners.include? user
+      end
+      can :manage, CallEscalation do |call_escalation|
+        call_escalation.call_list.owners.include? user
+      end
+
+      # User can sort call_escalations that they belong to 
+      can :sort, CallEscalation do |call_escalation|
+        call_escalation.call_list.assignees.include? user
+      end
+     
+      # User can update their own account
       can :update, User, :id => user.id
+
+      # User can read everything
       can :read, :all
     end
   end

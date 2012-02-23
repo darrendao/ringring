@@ -15,7 +15,7 @@
     <div class="grid_16">
       <ul class="nav main">
         <li><%= link_to 'Users Management', users_path %></li>
-        <li><%= link_to 'Oncall Management', call_escalations_path %></li>
+        <li><%= link_to 'Call Lists', call_lists_path %></li>
         <li class="secondary">
         <% if user_signed_in? %>
           <a>Logged in as <%= current_user.username %></a>

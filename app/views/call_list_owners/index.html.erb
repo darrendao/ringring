@@ -1,0 +1,25 @@
+<h1>Listing call_list_owners</h1>
+
+<table>
+  <tr>
+    <th>Call list</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @call_list_owners.each do |call_list_owner| %>
+  <tr>
+    <td><%= call_list_owner.call_list_id %></td>
+    <td><%= call_list_owner.user_id %></td>
+    <td><%= link_to 'Show', call_list_owner %></td>
+    <td><%= link_to 'Edit', edit_call_list_owner_path(call_list_owner) %></td>
+    <td><%= link_to 'Destroy', call_list_owner, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Call list owner', new_call_list_owner_path %>

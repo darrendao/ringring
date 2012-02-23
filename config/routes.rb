@@ -1,4 +1,13 @@
 Ringring::Application.routes.draw do
+  resources :call_list_owners
+
+  resources :call_lists do
+    collection do 
+      post 'add_call_escalation'
+      get 'remove_call_escalation'
+    end
+  end
+
   resources :roles
   resources :ecv
 
@@ -8,7 +17,6 @@ Ringring::Application.routes.draw do
   resources :call_escalations do
     collection do 
       post 'sort'
-      post 'add_entry'
     end
   end
 
@@ -77,5 +85,5 @@ Ringring::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-  root :to => "call_escalations#index"
+  root :to => "call_lists#index"
 end

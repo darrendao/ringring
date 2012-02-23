@@ -87,6 +87,10 @@ class CallEscalationsController < ApplicationController
   def sort
     @call_escalations = CallEscalation.all
     @call_escalations.each do |call_escalation|
+      next if params['call_escalation'].index(call_escalation.id.to_s).nil?
+      unless can? :sort, call_escalation
+        raise "Bad user"
+      end
       call_escalation.position = params['call_escalation'].index(call_escalation.id.to_s) + 1
       call_escalation.save
     end

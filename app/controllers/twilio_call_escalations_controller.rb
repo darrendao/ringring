@@ -3,8 +3,9 @@ class TwilioCallEscalationsController < ApplicationController
   
   # FIXME: should only accept requests from twilio
   def attempt_call
+    @call_list = CallList.find(params[:call_list_id])
     @caller_id = "+16198003326"
-    @call_escalations = CallEscalation.all
+    @call_escalations = @call_list.call_escalations
     @number_index = params[:number_index].to_i || 0
     dialCallStatus = params[:DialCallStatus] || ""
 

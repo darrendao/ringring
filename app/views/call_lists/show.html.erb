@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @call_list.name %>
+</p>
+
+<p>
+  <b>Owners:</b>
+  <%= @call_list.owners.map{|user| user.username}.join(", ") %>
+</p>
+
+
+<b>Call Escalations:</b>
+<div class="grid_16">
+<div id="call_escalations">
+  <%= render :partial => 'call_escalations', :locals => {:call_escalations => @call_list.call_escalations} %>
+</div>
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+   $('#call_escalations').sortable({
+       axis: 'y',
+       dropOnEmpty: false,
+       cursor: 'crosshair',
+       items: 'li',
+       opacity: 0.4,
+       scroll: true,
+       update: function(){
+          $.ajax({
+              type: 'post',
+              data: $('#call_escalations').sortable('serialize'),
+              dataType: 'script',
+              complete: function(request){
+                 $('#call_escalations').effect('highlight');
+              },
+                 url: '/call_escalations/sort'})
+              }
+          });
+     });
+<% end %>
+
+<div id="add_entry" style="display:none">
+  <%= render :partial => 'add_call_escalation' %>
+</div>
+<div id="add_entry_link">
+  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addentry").html_safe , "$('#add_entry').show(); $('#add_entry_link').hide()" %>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<%= link_to 'Edit', edit_call_list_path(@call_list) %> |
+<%= link_to 'Back', call_lists_path %>

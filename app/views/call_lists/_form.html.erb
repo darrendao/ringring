@@ -1,0 +1,30 @@
+<%= form_for(setup_call_list(@call_list)) do |f| %>
+  <% if @call_list.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@call_list.errors.count, "error") %> prohibited this call_list from being saved:</h2>
+
+      <ul>
+      <% @call_list.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+ 
+  <div class="field">
+  Owner(s):
+  <%= f.fields_for :call_list_owners do |ff| %>
+    <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
+    <%= ff.select :user_id, user_array, {:include_blank => true} %>
+  <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
