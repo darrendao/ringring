@@ -1,9 +1,12 @@
 common: &common
   use_ssl: true
+  authentication_method: database_authenticatable
 
 development:
   <<: *common
+  authentication_method: ldap_authenticatable
   use_ssl: false
 
 production:
+  authentication_method: ldap_authenticatable
   <<: *common
