@@ -1,6 +1,6 @@
 <Response>
-    <Dial action="<%= @base_url %>/attempt_call.xml?number_index=<%= @number_index+1 %>&amp;call_list_id=<%= @call_list.id%>" callerId="<%= @caller_id %>">
-        <Number url="<%= @base_url %>/screen_for_machine.xml">
+    <Dial action="<%= @base_url %>/twilio_call_escalations/attempt_call.xml?number_index=<%= @number_index+1 %>&amp;call_list_id=<%= @call_list.id%>" callerId="<%= @caller_id %>">
+        <Number url="<%= @base_url %>/twilio_call_escalations/screen_for_machine.xml">
         <%= @call_escalations[@number_index].user.phone_number %>
         </Number>
     </Dial>

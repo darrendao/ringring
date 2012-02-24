@@ -1,9 +1,9 @@
 class TwilioCallEscalationsController < ApplicationController
   before_filter :force_ssl if AppConfig.use_ssl
-  
+
   # FIXME: should only accept requests from twilio
   def attempt_call
-    @base_url = File.dirname(request.url)
+    @base_url = AppConfig.base_url || ""
     @call_list = CallList.find(params[:call_list_id])
     @caller_id = "+16198003326"
     @call_escalations = @call_list.call_escalations
@@ -17,9 +17,9 @@ class TwilioCallEscalationsController < ApplicationController
     end
   end
   def screen_for_machine
-    @base_url = File.dirname(request.url)
+    @base_url = AppConfig.base_url || ""
   end
   def complete_call
-    @base_url = File.dirname(request.url)
+    @base_url = AppConfig.base_url || ""
   end
 end
