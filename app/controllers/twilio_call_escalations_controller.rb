@@ -3,6 +3,7 @@ class TwilioCallEscalationsController < ApplicationController
   
   # FIXME: should only accept requests from twilio
   def attempt_call
+    @base_url = File.dirname(request.url)
     @call_list = CallList.find(params[:call_list_id])
     @caller_id = "+16198003326"
     @call_escalations = @call_list.call_escalations
@@ -16,7 +17,9 @@ class TwilioCallEscalationsController < ApplicationController
     end
   end
   def screen_for_machine
+    @base_url = File.dirname(request.url)
   end
   def complete_call
+    @base_url = File.dirname(request.url)
   end
 end
