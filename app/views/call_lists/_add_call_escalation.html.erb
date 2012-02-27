@@ -2,6 +2,7 @@
   <%= hidden_field_tag 'call_list_id', @call_list.id %>
   <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
   User: <%= select_tag "user_id", options_for_select(user_array)%>
+  Retry: <%= text_field_tag(:retry, AppConfig.default_retry) %>
   <%= submit_tag "Add" %>
   | <%= link_to_function 'Cancel', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
 <% end %>

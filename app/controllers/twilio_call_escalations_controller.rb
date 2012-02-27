@@ -7,9 +7,12 @@ class TwilioCallEscalationsController < ApplicationController
     @call_list = CallList.find(params[:call_list_id])
     @call_escalations = @call_list.call_escalations
     @number_index = params[:number_index].to_i || 0
+    @try = (params[:try] || 1).to_i
     dialCallStatus = params[:DialCallStatus] || ""
 
-    if dialCallStatus != "completed" && @number_index < @call_escalations.size
+    @call_escalation = get_number_to_call
+
+    if dialCallStatus != "completed" && @call_escalation
       return
     else
       render :text => "<Response><Hangup/></Response>"
@@ -21,5 +24,20 @@ class TwilioCallEscalationsController < ApplicationController
   end
   def complete_call
     @base_url = AppConfig.base_url || ""
+  end
+
+  private
+  def get_number_to_call
+    unless @call_escalations[@number_index]
+      return nil
+    end
+    call_escalation = @call_escalations[@number_index]
+    if @try > call_escalation.retry
+      @number_index += 1
+      @try = 1
+      call_escalation = @call_escalations[@number_index]
+    end
+    @try += 1
+    return call_escalation
   end
 end

@@ -3,6 +3,7 @@ common: &common
   authentication_method: database_authenticatable
   caller_id: "+16198003327"
   machine_detection_wait_time: 15   # Should not be less than 10
+  default_retry: 2
 
 development:
   <<: *common

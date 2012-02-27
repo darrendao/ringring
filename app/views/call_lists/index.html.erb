@@ -1,5 +1,8 @@
-<h1>Listing call_lists</h1>
-
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">Call Lists</h2>
+</div>
+<div class="clear"></div>
 <table>
   <thead>
   <tr>
@@ -23,6 +26,4 @@
   <tbody>
 </table>
 
-<br />
-
-<%= link_to 'New Call list', new_call_list_path %>
+<%= link_to jquery_ui_button_icon("New Call List", "ui-icon-plusthick", "newcalllist").html_safe, new_call_list_path %>

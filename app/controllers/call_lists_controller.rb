@@ -94,7 +94,7 @@ class CallListsController < ApplicationController
     unless can? :add_call_escalation, @call_list 
       raise 'bad user!'
     end
-    CallEscalation.create(:user_id => user.id, :call_list_id => @call_list.id)
+    CallEscalation.create(:user_id => user.id, :call_list_id => @call_list.id, :retry => params[:retry])
     respond_to do |format|
       format.html
       format.js

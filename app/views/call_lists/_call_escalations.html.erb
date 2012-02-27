@@ -1,7 +1,7 @@
 <ul id="call_escalations_ul"> <% @call_list.call_escalations.each do |call_escalation| %>
   <li id="call_escalation_<%= call_escalation.id %>" class="ui-state-default ui-corner-all">
     <span class="ui-icon ui-icon-arrow-4" style="display:inline-block"></span>
-    <%= call_escalation.user.username + " | " + call_escalation.user.phone_number  %> | 
+    <%= call_escalation.user.username + " | " + call_escalation.user.phone_number  %> | Retry: <%= call_escalation.retry %> |
     <%= link_to 'Remove', {:action => 'remove_call_escalation', :call_list_id => @call_list.id, :call_escalation_id => call_escalation.id},
                     :method => 'get', :confirm => "Are you sure?" %>
   </li>
