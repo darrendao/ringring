@@ -5,7 +5,6 @@ class TwilioCallEscalationsController < ApplicationController
   def attempt_call
     @base_url = AppConfig.base_url || ""
     @call_list = CallList.find(params[:call_list_id])
-    @caller_id = "+16198003326"
     @call_escalations = @call_list.call_escalations
     @number_index = params[:number_index].to_i || 0
     dialCallStatus = params[:DialCallStatus] || ""
