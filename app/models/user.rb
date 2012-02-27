@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :login, :role_ids
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :role_ids
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :role_ids, :phonetic_name
 
   def role?(role)
     return !!self.roles.find_by_name(role.to_s.camelize)
@@ -28,5 +28,13 @@ class User < ActiveRecord::Base
 
   def roles_names
     roles.map{|role|role.name}.join(", ") if roles
+  end
+
+  def full_name
+    "#{first_name} #{last_name}".strip
+  end
+
+  def name_to_greet
+    phonetic_name || full_name
   end
 end

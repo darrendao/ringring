@@ -18,6 +18,7 @@ class TwilioCallEscalationsController < ApplicationController
   end
   def screen_for_machine
     @base_url = AppConfig.base_url || ""
+    @machine_detection_wait_time = AppConfig.machine_detection_wait_time || 15
   end
   def complete_call
     @base_url = AppConfig.base_url || ""

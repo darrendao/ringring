@@ -1,10 +1,12 @@
 common: &common
   use_ssl: true
   authentication_method: database_authenticatable
+  caller_id: "+16198003326"
+  machine_detection_wait_time: 15   # Should not be less than 10
 
 development:
   <<: *common
-  authentication_method: ldap_authenticatable
+  authentication_method: database_authenticatable
   use_ssl: false
 
 production:
