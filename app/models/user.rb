@@ -35,6 +35,6 @@ class User < ActiveRecord::Base
   end
 
   def name_to_greet
-    phonetic_name || full_name
+    phonetic_name || full_name || username
   end
 end

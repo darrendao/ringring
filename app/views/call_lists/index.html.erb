@@ -1,21 +1,26 @@
 <h1>Listing call_lists</h1>
 
 <table>
+  <thead>
   <tr>
     <th>Name</th>
-    <th></th>
-    <th></th>
+    <th>Owner(s)</th>
+    <th>Members</th>
     <th></th>
   </tr>
-
+  </thead>
+  <tbody>
 <% @call_lists.each do |call_list| %>
   <tr>
-    <td><%= call_list.name %></td>
-    <td><%= link_to 'Show', call_list %></td>
-    <td><%= link_to 'Edit', edit_call_list_path(call_list) %></td>
-    <td><%= link_to 'Destroy', call_list, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to call_list.name, call_list %></td>
+    <td><%= call_list.owners_names.join(", ") %></td>
+    <td><%= call_list.members_names.join(", ") %></td>
+    <td><%= link_to 'Show', call_list %> |
+        <%= link_to 'Edit', edit_call_list_path(call_list) %> |
+        <%= link_to 'Destroy', call_list, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
+  <tbody>
 </table>
 
 <br />

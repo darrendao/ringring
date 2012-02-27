@@ -16,7 +16,7 @@ body {
 ----------------------------------------------- */
 a {
 	color: #000;
-	font-weight:bold;
+#	font-weight:bold;
 	text-decoration: none;
 }
 a:hover {
@@ -273,6 +273,7 @@ tbody td {
 	border-top:1px solid #bbb;
 	border-bottom:1px solid #bbb;
 	background:#eee;
+	padding:.2em 0.2em;
 }
 tbody tr.odd th,
 tbody tr.odd td {
