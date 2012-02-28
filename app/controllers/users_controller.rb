@@ -60,6 +60,7 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    authorize! :assign_roles, @user if params[:user][:role_ids]
 
     if params[:user][:password].blank?
       params[:user].delete(:password)

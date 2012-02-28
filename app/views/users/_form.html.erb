@@ -42,11 +42,13 @@
     <%= f.label :phone_number %><br />
     <%= f.text_field :phone_number %>
   </div>
+  <% if can? :assign_roles, @user %>
   <% for role in Role.find(:all) %>
     <div>
       <%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %>
       <%= role.name %>
     </div>
+  <% end %>
   <% end %>
   <div class="actions">
     <%= f.submit %>

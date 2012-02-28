@@ -29,6 +29,7 @@ class Ability
 
     if user.role? :super_admin
       can :manage, :all
+      can :assign_roles, User
     elsif user.role? :moderator
       can :manage, CallEscalation
     else
