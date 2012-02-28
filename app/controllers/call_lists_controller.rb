@@ -91,9 +91,7 @@ class CallListsController < ApplicationController
   def add_call_escalation
     @call_list = CallList.find(params[:call_list_id])
     user = User.find(params[:user_id])
-    unless can? :add_call_escalation, @call_list 
-      raise 'bad user!'
-    end
+    raise CanCan::AccessDenied unless can? :add_call_escalation, @call_list 
     CallEscalation.create(:user_id => user.id, :call_list_id => @call_list.id, :retry => params[:retry])
     respond_to do |format|
       format.html
@@ -103,14 +101,42 @@ class CallListsController < ApplicationController
 
   def remove_call_escalation
     @call_list = CallList.find(params[:call_list_id])
-    unless can? :remove_call_escalation, @call_list 
-      raise 'bad user!'
-    end
+    raise CanCan::AccessDenied unless can? :remove_call_escalation, @call_list 
     call_escalation = CallEscalation.find(params[:call_escalation_id])
     call_escalation.destroy
     respond_to do |format|
       format.html { redirect_to @call_list }
       format.json { head :no_content }
     end 
+  end
+
+  def refresh_oncalls
+    oncalls = []
+    @call_list = CallList.find(params[:call_list_id])
+    call_list_calendar = @call_list.call_list_calendar
+    if call_list_calendar && !call_list_calendar.url.blank?
+      oncalls = Calendar::ConfluenceIcal::find_oncall(call_list_calendar.url, DateTime.now)
+    end
+
+    if oncalls.nil? or oncalls.empty?
+      return
+    end
+
+    oncall_assignments = @call_list.oncall_assignments
+    oncalls.each_with_index do |oncall, index|
+      user = User.find_by_username(oncall)
+      next unless user
+     
+      oncall_assignment = oncall_assignments.pop 
+      if oncall_assignment
+        oncall_assignment.user = user
+        oncall_assignment.save
+      else
+        OncallAssignment.create(:user_id => user.id, :call_list_id => @call_list.id)
+      end
+    end
+
+    oncall_assignments.each {|oa| oa.destroy}
+    redirect_to @call_list 
   end
 end

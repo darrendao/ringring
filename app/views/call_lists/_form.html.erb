@@ -24,6 +24,18 @@
   <% end %>
   </div>
 
+  Oncall Calendar:<br/>
+  <%= f.fields_for :call_list_calendar do |ff| %>
+    <div class="field">
+      <%= ff.label :url %>
+      <%= ff.text_field :url %>
+    </div>
+    <div class="field">
+      <%= ff.label :type %>
+      <%= ff.select :ctype, Calendar::Type::select_options %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -10,11 +10,45 @@
   <%= @call_list.owners.map{|user| user.username}.join(", ") %>
 </p>
 
+<p>
+  <b>Oncall Calendar:</b>
+  <%= display_calendar_link %>
+</p>
+<b>Oncalls:</b>
+<div class="grid_16" style='background-color:lightblue;padding:10px'>
+<div id="oncall_assignments">
+  <% if @call_list.oncall_assignments.empty? %>
+  Empty
+  <% else %>
+  <%= render :partial => 'oncall_assignments/listing', :locals => {:oncall_assignments => @call_list.oncall_assignments} %>
+  <% end %>
+</div>
+<div id="add_oncall_assignment" style="display:none">
+  <%= render :partial => 'add_oncall_assignment' %>
+</div>
+<div id="add_oncall_assignment_link">
+  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addoncall_assignment").html_safe , "$('#add_oncall_assignment').show(); $('#add_oncall_assignment_link').hide()" %>
+  <%= link_to jquery_ui_button_icon("Pull From Calendar", "ui-icon-arrowreturnthick-1-s", "pullfromcalendar").html_safe, :action => 'refresh_oncalls', :call_list_id => @call_list.id  %>
+</div>
+</div>
+<br/>
+<div class="clear"></div>
+<br/>
 
 <b>Call Escalations:</b>
-<div class="grid_16">
+<div class="grid_16" style='background-color:lightblue;padding:10px'>
 <div id="call_escalations">
+  <% if @call_list.call_escalations.empty? %>
+  Empty
+  <% else %>
   <%= render :partial => 'call_escalations', :locals => {:call_escalations => @call_list.call_escalations} %>
+  <% end %>
+</div>
+<div id="add_entry" style="display:none">
+  <%= render :partial => 'add_call_escalation' %>
+</div>
+<div id="add_entry_link">
+  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addentry").html_safe , "$('#add_entry').show(); $('#add_entry_link').hide()" %>
 </div>
 
 <%= javascript_tag do %>
@@ -34,21 +68,18 @@ $(document).ready(function(){
               complete: function(request){
                  $('#call_escalations').effect('highlight');
               },
-                 url: '/call_escalations/sort'})
-              }
-          });
-     });
+              url: '/call_escalations/sort'
+          })
+       }
+   });
+});
 <% end %>
 
-<div id="add_entry" style="display:none">
-  <%= render :partial => 'add_call_escalation' %>
-</div>
-<div id="add_entry_link">
-  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addentry").html_safe , "$('#add_entry').show(); $('#add_entry_link').hide()" %>
-</div>
 </div>
 
 <div class="clear"></div>
-
+<br/>
+<div>
 <%= link_to 'Edit', edit_call_list_path(@call_list) %> |
 <%= link_to 'Back', call_lists_path %>
+</div>

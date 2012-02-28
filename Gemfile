@@ -35,6 +35,8 @@ gem 'devise'
 gem 'devise_ldap_authenticatable'
 gem 'cancan'
 gem 'acts_as_ecv'
+gem 'twilio-ruby'
+gem 'ri_cal'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

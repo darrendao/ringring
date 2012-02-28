@@ -43,7 +43,15 @@ class Ability
 
       # User can sort call_escalations that they belong to 
       can :sort, CallEscalation do |call_escalation|
-        call_escalation.call_list.assignees.include? user
+        call_escalation.call_list.escalations.include? user
+      end
+
+      # User can add and remove themselves to oncall_assignments and call_escalations
+      can :manage, OncallAssignment do |oncall_assignment|
+        oncall_assignment.user == user
+      end
+      can :manage, CallEscalation do |call_escalation|
+        call_escalation.user == user
       end
      
       # User can update their own account
