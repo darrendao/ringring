@@ -38,6 +38,10 @@ class Ability
       can :manage, CallList do |call_list|
         call_list.owners.include? user
       end
+      # Call list owner manage the list oncall_assignments and call_escalations
+      can :manage, OncallAssignment do |oncall_assignment|
+        oncall_assignment.call_list.owners.include? user
+      end
       can :manage, CallEscalation do |call_escalation|
         call_escalation.call_list.owners.include? user
       end
@@ -52,6 +56,12 @@ class Ability
         oncall_assignment.user == user
       end
       can :manage, CallEscalation do |call_escalation|
+        call_escalation.user == user
+      end
+      can :add_call_escalation do |call_escalation|
+        call_escalation.user == user
+      end
+      can :remove_call_escalation do |call_escalation|
         call_escalation.user == user
       end
      

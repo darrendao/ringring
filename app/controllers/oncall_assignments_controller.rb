@@ -1,6 +1,9 @@
 class OncallAssignmentsController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource
+  load_and_authorize_resource :call_list
+  load_and_authorize_resource :oncall_assignment, :through => :call_list
+#  load_and_authorize_resource
+  
   def create
     @call_list = CallList.find(params[:call_list_id])
     @oncall_assignment = @call_list.oncall_assignments.build(params[:oncall_assignment]) 

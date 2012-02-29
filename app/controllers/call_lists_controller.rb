@@ -91,8 +91,9 @@ class CallListsController < ApplicationController
   def add_call_escalation
     @call_list = CallList.find(params[:call_list_id])
     user = User.find(params[:user_id])
-    raise CanCan::AccessDenied unless can? :add_call_escalation, @call_list 
-    CallEscalation.create(:user_id => user.id, :call_list_id => @call_list.id, :retry => params[:retry])
+    call_escalation = CallEscalation.new(:user_id => user.id, :call_list_id => @call_list.id, :retry => params[:retry])
+    raise CanCan::AccessDenied unless can? :add_call_escalation, call_escalation
+    call_escalation.save
     respond_to do |format|
       format.html
       format.js
@@ -101,8 +102,8 @@ class CallListsController < ApplicationController
 
   def remove_call_escalation
     @call_list = CallList.find(params[:call_list_id])
-    raise CanCan::AccessDenied unless can? :remove_call_escalation, @call_list 
     call_escalation = CallEscalation.find(params[:call_escalation_id])
+    raise CanCan::AccessDenied unless can? :remove_call_escalation, call_escalation
     call_escalation.destroy
     respond_to do |format|
       format.html { redirect_to @call_list }
