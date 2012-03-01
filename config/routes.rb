@@ -5,7 +5,7 @@ Ringring::Application.routes.draw do
     collection do 
       post 'add_call_escalation'
       get 'remove_call_escalation'
-      get 'refresh_oncalls'
+      get 'pull_oncalls_from_calendar'
     end
     resources :oncall_assignments
   end

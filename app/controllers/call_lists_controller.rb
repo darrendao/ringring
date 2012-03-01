@@ -111,33 +111,15 @@ class CallListsController < ApplicationController
     end 
   end
 
-  def refresh_oncalls
+  def pull_oncalls_from_calendar
     oncalls = []
     @call_list = CallList.find(params[:call_list_id])
-    call_list_calendar = @call_list.call_list_calendar
-    if call_list_calendar && !call_list_calendar.url.blank?
-      oncalls = Calendar::ConfluenceIcal::find_oncall(call_list_calendar.url, DateTime.now)
+    err_code = Calendar::OncallHelper::update_oncalls(@call_list)
+    unless err_code == Calendar::OncallHelper::SUCCESS
+      Calendar::OncallHelper::handle_errors(err_code, @call_list, AppConfig.error_alerts['oncall_updates'])
     end
 
-    if oncalls.nil? or oncalls.empty?
-      return
-    end
-
-    oncall_assignments = @call_list.oncall_assignments
-    oncalls.each_with_index do |oncall, index|
-      user = User.find_by_username(oncall)
-      next unless user
-     
-      oncall_assignment = oncall_assignments.pop 
-      if oncall_assignment
-        oncall_assignment.user = user
-        oncall_assignment.save
-      else
-        OncallAssignment.create(:user_id => user.id, :call_list_id => @call_list.id)
-      end
-    end
-
-    oncall_assignments.each {|oa| oa.destroy}
     redirect_to @call_list 
   end
+
 end

@@ -4,7 +4,13 @@ common: &common
   caller_id: "+16198003327"
   machine_detection_wait_time: 15   # Should not be less than 10
   default_retry: 2
-  admin_email: unix-sa@eharmony.com
+  admin_email: admin@myhost.com
+  
+  error_alerts:
+    oncall_updates:
+      email: true
+      phone: false
+      sms: false
 
 development:
   <<: *common

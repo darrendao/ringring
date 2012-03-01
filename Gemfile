@@ -37,6 +37,7 @@ gem 'cancan'
 gem 'acts_as_ecv'
 gem 'twilio-ruby'
 gem 'ri_cal'
+gem 'rest-client'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

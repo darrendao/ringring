@@ -28,7 +28,7 @@
 </div>
 <div id="add_oncall_assignment_link">
   <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addoncall_assignment").html_safe , "$('#add_oncall_assignment').show(); $('#add_oncall_assignment_link').hide()" %>
-  <%= link_to jquery_ui_button_icon("Pull From Calendar", "ui-icon-arrowreturnthick-1-s", "pullfromcalendar").html_safe, :action => 'refresh_oncalls', :call_list_id => @call_list.id  %>
+  <%= link_to jquery_ui_button_icon("Pull From Calendar", "ui-icon-arrowreturnthick-1-s", "pullfromcalendar").html_safe, :action => 'pull_oncalls_from_calendar', :call_list_id => @call_list.id  %>
 </div>
 </div>
 <br/>

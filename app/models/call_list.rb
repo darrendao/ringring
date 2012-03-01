@@ -28,6 +28,12 @@ class CallList < ActiveRecord::Base
     oncalls.map{|o|o.username}
   end
 
+  # List of users to send notifications to when something is wrong.
+  # Should be a combination of the users in the owners and escalations list
+  def notification_users
+     [owners, escalations].compact.flatten.uniq
+  end
+
   private
   def must_have_owners
     if call_list_owners.empty?

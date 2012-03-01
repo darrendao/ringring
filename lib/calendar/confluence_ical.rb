@@ -1,10 +1,9 @@
-require 'open-uri'
 module Calendar
 class ConfluenceIcal
   def self.find_oncall(url, datetime)
     data = nil
     begin
-      data = open(url).read
+      data = RestClient.get(url).body
     rescue => e
       return nil
     end
