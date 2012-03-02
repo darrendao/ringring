@@ -14,6 +14,8 @@ class TwilioCallEscalationsController < ApplicationController
 
     if dialCallStatus != "completed" && @call_escalation
       return
+    elsif dialCallStatus == "completed"
+      render :text => "<Response><Hangup/></Response>"
     else
       render :text => "<Response><Say>No one on the call list pick up their phone. Good bye.</Say><Hangup/></Response>"
     end
