@@ -1,4 +1,4 @@
-module Calendar
+module Ringring::Calendar
 class Type
   CONFLUENCE_ICAL = "Confluence iCal"
 

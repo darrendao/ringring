@@ -16,6 +16,8 @@ class CallList < ActiveRecord::Base
   has_many :oncall_assignments
   has_many :oncalls, :through => :oncall_assignments, :source => :user
 
+  has_one :error_notification, :as => :notifiable
+
   def owners_names
     owners.map{|o|o.username}
   end

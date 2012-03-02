@@ -2,4 +2,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  error_notifications:
+    no_oncall: "This is an error notification for on call list __CALL_LIST_NAME__. There is no on call assignments."
+    unknown_oncall_users: "This is an error notification for on call list __CALL_LIST_NAME__. On call calendar contains unknown user."
+    etch_calendar_err: "This is an error notification for on call list __CALL_LIST_NAME__. Unable to fetch on call calendar."

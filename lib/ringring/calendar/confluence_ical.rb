@@ -1,4 +1,4 @@
-module Calendar
+module Ringring::Calendar
 class ConfluenceIcal
   def self.find_oncall(url, datetime)
     data = nil

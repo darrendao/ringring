@@ -27,6 +27,6 @@ class ErrorNotifier < ActionMailer::Base
       next if owner.email.blank?
       mail_to << owner.email
     end
-    mail(:to => mail_to, :subject => "Failed to fetch oncall calendar")
+    mail(:to => mail_to, :subject => "Failed to fetch oncall assignments from calendar")
   end
 end

@@ -1,16 +1,20 @@
-module Calendar
-class OncallHelper
-  SUCCESS = 0
-  FETCH_CALENDAR_ERR = 1
-  NO_ONCALL = 2
-  UNKNOWN_ONCALL_USER = 3
+module Ringring::Calendar
+class OncallUpdater
+  include Ringring::CallListErrHandler
 
   def self.update_oncalls(call_list)
     call_list_calendar = call_list.call_list_calendar
-    new_oncalls = nil
-    if call_list_calendar && !call_list_calendar.url.blank?
-      new_oncalls = Calendar::ConfluenceIcal::find_oncall(call_list_calendar.url, DateTime.now)
+
+    unless call_list_calendar && !call_list_calendar.url.blank?
+      return FETCH_CALENDAR_ERR
     end
+
+    # Only support Confluence iCal for now
+    if call_list_calendar.ctype != Type::CONFLUENCE_ICAL
+      return FETCH_CALENDAR_ERR
+    end
+
+    new_oncalls = ConfluenceIcal::find_oncall(call_list_calendar.url, DateTime.now)
     
     if new_oncalls.nil? 
       return FETCH_CALENDAR_ERR
@@ -45,17 +49,6 @@ class OncallHelper
       return NO_ONCALL
     else
       return SUCCESS
-    end
-  end
-
-  def self.handle_errors(error, call_list, handlers)
-    case error
-    when NO_ONCALL
-      ErrorNotifier.no_oncall(call_list).deliver if handlers['email']
-    when UNKNOWN_ONCALL_USER
-      ErrorNotifier.unknown_oncall_users(call_list).deliver if handlers['email']
-    when FETCH_CALENDAR_ERR
-      ErrorNotifier.fetch_calendar_err(call_list).deliver if handlers['email']
     end
   end
 end

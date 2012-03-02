@@ -22,6 +22,12 @@ Ringring::Application.routes.draw do
     end
   end
 
+  resources :twilio_error_notifications do
+    collection do
+      post 'twilio_error_notifications'
+    end
+  end
+
   resources :twilio_call_escalations do
     collection do 
       get 'attempt_call'

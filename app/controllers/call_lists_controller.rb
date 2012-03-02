@@ -114,9 +114,9 @@ class CallListsController < ApplicationController
   def pull_oncalls_from_calendar
     oncalls = []
     @call_list = CallList.find(params[:call_list_id])
-    err_code = Calendar::OncallHelper::update_oncalls(@call_list)
-    unless err_code == Calendar::OncallHelper::SUCCESS
-      Calendar::OncallHelper::handle_errors(err_code, @call_list, AppConfig.error_alerts['oncall_updates'])
+    err_code = Ringring::Calendar::OncallUpdater::update_oncalls(@call_list)
+    unless err_code == Ringring::CallListErrHandler::SUCCESS
+      Ringring::CallListErrHandler.notify(err_code, @call_list, AppConfig.error_alerts['oncall_updates'])
     end
 
     redirect_to @call_list 

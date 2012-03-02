@@ -1,16 +1,19 @@
 common: &common
   use_ssl: true
   authentication_method: database_authenticatable
-  caller_id: "+16198003327"
+  caller_id: "+14248886496"
   machine_detection_wait_time: 15   # Should not be less than 10
   default_retry: 2
   admin_email: admin@myhost.com
+  base_url: http://ec2-184-73-63-238.compute-1.amazonaws.com:3000/
+  twilio_conf_file: config/twilio.yml    # Where you store your twilio account sid and secret token
   
   error_alerts:
+    thresh_hold: 60 # minutes. Don't send alerts if one already sent within this period
     oncall_updates:
       email: true
-      phone: false
-      sms: false
+      phone: true
+      sms: true
 
 development:
   <<: *common
