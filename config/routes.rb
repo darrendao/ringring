@@ -1,5 +1,9 @@
 Ringring::Application.routes.draw do
 
+  resources :phone_number_infos
+
+  resources :phone_carriers
+
   resources :call_list_owners
 
   resources :call_lists do

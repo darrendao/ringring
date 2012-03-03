@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   belongs_to :call_escalation
+  has_one :phone_number_info
+  accepts_nested_attributes_for :phone_number_info, :allow_destroy => true,
+                                                   :reject_if => :all_blank
+
 #  acts_as_list :scope => :call_escalation
 
   # Include default devise modules. Others available are:
@@ -14,7 +18,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :login, :role_ids
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :role_ids, :phonetic_name
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :role_ids, :phonetic_name, :phone_number_info_attributes
 
   def role?(role)
     return !!self.roles.find_by_name(role.to_s.camelize)
@@ -36,5 +40,17 @@ class User < ActiveRecord::Base
 
   def name_to_greet
     phonetic_name.blank? ? (full_name.empty? ? username : full_name) : phonetic_name
+  end
+
+  def phone_number
+    ret = nil
+    if phone_number_info
+      ret = phone_number_info.number
+    end
+    ret
+  end
+
+  def sms_email
+    ret = phone_number_info ? phone_number_info.sms_email : nil
   end
 end

@@ -1,4 +1,4 @@
-<%= form_for(@user) do |f| %>
+<%= form_for(setup_user(@user)) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -38,10 +38,24 @@
     <%= f.label :email %><br />
     <%= f.text_field :email %>
   </div>
+
+<!--
   <div class="field">
     <%= f.label :phone_number %><br />
     <%= f.text_field :phone_number %>
   </div>
+-->
+
+  <%= f.fields_for :phone_number_info do |ff| %>
+    <div class="field">
+      <%= ff.label :phone_number %><br/>
+      <%= ff.text_field :number %>
+    </div>
+    <div class="field">
+      <%= ff.label :sms_gateway %><br/>
+      <%= ff.text_field :sms_gateway %>
+    </div>
+  <% end %>
   <% if can? :assign_roles, @user %>
   <% for role in Role.find(:all) %>
     <div>

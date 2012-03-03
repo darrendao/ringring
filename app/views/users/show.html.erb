@@ -20,6 +20,10 @@
   <%= @user.phone_number %>
 </p>
 
+<p>
+  <b>SMS Gateway:</b>
+  <%= @user.phone_number_info.sms_gateway %>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

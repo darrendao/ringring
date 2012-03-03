@@ -134,7 +134,7 @@ class CallListsController < ApplicationController
     if @call_list.in_business_hours?
       email = @call_list.email
     elsif !@call_list.oncalls.empty?
-      email = @call_list.oncalls.first.email
+      email = [@call_list.oncalls.first.email, @call_list.oncalls.first.sms_email].compact.join("\n")
     end    
     render :text => email
   end
