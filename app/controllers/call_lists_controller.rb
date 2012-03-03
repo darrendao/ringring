@@ -122,4 +122,20 @@ class CallListsController < ApplicationController
     redirect_to @call_list 
   end
 
+  def oncall_email
+    call_list = params['call_list']
+    if call_list.blank?
+      render :text => "Need to specify call_list"
+      return
+    end
+
+    email = []
+    @call_list = CallList.where(:name => call_list).first
+    if @call_list.in_business_hours?
+      email = @call_list.email
+    elsif !@call_list.oncalls.empty?
+      email = @call_list.oncalls.first.email
+    end    
+    render :text => email
+  end
 end

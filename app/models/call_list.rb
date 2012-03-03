@@ -18,6 +18,10 @@ class CallList < ActiveRecord::Base
 
   has_one :error_notification, :as => :notifiable
 
+  has_many :business_hours
+  accepts_nested_attributes_for :business_hours, :allow_destroy => true,
+                                                   :reject_if => :all_blank
+  
   def owners_names
     owners.map{|o|o.username}
   end
@@ -34,6 +38,21 @@ class CallList < ActiveRecord::Base
   # Should be a combination of the users in the owners and escalations list
   def notification_users
      [owners, escalations].compact.flatten.uniq
+  end
+
+  def in_business_hours?
+    return false if business_hours.nil? or business_hours.empty?
+
+    now = Time.now
+    date = Date.today
+    business_hours.each do |business_hour|
+      next if business_hour.wday != date.wday
+      Rails.logger.info business_hour.start_time.to_s
+      Rails.logger.info Time.parse(business_hour.start_time.to_s)
+
+      return true if Time.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.parse(business_hour.end_time.strftime("%H:%M"))
+    end
+    return false
   end
 
   private

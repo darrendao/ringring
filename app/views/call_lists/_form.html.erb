@@ -17,24 +17,39 @@
   </div>
  
   <div class="field">
-  Owner(s):
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+ 
+  <b>Owner(s):</b>
+  <div class="field">
   <%= f.fields_for :call_list_owners do |ff| %>
     <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
     <%= ff.select :user_id, user_array, {:include_blank => true} %>
   <% end %>
   </div>
 
-  Oncall Calendar:<br/>
+  <b>Oncall Calendar:</b><br/>
   <%= f.fields_for :call_list_calendar do |ff| %>
     <div class="field">
       <%= ff.label :url %>
       <%= ff.text_field :url %>
-    </div>
-    <div class="field">
       <%= ff.label :type %>
       <%= ff.select :ctype, Ringring::Calendar::Type::select_options %>
     </div>
   <% end %>
+
+  <b>Business Hours:</b><br />
+  <div class="field">
+    <%= f.fields_for :business_hours do |ff| %>
+      <%= ff.select :wday, day_options %>
+      from <%= ff.text_field :start_time, :value => fmt_time(ff.object.start_time), :class => 'timefield' %>
+      to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield' %><br/>
+    <% end %>
+    <script type="text/javascript">
+      $('.timefield').timepicker({});
+    </script>
+  </div>
 
   <div class="actions">
     <%= f.submit %>

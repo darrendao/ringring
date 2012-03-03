@@ -6,7 +6,21 @@ module CallListsHelper
     end
 
     call_list.call_list_calendar ||= CallListCalendar.new
-    call_list
+
+    existing = []
+    call_list.business_hours.each do |i|
+      existing << i.wday
+    end
+    (0..6).each do |i|
+      next if existing.include? i
+      business_hour = call_list.business_hours.build(:wday => i)
+      if business_hour.wday != Date::ABBR_DAYNAMES.index('Sun') and business_hour.wday != Date::ABBR_DAYNAMES.index('Sat')
+        business_hour.start_time ||= Time.parse(AppConfig.business_hours[0])
+        business_hour.end_time ||= Time.parse(AppConfig.business_hours[1])
+      end
+    end
+    call_list.business_hours.sort!{|x,y| x.wday <=> y.wday}    
+    return call_list
   end
 
   def display_calendar_link

@@ -7,6 +7,8 @@ common: &common
   admin_email: admin@myhost.com
   base_url: http://ec2-184-73-63-238.compute-1.amazonaws.com:3000/
   twilio_conf_file: config/twilio.yml    # Where you store your twilio account sid and secret token
+  whitepages_conf_file: config/whitepages.yml
+  business_hours: ["8:00", "18:00"]
   
   error_alerts:
     thresh_hold: 60 # minutes. Don't send alerts if one already sent within this period

@@ -11,6 +11,19 @@
 </p>
 
 <p>
+  <b>Email:</b>
+  <%= @call_list.email %>
+</p>
+
+<p>
+  <b>Business hours:</b><br/>
+  <% @call_list.business_hours.each do |business_hour| %>
+    <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= fmt_time(business_hour.start_time) %>
+      to <%= fmt_time(business_hour.end_time) %><br/>
+  <% end %>
+</p>
+
+<p>
   <b>Oncall Calendar:</b>
   <%= display_calendar_link %>
 </p>

@@ -1,4 +1,5 @@
 Ringring::Application.routes.draw do
+
   resources :call_list_owners
 
   resources :call_lists do
@@ -6,8 +7,10 @@ Ringring::Application.routes.draw do
       post 'add_call_escalation'
       get 'remove_call_escalation'
       get 'pull_oncalls_from_calendar'
+      get 'oncall_email'
     end
     resources :oncall_assignments
+    resources :oncall_times
   end
 
   resources :roles
