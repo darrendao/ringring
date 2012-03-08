@@ -34,7 +34,7 @@ class OncallUpdater
         oncall_assignment.user = user
         oncall_assignment.save
       else
-        OncallAssignment.create(:user_id => user.id, :call_list_id => @call_list.id)
+        OncallAssignment.create(:user_id => user.id, :call_list_id => call_list.id)
       end
 
       new_assignments += 1
