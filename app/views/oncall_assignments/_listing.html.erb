@@ -1,7 +1,7 @@
 <ul id="oncall_assignments_ul" class="no_bullet_list no_indent"> <% oncall_assignments.each do |oncall_assignment| %>
   <li id="oncall_assignment_<%= oncall_assignment.id %>" class="ui-state-default ui-corner-all">
     <span style="display:inline-block"></span>
-    <%= oncall_assignment.user.username + " | " + oncall_assignment.user.email + " | " + oncall_assignment.user.phone_number  %> | Retry: <%= oncall_assignment.retry %> |
+    <%= "#{oncall_assignment.user.username} | #{oncall_assignment.user.email} | #{oncall_assignment.user.phone_number} | Retry: #{oncall_assignment.retry}" %> |
     <%= link_to 'Remove', call_list_oncall_assignment_path(oncall_assignment.call_list.id, oncall_assignment.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %>
   </li>
 <% end %></ul>
