@@ -54,7 +54,7 @@
   <% if @call_list.call_escalations.empty? %>
   Empty
   <% else %>
-  <%= render :partial => 'call_escalations', :locals => {:call_escalations => @call_list.call_escalations} %>
+  <%= render :partial => 'call_escalations/listing', :locals => {:call_escalations => @call_list.call_escalations} %>
   <% end %>
 </div>
 <div id="add_entry" style="display:none">
@@ -81,7 +81,7 @@ $(document).ready(function(){
               complete: function(request){
                  $('#call_escalations').effect('highlight');
               },
-              url: '/call_escalations/sort'
+              url : "/call_lists/<%=@call_list.id%>/call_escalations/sort"
           })
        }
    });

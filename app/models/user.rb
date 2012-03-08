@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
-  belongs_to :call_escalation
   has_one :phone_number_info
   accepts_nested_attributes_for :phone_number_info, :allow_destroy => true,
-                                                   :reject_if => :all_blank
+                                                    :reject_if => proc{|attrs| attrs[:number].nil? or attrs[:sms_gateway].nil?}
+
+  has_many :oncall_assignments, :dependent => :destroy
+  has_many :call_escalations, :dependent => :destroy
 
 #  acts_as_list :scope => :call_escalation
 

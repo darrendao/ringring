@@ -11,7 +11,7 @@ class OncallAssignmentsController < ApplicationController
       if @oncall_assignment.save
         format.js { render 'update_listing', :layout => false }
       else
-        # TODO
+        format.js { render :partial => 'shared/error', :locals => {:target => @oncall_assignment} }
       end
     end
   end

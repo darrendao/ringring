@@ -1,8 +1,7 @@
-<%= form_tag 'add_call_escalation', :method => :post, :remote => true do %>
-  <%= hidden_field_tag 'call_list_id', @call_list.id %>
+<%= form_for([@call_list, CallEscalation.new], :remote => true) do |f| %>
   <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
-  User: <%= select_tag "user_id", options_for_select(user_array)%>
-  Retry: <%= text_field_tag(:retry, AppConfig.default_retry) %>
+  User: <%=  f.select 'user_id', options_for_select(user_array) %>
+  Retry: <%= f.text_field 'retry' %>
   <%= submit_tag "Add" %>
   | <%= link_to_function 'Cancel', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
 <% end %>

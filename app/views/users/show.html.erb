@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <b>Username:</b>
+  <%= @user.username %>
+</p>
+
+<p>
   <b>First name:</b>
   <%= @user.first_name %>
 </p>
@@ -15,6 +20,7 @@
   <%= @user.phonetic_name %>
 </p>
 
+<% if @user.phone_number_info %>
 <p>
   <b>Phone number:</b>
   <%= @user.phone_number %>
@@ -24,6 +30,15 @@
   <b>SMS Gateway:</b>
   <%= @user.phone_number_info.sms_gateway %>
 </p>
+<% else %>
+<p>
+<b>Phone info not available</b>
+</p>
+<% end %>
 
+<p>
+  <b>Roles:</b>
+  <%= @user.roles_names %>
+</p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

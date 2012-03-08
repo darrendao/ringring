@@ -9,6 +9,8 @@ common: &common
   twilio_conf_file: config/twilio.yml    # Where you store your twilio account sid and secret token
   whitepages_conf_file: config/whitepages.yml
   business_hours: ["8:00", "18:00"]
+  require_sms_gateway: true
+  require_phone_number: true
   
   error_alerts:
     thresh_hold: 60 # minutes. Don't send alerts if one already sent within this period

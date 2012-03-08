@@ -15,6 +15,12 @@ Ringring::Application.routes.draw do
     end
     resources :oncall_assignments
     resources :oncall_times
+
+    resources :call_escalations do
+      collection do
+        post 'sort'
+      end
+    end
   end
 
   resources :roles
@@ -23,11 +29,12 @@ Ringring::Application.routes.draw do
   devise_for :users
 
   resources :users
-  resources :call_escalations do
-    collection do 
-      post 'sort'
-    end
-  end
+
+#  resources :call_escalations do
+#    collection do 
+#      post 'sort'
+#    end
+#  end
 
   resources :twilio_error_notifications do
     collection do

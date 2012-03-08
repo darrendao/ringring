@@ -41,11 +41,13 @@ class CallList < ActiveRecord::Base
   end
 
   def in_business_hours?
+Rails.logger.info "HELLLLO"
     return false if business_hours.nil? or business_hours.empty?
 
     now = Time.now
     date = Date.today
     business_hours.each do |business_hour|
+Rails.logger.info "HELLLLO    #{business_hour.wday}"
       next if business_hour.wday != date.wday
       Rails.logger.info business_hour.start_time.to_s
       Rails.logger.info Time.parse(business_hour.start_time.to_s)
