@@ -13,7 +13,7 @@ class OncallAssignment < ActiveRecord::Base
   end
   def user_has_phone_and_sms_info
     if user.phone_number_info.blank? or user.phone_number_info.number.blank? or user.phone_number_info.sms_gateway.blank?
-      errors.add(:phone_number_info, " is missing phone number and/or sms gateway")
+      errors.add(:phone_number_info, "is missing phone number and/or sms gateway")
     end
   end
 end
