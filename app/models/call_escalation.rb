@@ -1,4 +1,5 @@
 class CallEscalation < OncallAssignment
+  set_table_name 'call_escalations'
 #  belongs_to :user
 #  belongs_to :call_list
 #  default_scope :order => 'position'
