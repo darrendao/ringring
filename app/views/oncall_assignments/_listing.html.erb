@@ -13,6 +13,7 @@
     <th>Phone number</th>
     <th>Email Address</th>
     <th>Retry</th>
+    <th></th>
   </tr>
   </thead>
 
@@ -25,9 +26,7 @@
     <td><%= oncall_assignment.user.phone_number %></td>
     <td><%= oncall_assignment.user.email %></td>
     <td><%= oncall_assignment.retry %></td>
-<!--
     <td><%= link_to 'Remove', call_list_oncall_assignment_path(oncall_assignment.call_list.id, oncall_assignment.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %></td>
--->
   </tr>
 <% end %>
 </tbody>
