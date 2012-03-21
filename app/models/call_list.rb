@@ -41,13 +41,11 @@ class CallList < ActiveRecord::Base
   end
 
   def in_business_hours?
-Rails.logger.info "HELLLLO"
     return false if business_hours.nil? or business_hours.empty?
 
     now = Time.now
     date = Date.today
     business_hours.each do |business_hour|
-Rails.logger.info "HELLLLO    #{business_hour.wday}"
       next if business_hour.wday != date.wday
       Rails.logger.info business_hour.start_time.to_s
       Rails.logger.info Time.parse(business_hour.start_time.to_s)
@@ -55,6 +53,10 @@ Rails.logger.info "HELLLLO    #{business_hour.wday}"
       return true if Time.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.parse(business_hour.end_time.strftime("%H:%M"))
     end
     return false
+  end
+
+  def current_oncalls
+    [] | self.oncall_assignments.where("starts_at < ? AND ends_at > ?", DateTime.now, DateTime.now) | self.oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
   end
 
   private

@@ -25,7 +25,7 @@ module CallListsHelper
 
   def display_calendar_link
     if @call_list.call_list_calendar && !@call_list.call_list_calendar.url.blank? 
-      link_to(@call_list.call_list_calendar.url, @call_list.call_list_calendar.url) + " (#{@call_list.call_list_calendar.ctype})"
+      link_to(@call_list.call_list_calendar.url, @call_list.call_list_calendar.url)
     else
       "N/A"
     end

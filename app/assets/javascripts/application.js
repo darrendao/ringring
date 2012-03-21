@@ -14,3 +14,11 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require_tree .
+
+var my_timezone = [
+    { value: '-0800', label: 'PST' },
+    { value: '-0700', label: 'PDT' },
+    { value: '-0600', label: 'CST' },
+    { value: '-0500', label: 'EST' },
+    { value: '-0400', label: 'EDT' }
+];

@@ -10,6 +10,6 @@ module ApplicationHelper
     day_options
   end
   def fmt_time(time)
-    time ? time.strftime("%H:%M") : ""
+    time ? l(time, :format => :timeonly) : ""
   end  
 end

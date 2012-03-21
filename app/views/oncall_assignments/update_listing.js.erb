@@ -1,1 +1,2 @@
-$("#oncall_assignments").html("<%= escape_javascript(render :partial => 'listing', :locals => {:oncall_assignments => @call_list.oncall_assignments}) %>");
+$("#oncall_assignments").html("<%= escape_javascript(render :partial => 'listing', :locals => {:oncall_assignments => @call_list.current_oncalls}) %>");
+$("#oncall_calendar").html("<%= escape_javascript(render :partial => 'call_lists/calendar') %>");

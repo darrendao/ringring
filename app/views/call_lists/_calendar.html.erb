@@ -1,0 +1,72 @@
+<div id='calendar'></div>
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+
+  $('#calendar').fullCalendar({
+    header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,basicWeek,basicDay'
+    },
+    editable: true,
+    theme: true,
+
+    //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+    eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
+        updateEvent(event);
+    },
+
+    // http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+    eventResize: function(event, dayDelta, minuteDelta, revertFunc){
+        updateEvent(event);
+    },
+
+
+    eventSources: [{
+        url: '<%= call_list_oncall_assignments_url @call_list %>',
+        color: 'blue',
+        textColor: 'white',
+        ignoreTimezone: false
+    }]
+  });
+
+  addCalButton("left", "Export iCal", "export_ical");
+  $("#export_ical").click(function () { 
+    location.href = "<%= url_for(:controller => 'call_list_calendars',
+                                :action => 'ical',
+                                :id => @call_list.call_list_calendar.id) %>";
+  });
+});
+
+function updateEvent(the_event) {
+    $.update(
+      "<%= call_list_oncall_assignments_url @call_list %>/" + the_event.id,
+      { oncall_assignment: { oncall: the_event.title,
+                             starts_at: "" + the_event.start,
+                             ends_at: "" + the_event.end
+                           }
+      },
+      function (response) { 
+        alert('successfully updated task.'); 
+        $.get("<%= call_list_oncall_assignments_url @call_list %>/refresh_listing");
+      },
+      function (response) { 
+        $.get("<%= call_list_oncall_assignments_url @call_list %>/refresh_listing");
+      }
+    );
+};
+
+function addCalButton(where, text, id) {
+    var my_button = '<span class="fc-header-space"></span>' +
+                    '<span id="' + id + '" class="fc-button ui-state-disabled"><span class="fc-button-inner">' + text +'</span></span>';
+    $("td.fc-header-" + where).append(my_button);
+    $("#" + id).button();
+}
+
+<% end %>
+
