@@ -13,8 +13,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   #devise :database_authenticatable,
   #devise :ldap_authenticatable,
-  devise AppConfig.authentication_method,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise AppConfig.authentication_method, :trackable, :validatable
 
   #attr_accessor :login
 
