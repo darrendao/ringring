@@ -138,4 +138,18 @@ class CallListsController < ApplicationController
     end    
     render :text => email
   end
+
+  def download_calendar
+    @call_list = CallList.find(params[:call_list_id])
+    oncall_assignments = @call_list.oncall_assignments
+  
+    cal = RiCal.Calendar do
+      event do
+        description "ops oncall"
+        dtstart     DateTime.parse("3/20/2012 14:47:39")
+        dtend       DateTime.parse("3/21/2012 19:43:02")
+      end
+    end
+    render :text => cal 
+  end
 end

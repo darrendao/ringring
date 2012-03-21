@@ -12,8 +12,14 @@ Ringring::Application.routes.draw do
       get 'remove_call_escalation'
       get 'pull_oncalls_from_calendar'
       get 'oncall_email'
+      get 'download_calendar'
     end
-    resources :oncall_assignments
+    resources :oncall_assignments do
+      collection do
+        get 'events_for_cal'
+        get 'refresh_listing'
+      end
+    end
     resources :oncall_times
 
     resources :call_escalations do
@@ -25,6 +31,11 @@ Ringring::Application.routes.draw do
 
   resources :roles
   resources :ecv
+  resources :call_list_calendars do
+    collection do
+      get 'ical'
+    end
+  end
 
   devise_for :users
 

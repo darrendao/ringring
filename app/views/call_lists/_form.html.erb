@@ -32,10 +32,12 @@
   <b>Oncall Calendar:</b><br/>
   <%= f.fields_for :call_list_calendar do |ff| %>
     <div class="field">
-      <%= ff.label :url %>
-      <%= ff.text_field :url %>
       <%= ff.label :type %>
-      <%= ff.select :ctype, Ringring::Calendar::Type::select_options %>
+      <%= ff.select :ctype, Ringring::Calendar::Type::select_options, {:include_blank => true} %>
+    </div>
+    <div class="field">
+      <%= ff.label :url %>
+      <%= ff.text_field :url %> (only for "remote" calendar)
     </div>
   <% end %>
 

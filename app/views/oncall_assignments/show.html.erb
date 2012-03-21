@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Username:</b>
+  <%= @oncall_assignment.user.username %>
+</p>
+
+<% if @oncall_assignment.user.phone_number_info %>
+<p>
+  <b>Phone number:</b>
+  <%= @oncall_assignment.user.phone_number %>
+</p>
+<% end %>
+
+<p>
+  <b>Starts at:</b>
+  <%= @oncall_assignment.starts_at_local %>
+</p>
+
+<p>
+  <b>Ends at:</b>
+  <%= @oncall_assignment.ends_at_local %>
+</p>
+
+<%= link_to 'Back to Call List', @oncall_assignment.call_list %> |
+<%= link_to 'Destroy', call_list_oncall_assignment_path(@oncall_assignment.call_list.id, @oncall_assignment.id), :confirm => 'Are you sure?', :method => :delete %></td>

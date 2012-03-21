@@ -349,6 +349,9 @@ $.extend(Timepicker.prototype, {
 			millisecMax  = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)) ,10),
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
+                // ddao: override default timezone value
+                this.timezone = o.timezone;
+
 		// Prevent displaying twice
 		//if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0) {
 		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0 && o.showTimepicker) {

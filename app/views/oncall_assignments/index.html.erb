@@ -1,0 +1,30 @@
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">Listing Oncall Assignments</h2>
+</div>
+<div class="clear"></div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Starts At</th>
+    <th>Ends At</th>
+    <th>Username</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+<% @oncall_assignments.each do |oncall_assignment| %>
+  <tr>
+    <td><%= oncall_assignment.starts_at %></td>
+    <td><%= oncall_assignment.ends_at %></td>
+    <td><%= oncall_assignment.user.username %></td>
+    <td><%= link_to 'Show', call_list_oncall_assignment_path(oncall_assignment.call_list.id, oncall_assignment.id) %> | 
+        <%= link_to 'Destroy', call_list_oncall_assignment_path(oncall_assignment.call_list.id, oncall_assignment.id), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+
+<br />
