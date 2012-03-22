@@ -44,6 +44,10 @@ class OncallAssignmentsController < ApplicationController
 
   def show
     @oncall_assignment = OncallAssignment.find(params[:id])
+    if request.xhr?
+      render 'show', :layout => false 
+      return
+    end
   end
 
   # PUT /oncall_assignments/1

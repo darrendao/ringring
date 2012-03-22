@@ -24,7 +24,7 @@
     </div>
     <div id="add_oncall_assignment_link">
       <%= link_to jquery_ui_button_icon("View All Oncall Assignments", "ui-icon-carat-2-n-s", "view_oncall_assignments").html_safe, call_list_oncall_assignments_path(@call_list)  %>
-      <%= link_to_function jquery_ui_button_icon("Add Oncall Assignment", "ui-icon-plusthick", "addoncall_assignment").html_safe , "$('#add_oncall_assignment').show();" %>
+      <%= link_to jquery_ui_button_icon("Add Oncall Assignment", "ui-icon-plusthick", "addoncall_assignment").html_safe , "#add_oncall_assignment", :class => 'nyroModal' %>
       <% unless @call_list.call_list_calendar.ctype == Ringring::Calendar::Type::LOCAL %>
         <%= link_to jquery_ui_button_icon("Pull From Calendar", "ui-icon-arrowreturnthick-1-s", "pullfromcalendar").html_safe, :action => 'pull_oncalls_from_calendar', :call_list_id => @call_list.id  %>
       <% else %>
@@ -101,6 +101,8 @@ $(document).ready(function(){
     $('#oncall_calendar').toggle();
     $('#calendar').fullCalendar( 'today' );
   });
+
+  $('.nyroModal').nyroModal();
 
 });
 <% end %>

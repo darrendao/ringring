@@ -1,20 +1,19 @@
 <%= form_for([@call_list, OncallAssignment.new], :remote => true) do |f| %>
   <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
-  User: <%=  f.select 'user_id', options_for_select(user_array) %>
+  User: <%=  f.select 'user_id', options_for_select(user_array) %><br/>
   From: <%= f.text_field 'starts_at', :class => 'timefield' %>
   To: <%= f.text_field 'ends_at', :class => 'timefield' %>
   Retry: <%= f.text_field 'retry', :class => 'tinytextfield' %>
   <%= submit_tag "Add" %>
-  | <%= link_to_function 'Done', "$('#add_oncall_assignment').hide(); $('#add_oncall_assignment_link').show()" %>
+  <%= submit_tag "Close", :class => "nyroModalClose" %>
 <% end %>
 <script type="text/javascript">
-   function get_time_zone_offset( ) {
-     var current_date = new Date( );
-     var gmt_offset = -current_date.getTimezoneOffset( )/60;
+   function get_time_zone_offset(date) {
+     var gmt_offset = -date.getTimezoneOffset( )/60;
      return gmt_offset;
    }
-   function get_timezone( ) {
-     var i = get_time_zone_offset();
+   function get_timezone(date) {
+     var i = get_time_zone_offset(date);
      var timezone = (i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00'
      return timezone
    }
@@ -25,7 +24,7 @@
                   timeFormat: 'hh:mm z',
                   showTimezone: true,
                   timezoneList: my_timezone,
-                  timezone: get_timezone()
-                  });
+                  timezone: get_timezone(new Date()) 
+   });
 
  </script>

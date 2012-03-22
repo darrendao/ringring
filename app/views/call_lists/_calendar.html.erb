@@ -16,6 +16,14 @@ $(document).ready(function(){
     editable: true,
     theme: true,
 
+    selectable: true,
+    selectHelper: true,
+    select: function(start, end, allDay) {
+      $('.nyroModal').nmCall();
+      $('#oncall_assignment_starts_at').val(start.format('m/d/Y 08:00 O'));
+      $('#oncall_assignment_ends_at').val(end.format('m/d/Y 08:00 O'));
+    },
+
     //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
     eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
         updateEvent(event);
@@ -26,7 +34,13 @@ $(document).ready(function(){
         updateEvent(event);
     },
 
-
+    eventClick: function(event, jsEvent, view) {
+        if(event.url) {
+           jsEvent.preventDefault();
+           $.nmManual(event.url);
+        }                    
+    }, 
+    
     eventSources: [{
         url: '<%= call_list_oncall_assignments_url @call_list %>',
         color: 'blue',
