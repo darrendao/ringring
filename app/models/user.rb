@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :oncall_assignments, :dependent => :destroy
   has_many :call_escalations, :dependent => :destroy
 
+  before_save :set_username_from_email
+
 #  acts_as_list :scope => :call_escalation
 
   # Include default devise modules. Others available are:
@@ -53,5 +55,12 @@ class User < ActiveRecord::Base
 
   def sms_email
     ret = phone_number_info ? phone_number_info.sms_email : nil
+  end
+
+  private
+  def set_username_from_email
+    if self.email && self.username.nil?
+      self.username = self.email.split("@")[0]
+    end
   end
 end
