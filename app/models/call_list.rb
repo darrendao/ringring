@@ -30,10 +30,6 @@ class CallList < ActiveRecord::Base
     escalations.map{|o|o.username}
   end
 
-  def oncall_names
-    oncalls.map{|o|o.username}
-  end
-
   # List of users to send notifications to when something is wrong.
   # Should be a combination of the users in the owners and escalations list
   def notification_users
