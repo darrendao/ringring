@@ -133,9 +133,21 @@ class CallListsController < ApplicationController
     @call_list = CallList.where(:name => call_list).first
     if @call_list.in_business_hours?
       email = @call_list.email
-    elsif !@call_list.oncalls.empty?
-      email = [@call_list.oncalls.first.email, @call_list.oncalls.first.sms_email].compact.join("\n")
-    end    
+    elsif !@call_list.current_oncalls.empty?
+      email = []
+      @call_list.current_oncalls.each do |oa|
+        email << oa.user.email
+        email << oa.user.sms_email
+      end
+      email = email.join("\n")
+    else
+      email = []
+      @call_list.call_escalations.each do |ce|
+        email << ce.user.email
+        email << ce.user.sms_email
+      end
+      email = email.join("\n")
+    end   
     render :text => email
   end
 
