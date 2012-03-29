@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :oncall_assignments, :dependent => :destroy
   has_many :call_escalations, :dependent => :destroy
+  has_many :call_list_owners, :dependent => :destroy
 
   before_save :set_username_from_email
 

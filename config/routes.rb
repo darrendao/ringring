@@ -1,5 +1,7 @@
 Ringring::Application.routes.draw do
 
+  resources :dashboard
+
   resources :phone_number_infos
 
   resources :phone_carriers
@@ -13,6 +15,7 @@ Ringring::Application.routes.draw do
       get 'pull_oncalls_from_calendar'
       get 'oncall_email'
       get 'download_calendar'
+      get 'mine'
     end
     resources :oncall_assignments do
       collection do
@@ -112,11 +115,11 @@ Ringring::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
+  root :to => "dashboard#index"
 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-  root :to => "call_lists#index"
 end

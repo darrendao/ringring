@@ -1,0 +1,33 @@
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">My Call Lists</h2>
+</div>
+<div class="clear"></div>
+<%= render :partial => 'call_lists/listing' %>
+<%= link_to jquery_ui_button_icon("New Call List", "ui-icon-plusthick", "newcalllist").html_safe, new_call_list_path %>
+<div class="clear"></div>
+<br/>
+<div class="clear"></div>
+<div class="grid_16">
+  <h2 id="page-heading">My Oncall Assignments</h2>
+</div>
+<table>
+  <thead>
+  <tr>
+    <th>Call List</th>
+    <th>Starts At</th>
+    <th>Ends At</th>
+    <th></th>
+  </tr>
+  </thead>
+<tbody>
+<% @oncall_assignments.each do |oncall_assignment| %>
+  <tr>
+    <td><%= link_to oncall_assignment.call_list.name, oncall_assignment.call_list %></td>
+    <td><%= oncall_assignment.starts_at_local if oncall_assignment.starts_at %></td>
+    <td><%= oncall_assignment.ends_at_local if oncall_assignment.ends_at %></td>
+    <td><%= link_to 'Delete', call_list_oncall_assignment_path(oncall_assignment.call_list.id, oncall_assignment.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>

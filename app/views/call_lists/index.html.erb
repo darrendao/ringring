@@ -3,29 +3,5 @@
   <h2 id="page-heading">Call Lists</h2>
 </div>
 <div class="clear"></div>
-<table>
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Owner(s)</th>
-    <th>Oncall(s)</th>
-    <th>Escalation Order</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-<% @call_lists.each do |call_list| %>
-  <tr>
-    <td><%= link_to call_list.name, call_list %></td>
-    <td><%= call_list.owners_names.join(", ") %></td>
-    <td><%= call_list.current_oncalls.map{|o|o.user.username}.join(", ") %></td>
-    <td><%= call_list.escalation_names.join(", ") %></td>
-    <td><%= link_to 'Show', call_list %> |
-        <%= link_to 'Edit', edit_call_list_path(call_list) %> |
-        <%= link_to 'Destroy', call_list, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-  <tbody>
-</table>
-
+<%= render :partial => 'listing' %>
 <%= link_to jquery_ui_button_icon("New Call List", "ui-icon-plusthick", "newcalllist").html_safe, new_call_list_path %>

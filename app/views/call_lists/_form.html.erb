@@ -20,7 +20,7 @@
     <%= f.label :email %><br />
     <%= f.text_field :email %>
   </div>
- 
+  <br/> 
   <b>Owner(s):</b>
   <div class="field">
   <%= f.fields_for :call_list_owners do |ff| %>
@@ -29,11 +29,12 @@
   <% end %>
   </div>
 
+  <br/> 
   <b>Oncall Calendar:</b><br/>
   <%= f.fields_for :call_list_calendar do |ff| %>
     <div class="field">
       <%= ff.label :type %>
-      <%= ff.select :ctype, Ringring::Calendar::Type::select_options, {:include_blank => true} %>
+      <%= ff.select :ctype, Ringring::Calendar::Type::select_options %>
     </div>
     <div class="field">
       <%= ff.label :url %>
@@ -41,6 +42,7 @@
     </div>
   <% end %>
 
+  <br/> 
   <b>Business Hours:</b><br />
   <div class="field">
     <%= f.fields_for :business_hours do |ff| %>

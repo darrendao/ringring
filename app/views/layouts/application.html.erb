@@ -9,11 +9,12 @@
 <body>
   <div class="container_16">
     <div class="grid_16">
-      <h1 id="branding"><a href="">RingRing</a></h1>
+      <h1 id="branding"><%= link_to 'RingRing', "/" %></h1>
     </div>
     <div class="clear"></div>
     <div class="grid_16">
       <ul class="nav main">
+        <li><%= link_to 'Home', "/" %></li>
         <li><%= link_to 'Users Management', users_path %></li>
         <li><%= link_to 'Call Lists', call_lists_path %></li>
         <li class="secondary">

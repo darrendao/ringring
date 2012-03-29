@@ -2,10 +2,10 @@ class CallList < ActiveRecord::Base
   validates :name, :uniqueness => true, :presence => true
   validate :must_have_owners
 
-  has_many :call_list_owners
+  has_many :call_list_owners, :dependent => :destroy
   has_many :owners, :through => :call_list_owners, :source => :user
 
-  has_many :call_escalations
+  has_many :call_escalations, :dependent => :destroy
   has_many :escalations, :through => :call_escalations, :source => :user
   accepts_nested_attributes_for :call_list_owners, :allow_destroy => true,
                                                    :reject_if => :all_blank
@@ -13,12 +13,12 @@ class CallList < ActiveRecord::Base
   has_one :call_list_calendar
   accepts_nested_attributes_for :call_list_calendar, :allow_destroy => true
 
-  has_many :oncall_assignments
+  has_many :oncall_assignments, :dependent => :destroy
   has_many :oncalls, :through => :oncall_assignments, :source => :user
 
   has_one :error_notification, :as => :notifiable
 
-  has_many :business_hours
+  has_many :business_hours, :dependent => :destroy
   accepts_nested_attributes_for :business_hours, :allow_destroy => true,
                                                    :reject_if => :all_blank
   
