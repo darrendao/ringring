@@ -46,6 +46,8 @@ class CallList < ActiveRecord::Base
       Rails.logger.info business_hour.start_time.to_s
       Rails.logger.info Time.parse(business_hour.start_time.to_s)
 
+      return false if business_hour.start_time.nil? or business_hour.end_time.nil?
+
       return true if Time.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.parse(business_hour.end_time.strftime("%H:%M"))
     end
     return false
