@@ -1,4 +1,5 @@
 class CallList < ActiveRecord::Base
+  after_save :add_call_list_membership
   validates :name, :uniqueness => true, :presence => true
   validate :must_have_owners
 
@@ -108,6 +109,11 @@ class CallList < ActiveRecord::Base
   def must_have_owners
     if call_list_owners.empty?
       errors.add(:call_list_owners, "must be specified")
+    end
+  end
+  def add_call_list_membership
+    owners.each do |owner|
+      CallListMembership.find_or_create_by_call_list_id_and_user_id(self.id, owner.id)
     end
   end
 end

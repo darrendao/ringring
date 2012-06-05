@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
 
   def index
     @call_lists = []
-    current_user.call_list_owners.each do |clo|
+    (current_user.call_list_owners | current_user.call_list_memberships).each do |clo|
       @call_lists << clo.call_list
     end
 
