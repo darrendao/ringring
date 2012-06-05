@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Call list:</b>
+  <%= @call_list_membership.call_list_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @call_list_membership.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_call_list_membership_path(@call_list_membership) %> |
+<%= link_to 'Back', call_list_memberships_path %>

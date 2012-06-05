@@ -1,0 +1,25 @@
+<%= form_for(@smart_contact_list) do |f| %>
+  <% if @smart_contact_list.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@smart_contact_list.errors.count, "error") %> prohibited this smart_contact_list from being saved:</h2>
+
+      <ul>
+      <% @smart_contact_list.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :call_list_id %><br />
+    <%= f.number_field :call_list_id %>
+  </div>
+  <div class="field">
+    <%= f.label :contact_type %><br />
+    <%= f.text_field :contact_type %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

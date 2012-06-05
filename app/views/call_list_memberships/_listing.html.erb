@@ -1,0 +1,20 @@
+<table class='styled datatable display' id='members_table'>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone #</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+ <% @call_list.sorted_memberships.each do |membership| %>
+  <tr>
+    <td><%= membership.user.username %></td>
+    <td><%= membership.user.email %></td>
+    <td><%= membership.user.phone_number %></td>
+    <td><%= link_to 'Remove', call_list_call_list_membership_path(membership.call_list.id, membership.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %></td>
+  </tr>
+<% end %>
+  </tbody>
+</table>

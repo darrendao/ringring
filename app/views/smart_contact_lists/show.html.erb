@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Call list:</b>
+  <%= @smart_contact_list.call_list_id %>
+</p>
+
+<p>
+  <b>Contact type:</b>
+  <%= @smart_contact_list.contact_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_smart_contact_list_path(@smart_contact_list) %> |
+<%= link_to 'Back', smart_contact_lists_path %>

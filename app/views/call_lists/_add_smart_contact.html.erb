@@ -1,0 +1,7 @@
+<%= form_for([@call_list, SmartContactList.new], :remote => true) do |f| %>
+  <% contact_type_array = SmartContactList::CONTACT_TYPES %>
+  Hour Type: <%= f.select 'hour_type', ['business_hour', 'off_hour'] %>
+  Contact Type: <%=  f.select 'contact_type', options_for_select(contact_type_array) %>
+  <%= submit_tag "Add" %>
+  | <%= link_to_function 'Done', "$('#add_smart_contact').hide(); $('#add_smart_contact_link').show()" %>
+<% end %>

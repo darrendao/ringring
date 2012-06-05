@@ -1,0 +1,24 @@
+<div class="grid_8">
+During business hour<br/>
+<% if @call_list.biz_hr_smart_contact_lists.empty? %>
+Empty
+<% else %>
+<% @call_list.biz_hr_smart_contact_lists.each do |smart_contact_list| %>
+  <%= "#{smart_contact_list.contact_type}" %> <%= link_to '(x)', call_list_smart_contact_list_path(smart_contact_list.call_list.id, smart_contact_list.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %>
+<br/>
+<% end %>
+<% end %>
+</div>
+<div class="grid_8">
+During off hour<br/>
+<% if @call_list.off_hr_smart_contact_lists.empty? %>
+Empty
+<% else %>
+<% @call_list.off_hr_smart_contact_lists.each do |smart_contact_list| %>
+  <%= "#{smart_contact_list.contact_type}" %> <%= link_to '(x)', call_list_smart_contact_list_path(smart_contact_list.call_list.id, smart_contact_list.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %>
+<br/>
+<% end %>
+<% end %>
+</div>
+<div class="clear"></div>
+<br/>
