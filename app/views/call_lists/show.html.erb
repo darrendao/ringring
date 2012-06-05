@@ -74,6 +74,42 @@
 <div id="add_entry_link">
   <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "addentry").html_safe , "$('#add_entry').show(); $('#add_entry_link').hide()" %>
 </div>
+</div>
+
+<div class="clear"></div>
+<br/>
+<b>Smart Contact Specs</b><br/>
+<div class="grid_12 content_box">
+<div id="smart_contact_lists">
+<%= render :partial => 'smart_contact_lists/listing', :locals => {:smart_contact_lists => @call_list.smart_contact_lists} %>
+</div>
+<div id="add_smart_contact" style="display:none">
+  <%= render :partial => 'add_smart_contact' %>
+</div>
+<div id="add_smart_contact_link">
+  <%= link_to_function jquery_ui_button_icon("Add Entry", "ui-icon-plusthick", "add_smart_contact").html_safe , "$('#add_smart_contact').show(); $('#add_smart_contact_link').hide()" %>
+  <%= link_to jquery_ui_button_icon("View Smart Contacts", "ui-icon-circle-zoomin", "view_smart_contacts").html_safe, "smart_contacts?call_list=#{@call_list.name}" %>
+</div>
+</div>
+
+<div class="clear"></div>
+<br/>
+<b>Members</b><br/>
+<div class="grid_12">
+<div id="call_list_memberships">
+  <% if @call_list.members.empty? %>
+  Empty
+  <% else %>
+  <%= render :partial => 'call_list_memberships/listing', :locals => {:call_list_memberships => @call_list.members} %>
+  <% end %>
+</div>
+<div id="add_member" style="display:none">
+  <%= render :partial => 'add_member' %>
+</div>
+<div id="add_member_link">
+  <%= link_to_function jquery_ui_button_icon("Add Member", "ui-icon-plusthick", "addentry").html_safe , "$('#add_member').show(); $('#add_member_link').hide()" %>
+</div>
+</div>
 
 <%= javascript_tag do %>
 $(document).ready(function(){
@@ -107,11 +143,10 @@ $(document).ready(function(){
 });
 <% end %>
 
-</div>
-
 <div class="clear"></div>
 <br/>
 <div>
 <%= link_to 'Edit', edit_call_list_path(@call_list) %> |
 <%= link_to 'Back', call_lists_path %>
 </div>
+<br/>

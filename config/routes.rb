@@ -1,5 +1,8 @@
 Ringring::Application.routes.draw do
 
+  resources :call_list_memberships
+
+
   resources :dashboard
 
   resources :phone_number_infos
@@ -14,6 +17,7 @@ Ringring::Application.routes.draw do
       get 'remove_call_escalation'
       get 'pull_oncalls_from_calendar'
       get 'oncall_email'
+      get 'smart_contacts'
       get 'download_calendar'
       get 'mine'
     end
@@ -30,6 +34,8 @@ Ringring::Application.routes.draw do
         post 'sort'
       end
     end
+    resources :call_list_memberships
+    resources :smart_contact_lists
   end
 
   resources :roles

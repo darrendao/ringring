@@ -1,4 +1,5 @@
 class CallEscalation < ActiveRecord::Base
+  after_save :add_call_list_membership
   belongs_to :user
   belongs_to :call_list
   default_scope :order => 'position'
@@ -15,5 +16,8 @@ class CallEscalation < ActiveRecord::Base
     if user.phone_number_info.blank? or user.phone_number_info.number.blank? or user.phone_number_info.sms_gateway.blank?
       errors.add(:phone_number_info, "is missing phone number and/or sms gateway")
     end
+  end
+  def add_call_list_membership
+    CallListMembership.find_or_create_by_call_list_id_and_user_id(call_list.id, user.id)
   end
 end

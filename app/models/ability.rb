@@ -38,7 +38,10 @@ class Ability
       can :manage, CallList do |call_list|
         call_list.owners.include? user
       end
-      # Call list owner manage the list oncall_assignments and call_escalations
+      # Call list owner manage the list membership, oncall_assignments and call_escalations
+      can :manage, CallListMembership do |call_list_membership|
+        call_list_membership.call_list.owners.include? user
+      end
       can :manage, OncallAssignment do |oncall_assignment|
         oncall_assignment.call_list.owners.include? user
       end
@@ -51,9 +54,12 @@ class Ability
         call_escalation.call_list.escalations.include? user
       end
 
-      # User can add and remove themselves to oncall_assignments and call_escalations
+      # User can add and remove themselves to call_list, oncall_assignments and call_escalations
       can :manage, OncallAssignment do |oncall_assignment|
         oncall_assignment.user == user
+      end
+      can :manage, CallListMembership do |call_list_membership|
+        call_list_membership.user == user
       end
       can :manage, CallEscalation do |call_escalation|
         call_escalation.user == user
@@ -64,7 +70,12 @@ class Ability
       can :remove_call_escalation do |call_escalation|
         call_escalation.user == user
       end
-     
+
+      # Only owner can manage smart contact list
+      can :manage, SmartContactList do |smart_contact_list|
+        smart_contact_list.call_list.owners.include? user
+      end
+
       # User can update their own account
       can :update, User, :id => user.id
 

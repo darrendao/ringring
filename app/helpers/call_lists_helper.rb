@@ -20,6 +20,7 @@ module CallListsHelper
       end
     end
     call_list.business_hours.sort!{|x,y| x.wday <=> y.wday}    
+
     return call_list
   end
 

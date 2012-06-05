@@ -151,6 +151,16 @@ class CallListsController < ApplicationController
     render :text => email
   end
 
+  def smart_contacts
+    call_list = params['call_list']
+    if call_list.blank?
+      render :text => "Need to specify call_list"
+      return
+    end
+    @call_list = CallList.where(:name => call_list).first
+    render :text => @call_list.smart_contacts.join("\n")
+  end
+
   def download_calendar
     @call_list = CallList.find(params[:call_list_id])
     oncall_assignments = @call_list.oncall_assignments

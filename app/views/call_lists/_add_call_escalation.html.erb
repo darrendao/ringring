@@ -3,5 +3,5 @@
   User: <%=  f.select 'user_id', options_for_select(user_array) %>
   Retry: <%= f.text_field 'retry' %>
   <%= submit_tag "Add" %>
-  | <%= link_to_function 'Cancel', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
+  | <%= link_to_function 'Done', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
 <% end %>

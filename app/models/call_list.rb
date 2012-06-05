@@ -4,11 +4,11 @@ class CallList < ActiveRecord::Base
 
   has_many :call_list_owners, :dependent => :destroy
   has_many :owners, :through => :call_list_owners, :source => :user
+  accepts_nested_attributes_for :call_list_owners, :allow_destroy => true,
+                                                   :reject_if => :all_blank
 
   has_many :call_escalations, :dependent => :destroy
   has_many :escalations, :through => :call_escalations, :source => :user
-  accepts_nested_attributes_for :call_list_owners, :allow_destroy => true,
-                                                   :reject_if => :all_blank
 
   has_one :call_list_calendar
   accepts_nested_attributes_for :call_list_calendar, :allow_destroy => true
@@ -20,7 +20,18 @@ class CallList < ActiveRecord::Base
 
   has_many :business_hours, :dependent => :destroy
   accepts_nested_attributes_for :business_hours, :allow_destroy => true,
-                                                   :reject_if => :all_blank
+                                                 :reject_if => :all_blank
+
+  has_many :smart_contact_lists, :dependent => :destroy
+  accepts_nested_attributes_for :smart_contact_lists, :allow_destroy => true,
+                                                      :reject_if => :all_blank
+
+  has_many :call_list_memberships, :dependent => :destroy
+  has_many :members, :through => :call_list_memberships, :source => :user
+
+  def sorted_memberships
+    call_list_memberships.sort{|x,y| x.user.username <=> y.user.username}
+  end
   
   def owners_names
     owners.map{|o|o.username}
@@ -55,6 +66,42 @@ class CallList < ActiveRecord::Base
 
   def current_oncalls
     [] | self.oncall_assignments.where("starts_at < ? AND ends_at > ?", DateTime.now, DateTime.now) | self.oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
+  end
+
+  def contact_types
+    smart_contact_lists.map{|list| list.contact_type}
+  end
+
+  def biz_hr_smart_contact_lists
+    smart_contact_lists.where(:hour_type => "business_hour")
+  end
+
+  def off_hr_smart_contact_lists
+    smart_contact_lists.where(:hour_type => "off_hour")
+  end
+
+  def smart_contacts
+    results = []
+    if in_business_hours?
+      current_smart_contact_lists = biz_hr_smart_contact_lists
+    else
+      current_smart_contact_lists = off_hr_smart_contact_lists
+    end
+    current_smart_contact_lists.map{|list| list.contact_type}.each do |contact_type|
+      case contact_type
+      when "group_email"
+        results << email unless email.empty?
+      when "member_emails"
+        results |=  members.map{|member| member.email}        
+      when "member_sms"
+        results |=  members.map{|member| member.sms_email}        
+      when "oncall_emails"
+        results |=  oncalls.map{|oncall| oncall.email}        
+      when "oncall_sms"
+        results |=  oncalls.map{|oncall| oncall.sms_email}        
+      end 
+    end
+    results.compact
   end
 
   private

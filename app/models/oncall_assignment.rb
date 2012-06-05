@@ -1,6 +1,7 @@
 class OncallAssignment < CallEscalation
   set_table_name 'oncall_assignments'
   validate :check_oncall_datetime
+  after_save :add_call_list_membership
 
   def as_json(options = {})
     {
@@ -50,5 +51,8 @@ class OncallAssignment < CallEscalation
     else
       return time
     end
+  end
+  def add_call_list_membership
+    CallListMembership.find_or_create_by_call_list_id_and_user_id(call_list.id, user.id)
   end
 end
