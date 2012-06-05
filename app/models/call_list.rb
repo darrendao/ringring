@@ -96,9 +96,9 @@ class CallList < ActiveRecord::Base
       when "member_sms"
         results |=  members.map{|member| member.sms_email}        
       when "oncall_emails"
-        results |=  oncalls.map{|oncall| oncall.email}        
+        results |=  current_oncalls.map{|oncall| oncall.user.email}        
       when "oncall_sms"
-        results |=  oncalls.map{|oncall| oncall.sms_email}        
+        results |=  current_oncalls.map{|oncall| oncall.user.sms_email}        
       end 
     end
     results.compact
