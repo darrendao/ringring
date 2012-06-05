@@ -1,1 +1,4 @@
-$("#call_list_memberships").html("<%= escape_javascript(render :partial => 'listing', :locals => {:call_list_memberships => @call_list.members}) %>");
+$("#call_list_memberships").html("<%= escape_javascript(render :partial => 'call_list_memberships/listing', :locals => {:call_list_memberships => @call_list.members}) %>");
+$("#oncall_assignments").html("<%= escape_javascript(render :partial => 'oncall_assignments/listing', :locals => {:oncall_assignments => @call_list.current_oncalls}) %>");
+$("#oncall_calendar").html("<%= escape_javascript(render :partial => 'call_lists/calendar') %>");
+$("#call_escalations").html("<%= escape_javascript(render :partial => 'call_escalations/listing', :locals => {:call_escalations => @call_list.call_escalations}) %>");
