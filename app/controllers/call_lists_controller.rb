@@ -1,5 +1,5 @@
 class CallListsController < ApplicationController
-  before_filter :authenticate_user!, :except => ['oncall_email']
+  before_filter :authenticate_user!, :except => ['oncall_email', 'smart_contacts']
   load_and_authorize_resource
 
   # GET /call_lists
