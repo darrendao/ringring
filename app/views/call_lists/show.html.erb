@@ -9,15 +9,6 @@
   </div>
   <div class="clear" style="padding:7px"></div>
 
-  <b>Business Hours</b><br/>
-  <div class="grid_12 content_box">
-  <% @call_list.business_hours.each do |business_hour| %>
-    <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= fmt_time(business_hour.start_time) %>
-      to <%= fmt_time(business_hour.end_time) %><br/>
-  <% end %>
-  </div>
-  <div class="clear" style="padding:7px"></div>
-
   <b>Current Oncalls</b><br/>
   <div class="grid_12">
     <div id="oncall_assignments">
@@ -78,6 +69,15 @@
 </div>
 
 <div class="clear"></div>
+<b>Business Hours</b><br/>
+<div class="grid_12 content_box">
+<% @call_list.business_hours.each do |business_hour| %>
+  <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= fmt_time(business_hour.start_time) %>
+    to <%= fmt_time(business_hour.end_time) %><br/>
+<% end %>
+</div>
+<div class="clear" style="padding:7px"></div>
+
 <br/>
 <b>Smart Contact Specs</b><br/>
 <div class="grid_12 content_box">
