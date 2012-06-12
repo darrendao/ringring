@@ -14,7 +14,8 @@
 <table>
   <thead>
   <tr>
-    <th>Call List</th>
+    <th>Call List ID</th>
+    <th>Call List Name</th>
     <th>Starts At</th>
     <th>Ends At</th>
     <th></th>
@@ -23,6 +24,7 @@
 <tbody>
 <% @oncall_assignments.each do |oncall_assignment| %>
   <tr>
+    <td><%= oncall_assignment.call_list.id %></td>
     <td><%= link_to oncall_assignment.call_list.name, oncall_assignment.call_list %></td>
     <td><%= oncall_assignment.starts_at_local if oncall_assignment.starts_at %></td>
     <td><%= oncall_assignment.ends_at_local if oncall_assignment.ends_at %></td>
