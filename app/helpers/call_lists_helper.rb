@@ -31,4 +31,11 @@ module CallListsHelper
       "N/A"
     end
   end
+
+  def oncall_assignment_options
+    all_users = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]}
+    members = @call_list.members.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]}
+    non_members = all_users - members
+    options_for_select(members | ["-----------------------", nil] | non_members)
+  end
 end

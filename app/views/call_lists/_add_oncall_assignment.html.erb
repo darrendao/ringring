@@ -1,6 +1,5 @@
 <%= form_for([@call_list, OncallAssignment.new], :remote => true) do |f| %>
-  <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
-  User: <%=  f.select 'user_id', options_for_select(user_array) %><br/>
+  User: <%=  f.select 'user_id', oncall_assignment_options %>
   From: <%= f.text_field 'starts_at', :class => 'timefield' %>
   To: <%= f.text_field 'ends_at', :class => 'timefield' %>
   Retry: <%= f.text_field 'retry', :class => 'tinytextfield' %>

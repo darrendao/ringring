@@ -1,6 +1,5 @@
 <%= form_for([@call_list, CallEscalation.new], :remote => true) do |f| %>
-  <% user_array = User.order('username').collect {|s| ["#{s.username} | #{s.first_name} #{s.last_name}", s.id]} %>
-  User: <%=  f.select 'user_id', options_for_select(user_array) %>
+  User: <%=  f.select 'user_id', oncall_assignment_options %>
   Retry: <%= f.text_field 'retry' %>
   <%= submit_tag "Add" %>
   | <%= link_to_function 'Done', "$('#add_entry').hide(); $('#add_entry_link').show()" %>
