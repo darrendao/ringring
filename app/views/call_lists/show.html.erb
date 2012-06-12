@@ -2,6 +2,7 @@
 
   <b>Basic Info</b><br/>
   <div class="grid_12 content_box">
+  ID: <%= @call_list.id %><br/>
   Name: <%= @call_list.name %><br/>
   Owners: <%= @call_list.owners.map{|user| user.username}.join(", ") %><br/>
   Email: <%= @call_list.email %><br/>
