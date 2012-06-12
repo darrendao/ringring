@@ -28,6 +28,19 @@ class TwilioCallEscalationsController < ApplicationController
     @base_url = AppConfig.base_url || ""
   end
 
+
+  def call_list_menu
+    @call_lists = CallList.all
+    @base_url = AppConfig.base_url || ""
+  end
+
+  def gather_call_list_id
+    @base_url = AppConfig.base_url || ""
+    call_list_id = params['Digits']
+    @call_list = CallList.find(call_list_id)
+    redirect_to "#{@base_url}/twilio_call_escalations/attempt_call.xml?call_list_id=#{call_list_id}"
+  end
+
   private
   def get_number_to_call
     unless @call_escalations[@number_index]

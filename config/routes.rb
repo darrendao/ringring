@@ -68,6 +68,9 @@ Ringring::Application.routes.draw do
       post 'attempt_call'
       post 'screen_for_machine'
       post 'complete_call'
+      get 'call_list_menu'
+      post 'gather_call_list_id'
+      get 'gather_call_list_id'
     end
   end
 
