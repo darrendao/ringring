@@ -3,13 +3,13 @@
     <Pause length="2"/>
     <Gather action="<%= @base_url %>/twilio_call_escalations/gather_call_list_id.xml" timeout="2">
         <Say>Enter the call list ID you want to call, followed by the pound sign.</Say>
-        <Pause length="2"/>
+        <Pause length="1"/>
         <Say>Call list directory</Say>
 <% @call_lists.each do |call_list| %>
         <Say><%= "#{call_list.phonetic_name || call_list.name} ID #{call_list.id}"%></Say>        
         <Pause length="1"/>
 <% end %>
-        <Say>Are you still there? To enter the call list ID, followed by the pound sign.</Say>
+        <Say>Are you still there? Enter the call list ID, followed by the pound sign.</Say>
     </Gather>
     <Say>We didn't receive any input. Goodbye!</Say>
     <Hangup/>
