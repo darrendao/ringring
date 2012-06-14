@@ -6,7 +6,7 @@
         <Pause length="2"/>
         <Say>Call list directory</Say>
 <% @call_lists.each do |call_list| %>
-        <Say><%= "#{call_list.name} ID #{call_list.id}"%></Say>        
+        <Say><%= "#{call_list.phonetic_name || call_list.name} ID #{call_list.id}"%></Say>        
         <Pause length="1"/>
 <% end %>
         <Say>Are you still there? To enter the call list ID, followed by the pound sign.</Say>
