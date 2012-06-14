@@ -4,6 +4,7 @@
   <div class="grid_12 content_box">
   ID: <%= @call_list.id %><br/>
   Name: <%= @call_list.name %><br/>
+  Phonetic Name: <%= @call_list.phonetic_name %><br/>
   Owners: <%= @call_list.owners.map{|user| user.username}.join(", ") %><br/>
   Email: <%= @call_list.email %><br/>
   </div>
