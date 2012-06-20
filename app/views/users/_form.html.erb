@@ -53,7 +53,7 @@
     </div>
   <% end %>
   <div class="field">
-    <%= f.label :sms_email %><br />
+    <%= f.label :sms_email %> (e.g. 1234567890@txt.att.net)<br />
     <%= f.text_field :sms_email %>
   </div>
   <% if can? :assign_roles, @user %>
