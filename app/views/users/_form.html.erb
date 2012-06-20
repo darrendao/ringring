@@ -51,11 +51,11 @@
       <%= ff.label :phone_number %><br/>
       <%= ff.text_field :number %>
     </div>
-    <div class="field">
-      <%= ff.label :sms_gateway %> (e.g. vtext.com for Verizon Wireless)<br/> 
-      <%= ff.text_field :sms_gateway %>
-    </div>
   <% end %>
+  <div class="field">
+    <%= f.label :sms_email %><br />
+    <%= f.text_field :sms_email %>
+  </div>
   <% if can? :assign_roles, @user %>
   <% for role in Role.find(:all) %>
     <div>

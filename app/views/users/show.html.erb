@@ -30,16 +30,16 @@
   <b>Phone number:</b>
   <%= @user.phone_number %>
 </p>
-
-<p>
-  <b>SMS Gateway:</b>
-  <%= @user.phone_number_info.sms_gateway %>
-</p>
 <% else %>
 <p>
 <b>Phone info not available</b>
 </p>
 <% end %>
+
+<p>
+  <b>SMS Email:</b>
+  <%= @user.sms_email %>
+</p>
 
 <p>
   <b>Roles:</b>

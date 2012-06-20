@@ -2,16 +2,15 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_one :phone_number_info
   accepts_nested_attributes_for :phone_number_info, :allow_destroy => true,
-                                                    :reject_if => proc{|attrs| attrs[:number].nil? or attrs[:sms_gateway].nil?}
+                                                    :reject_if => proc{|attrs| attrs[:number].nil?}
 
   has_many :oncall_assignments, :dependent => :destroy
   has_many :call_escalations, :dependent => :destroy
   has_many :call_list_owners, :dependent => :destroy
   has_many :call_list_memberships, :dependent => :destroy
+#  has_many :vacations, :dependent => :destroy
 
   before_save :set_username_from_email
-
-#  acts_as_list :scope => :call_escalation
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -22,8 +21,7 @@ class User < ActiveRecord::Base
   #attr_accessor :login
 
   # Setup accessible (or protected) attributes for your model
-  #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :phone_number, :login, :role_ids
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :role_ids, :phonetic_name, :phone_number_info_attributes
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :role_ids, :phonetic_name, :phone_number_info_attributes, :sms_email
 
   def role?(role)
     return !!self.roles.find_by_name(role.to_s.camelize)
@@ -55,7 +53,7 @@ class User < ActiveRecord::Base
     ret
   end
 
-  def sms_email
+  def old_sms_email
     ret = phone_number_info ? phone_number_info.sms_email : nil
   end
 

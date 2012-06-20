@@ -11,8 +11,8 @@
     <th>Email</th>
     <th>First name</th>
     <th>Last name</th>
-    <th>Phonetic Name</th>
     <th>Phone number</th>
+    <th>SMS Email</th>
     <th>Roles</th>
     <th></th>
   </tr>
@@ -25,8 +25,8 @@
     <td><%= user.email %></td>
     <td><%= user.first_name %></td>
     <td><%= user.last_name %></td>
-    <td><%= user.phonetic_name %></td>
     <td><%= user.phone_number %></td>
+    <td><%= user.sms_email %></td>
     <td><%= user.roles_names %></td>
     <td><%= link_to 'Show', user %>
         | <%= link_to 'Edit', edit_user_path(user) %>
