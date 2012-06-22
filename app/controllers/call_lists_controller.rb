@@ -174,4 +174,18 @@ class CallListsController < ApplicationController
     end
     render :text => cal 
   end
+
+  def members_vacations
+    vacations = []
+    @call_list = CallList.find(params[:id])
+    @call_list.members.each do |member|
+      vacations |= member.vacations
+    end
+
+    respond_to do |format|
+      format.js  do
+        render :json => vacations
+      end
+    end
+  end
 end

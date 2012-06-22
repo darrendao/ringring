@@ -1,5 +1,6 @@
 Ringring::Application.routes.draw do
 
+
   resources :call_list_memberships
 
 
@@ -20,6 +21,7 @@ Ringring::Application.routes.draw do
       get 'smart_contacts'
       get 'download_calendar'
       get 'mine'
+      get 'members_vacations'
     end
     resources :oncall_assignments do
       collection do
@@ -48,7 +50,9 @@ Ringring::Application.routes.draw do
 
   devise_for :users
 
-  resources :users
+  resources :users do
+    resources :vacations
+  end
 
 #  resources :call_escalations do
 #    collection do 

@@ -1,8 +1,6 @@
-<%= form_for([@call_list, OncallAssignment.new], :remote => true) do |f| %>
-  User: <%=  f.select 'user_id', oncall_assignment_options %>
+<%= form_for([current_user, Vacation.new], :remote => true) do |f| %>
   From: <%= f.text_field 'starts_at', :class => 'timefield' %>
   To: <%= f.text_field 'ends_at', :class => 'timefield' %>
-  Retry: <%= f.text_field 'retry', :class => 'tinytextfield' %>
   <%= submit_tag "Add" %>
   <%= submit_tag "Close", :class => "nyroModalClose" %>
   &nbsp;
@@ -18,13 +16,13 @@
      return timezone
    }
 
-   $('.timefield').datetimepicker({ 
+   $('.timefield').datetimepicker({
                   stepMinute: 5,
                   hour: 8,
                   timeFormat: 'hh:mm z',
                   showTimezone: true,
                   timezoneList: my_timezone,
-                  timezone: get_timezone(new Date()) 
+                  timezone: get_timezone(new Date())
    });
 
  </script>

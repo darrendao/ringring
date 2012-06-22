@@ -28,6 +28,10 @@
   padding:10px
 }
 
+.clear_content_box {
+  padding:10px
+}
+
 .nyroModalBg {z-index:200}
 .nyroModalCont{z-index:300}
 .nyroModalDom { z-index: 300}

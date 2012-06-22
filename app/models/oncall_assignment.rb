@@ -5,8 +5,8 @@ class OncallAssignment < CallEscalation
 
   def as_json(options = {})
     {
-      :id => self.id,
-      :title => self.user.username,
+      :id => "#{self.id}_oncall_assignment",
+      :title => self.user.username + " oncall",
       :description => "description",
       :start => starts_at.iso8601,
       :end => ends_at.iso8601,

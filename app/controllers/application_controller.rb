@@ -16,4 +16,10 @@ class ApplicationController < ActionController::Base
       redirect_to :protocol => 'https'
     end
   end
+
+  def set_tz_offset(attr)
+    if params[attr] && params[attr][:starts_at]
+      params[attr][:timezone_offset] = DateTime.parse(params[attr][:starts_at]).utc_offset
+    end
+  end
 end

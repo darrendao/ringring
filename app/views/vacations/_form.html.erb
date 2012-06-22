@@ -1,0 +1,29 @@
+<%= form_for(@vacation) do |f| %>
+  <% if @vacation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@vacation.errors.count, "error") %> prohibited this vacation from being saved:</h2>
+
+      <ul>
+      <% @vacation.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :starts_at %><br />
+    <%= f.datetime_select :starts_at %>
+  </div>
+  <div class="field">
+    <%= f.label :ends_at %><br />
+    <%= f.datetime_select :ends_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,70 @@
+<div id='calendar'></div>
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+
+  $('#calendar').fullCalendar({
+    header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,basicWeek,basicDay'
+    },
+    editable: true,
+    theme: true,
+
+    selectable: true,
+    selectHelper: true,
+    select: function(start, end, allDay) {
+      $('#addvacationlink').nmCall();
+      $('#vacation_starts_at').val(start.format('m/d/Y 08:00 O'));
+      $('#vacation_ends_at').val(end.format('m/d/Y 08:00 O'));
+    },
+
+    //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+    eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
+        updateEvent(event);
+    },
+
+    // http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+    eventResize: function(event, dayDelta, minuteDelta, revertFunc){
+        updateEvent(event);
+    },
+
+    eventClick: function(event, jsEvent, view) {
+        if(event.url) {
+           jsEvent.preventDefault();
+           $.nmManual(event.url);
+        }
+    },
+
+    eventSources: [{
+        url: '<%= user_vacations_url current_user %>',
+        color: 'lightblue',
+        textColor: 'black',
+        ignoreTimezone: false
+    }]
+  });
+});
+
+function updateEvent(the_event) {
+ $.update(
+   "<%= user_vacations_url current_user %>/" + the_event.id,
+   { vacation: { 
+                 starts_at: "" + the_event.start,
+                 ends_at: "" + the_event.end
+               }
+   },
+   function (response) {
+     alert('successfully updated calendar');
+     $.get("<%= user_vacations_url current_user %>/refresh_listing");
+   },
+   function (response) {
+     $.get("<%= user_vacations_url current_user %>/refresh_listing");
+   }
+ );
+};
+<% end %>

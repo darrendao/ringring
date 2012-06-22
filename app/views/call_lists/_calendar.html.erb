@@ -46,7 +46,15 @@ $(document).ready(function(){
         color: 'blue',
         textColor: 'white',
         ignoreTimezone: false
-    }]
+      },
+      {
+        url: '<%= url_for :controller => :call_lists, :action =>  'members_vacations', :id => @call_list.id %>',
+        color: 'lightblue',
+        textColor: 'black',
+        ignoreTimezone: false,
+        editable: false
+      }
+    ]
   });
 
   addCalButton("left", "Export iCal", "export_ical");

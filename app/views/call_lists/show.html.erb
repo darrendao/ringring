@@ -2,11 +2,14 @@
 
   <b>Basic Info</b><br/>
   <div class="grid_12 content_box">
-  ID: <%= @call_list.id %><br/>
-  Name: <%= @call_list.name %><br/>
-  Phonetic Name: <%= @call_list.phonetic_name %><br/>
-  Owners: <%= @call_list.owners.map{|user| user.username}.join(", ") %><br/>
-  Email: <%= @call_list.email %><br/>
+    ID: <%= @call_list.id %><br/>
+    Name: <%= @call_list.name %><br/>
+    Phonetic Name: <%= @call_list.phonetic_name %><br/>
+    Owners: <%= @call_list.owners.map{|user| user.username}.join(", ") %><br/>
+    Email: <%= @call_list.email %><br/>
+  </div>
+  <div class="grid_2">
+    <%= link_to jquery_ui_button_icon("Edit Call List", "ui-icon-pencil", "editcalllist").html_safe, edit_call_list_path(@call_list) %>
   </div>
   <div class="clear" style="padding:7px"></div>
 
@@ -36,12 +39,12 @@
 
   <b>Oncall Calendar</b><br/>
   <% if @call_list.call_list_calendar.ctype != Ringring::Calendar::Type::LOCAL %>
-  <div id="oncall_calendar" class="grid_12">
+  <div id="oncall_calendar" class="grid_12 clear_content_box">
     Remote Calendar URL: <%= display_calendar_link %><br/>
     Calendar Type: <%= @call_list.call_list_calendar.ctype %><br/>
   </div>
   <% else %>
-  <div id="oncall_calendar" class="grid_12">
+  <div id="oncall_calendar" class="grid_12 clear_content_box">
     <%= render :partial => 'calendar' %>
     <!--
     <%= link_to_function jquery_ui_button_icon("Export iCal", "ui-icon-arrowthickstop-1-s", "exportical").html_safe , "alert('To be implemented')" %>
@@ -49,6 +52,11 @@
     -->
   </div>
   <% end %>
+  <div class="grid_3">
+  <% if @call_list.call_list_calendar.ctype == Ringring::Calendar::Type::LOCAL %>
+    <i>Tip: You can add and modify oncall assignments by directly clicking/dragging on the calendar.</i>
+  <% end %>
+  </div>
 <div class="clear" style="padding:7px"></div>
 <b>Call Escalations</b><br/>
 <div class="grid_12 content_box">
@@ -143,8 +151,4 @@ $(document).ready(function(){
 
 <div class="clear"></div>
 <br/>
-<div>
-<%= link_to 'Edit', edit_call_list_path(@call_list) %> |
-<%= link_to 'Back', call_lists_path %>
-</div>
 <br/>

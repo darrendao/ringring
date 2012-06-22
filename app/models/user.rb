@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :call_escalations, :dependent => :destroy
   has_many :call_list_owners, :dependent => :destroy
   has_many :call_list_memberships, :dependent => :destroy
-#  has_many :vacations, :dependent => :destroy
+  has_many :vacations, :dependent => :destroy
 
   before_save :set_username_from_email
 
@@ -55,6 +55,14 @@ class User < ActiveRecord::Base
 
   def old_sms_email
     ret = phone_number_info ? phone_number_info.sms_email : nil
+  end
+
+  def on_vacation?
+    now = Time.now
+    vacations.each do |vacation|
+      return true if vacation.starts_at <= now && now <= vacation.ends_at
+    end
+    false
   end
 
   private

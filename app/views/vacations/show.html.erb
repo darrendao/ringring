@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @vacation.user.username %>
+</p>
+
+<p>
+  <b>Starts at:</b>
+  <%= @vacation.starts_at %>
+</p>
+
+<p>
+  <b>Ends at:</b>
+  <%= @vacation.ends_at %>
+</p>
+
+<%= link_to 'Delete', user_vacation_path(@vacation.user.id, @vacation.id), :confirm => 'Are you sure?', :method => :delete %></td>

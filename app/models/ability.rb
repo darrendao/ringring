@@ -76,6 +76,11 @@ class Ability
         smart_contact_list.call_list.owners.include? user
       end
 
+      # User can only manage their own vacations
+      can :manage, Vacation do |vacation|
+        vacation.user == user
+      end
+
       # User can update their own account
       can :update, User, :id => user.id
 

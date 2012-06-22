@@ -93,9 +93,9 @@ class CallList < ActiveRecord::Base
       when "group_email"
         results << email unless email.empty?
       when "member_emails"
-        results |=  members.map{|member| member.email}        
+        results |=  members.map{|member| member.email unless member.on_vacation?}        
       when "member_sms"
-        results |=  members.map{|member| member.sms_email}        
+        results |=  members.map{|member| member.sms_email unless member.on_vacation?}        
       when "oncall_emails"
         results |=  current_oncalls.map{|oncall| oncall.user.email}        
       when "oncall_sms"
