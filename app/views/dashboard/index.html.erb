@@ -32,8 +32,11 @@
 <div id="vacation_calendar" class="grid_12">
   <%= render :partial => 'vacation_calendar' %>
 </div>
-<div class="grid_2">
+<div class="grid_3">
   <%= link_to jquery_ui_button_icon("Add Vacation", "ui-icon-plusthick", "addvacationlink").html_safe , "#add_vacation", :class => 'nyroModal' %>
+  <br/>
+  <br/>
+  <i>Tip: You can add and modify your vacations by directly clicking/dragging on the calendar.</i>
 </div>
 <div id="add_vacation" style="display:none">
   <br/>
