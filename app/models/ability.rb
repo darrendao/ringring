@@ -30,8 +30,6 @@ class Ability
     if user.role? :super_admin
       can :manage, :all
       can :assign_roles, User
-    elsif user.role? :moderator
-      can :manage, CallEscalation
     else
       # User can create new call_list, and edit call_lists that they own
       can :create, CallList
