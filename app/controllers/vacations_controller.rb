@@ -43,6 +43,7 @@ class VacationsController < ApplicationController
   # POST /vacations
   # POST /vacations.json
   def create
+    @gotodate = params[:vacation][:starts_at].to_time.to_i * 1000
     set_tz_offset(:vacation)
     @user = User.find(params[:user_id])
     @vacation = @user.vacations.build(params[:vacation])

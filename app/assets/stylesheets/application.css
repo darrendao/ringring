@@ -35,3 +35,9 @@
 .nyroModalBg {z-index:200}
 .nyroModalCont{z-index:300}
 .nyroModalDom { z-index: 300}
+
+.cell_link a {
+    display:block;
+    height:100%;
+    width:100%;
+}

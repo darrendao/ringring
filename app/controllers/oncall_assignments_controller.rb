@@ -6,7 +6,6 @@ class OncallAssignmentsController < ApplicationController
 
   def index
     @oncall_assignments = CallList.find(params[:call_list_id]).oncall_assignments
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @oncall_assignments }
@@ -19,6 +18,8 @@ class OncallAssignmentsController < ApplicationController
   end
   
   def create
+    @gotodate = params[:oncall_assignment][:starts_at].to_time.to_i * 1000
+
     set_tz_offset
     @call_list = CallList.find(params[:call_list_id])
     @oncall_assignment = @call_list.oncall_assignments.build(params[:oncall_assignment]) 
@@ -57,6 +58,8 @@ class OncallAssignmentsController < ApplicationController
   # it on the week or day view), this method will be called to update the values.
   # viv la REST!
   def update
+    @gotodate = params[:oncall_assignment][:starts_at].to_time.to_i * 1000
+
     set_tz_offset
     @oncall_assignment = OncallAssignment.find(params[:id])
     if params[:oncall_assignment]
@@ -71,11 +74,13 @@ class OncallAssignmentsController < ApplicationController
 
     respond_to do |format|
       if @oncall_assignment.update_attributes(params[:oncall_assignment])
+        @call_list = CallList.find(params[:call_list_id])
         format.html { redirect_to(@oncall_assignment, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
-        format.js do
-          head :ok
-        end
+        format.js { 
+          logger.info "HERE IS LIST #{@call_list.current_oncalls.inspect}"
+          render 'update_listing', :layout => false 
+        }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @oncall_assignment.errors, :status => :unprocessable_entity }
@@ -83,8 +88,8 @@ class OncallAssignmentsController < ApplicationController
       end
     end
   end
- 
-  def refresh_listing
+
+  def deprecated_refresh_listing
     @call_list = CallList.find(params[:call_list_id])
     render 'update_listing', :layout => false
   end

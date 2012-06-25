@@ -59,7 +59,6 @@ function updateEvent(the_event) {
                }
    },
    function (response) {
-     alert('successfully updated calendar');
      $.get("<%= user_vacations_url current_user %>/refresh_listing");
    },
    function (response) {

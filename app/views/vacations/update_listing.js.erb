@@ -1,1 +1,4 @@
 $("#vacation_calendar").html("<%= escape_javascript(render :partial => 'dashboard/vacation_calendar') %>");
+<% if @gotodate %>
+  $('#calendar').fullCalendar('gotoDate', new Date(<%= @gotodate %>));
+<% end %>

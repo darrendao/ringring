@@ -66,22 +66,18 @@ $(document).ready(function(){
 });
 
 function updateEvent(the_event) {
-    $.update(
-      "<%= call_list_oncall_assignments_url @call_list %>/" + the_event.id,
-      { oncall_assignment: { oncall: the_event.title,
+  $.ajax({
+    type: "PUT",
+    url: the_event.url + ".js",
+    data: { oncall_assignment: { oncall: the_event.title,
                              starts_at: "" + the_event.start,
                              ends_at: "" + the_event.end
                            }
-      },
-      function (response) { 
-        alert('successfully updated task.'); 
-        $.get("<%= call_list_oncall_assignments_url @call_list %>/refresh_listing");
-      },
-      function (response) { 
-        $.get("<%= call_list_oncall_assignments_url @call_list %>/refresh_listing");
-      }
-    );
-};
+          }
+  }).done(function( msg ) {
+    //alert("Updated successfully");
+  });
+}
 
 function addCalButton(where, text, id) {
     var my_button = '<span class="fc-header-space"></span>' +
