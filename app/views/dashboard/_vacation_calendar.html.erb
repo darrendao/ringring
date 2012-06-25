@@ -48,6 +48,10 @@ $(document).ready(function(){
         ignoreTimezone: false
     }]
   });
+
+  <% if @gotodate %>
+    $('#calendar').fullCalendar('gotoDate', new Date(<%= @gotodate %>));
+  <% end %>
 });
 
 function updateEvent(the_event) {

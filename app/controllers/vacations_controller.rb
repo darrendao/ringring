@@ -78,7 +78,9 @@ class VacationsController < ApplicationController
   # DELETE /vacations/1.json
   def destroy
     @user = User.find(params[:user_id])
-    Vacation.find(params[:id]).destroy
+    vacation = Vacation.find(params[:id])
+    @gotodate = vacation.starts_at.to_time.to_i * 1000
+    vacation.destroy
     respond_to do |format|
       format.html do
         redirect_to :back

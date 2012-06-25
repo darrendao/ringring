@@ -15,4 +15,4 @@
   <%= @vacation.ends_at %>
 </p>
 
-<%= link_to 'Delete', user_vacation_path(@vacation.user.id, @vacation.id), :confirm => 'Are you sure?', :method => :delete %></td>
+<%= link_to 'Delete', user_vacation_path(@vacation.user.id, @vacation.id), :confirm => 'Are you sure?', :method => :delete, :remote => true %></td>

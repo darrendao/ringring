@@ -63,6 +63,10 @@ $(document).ready(function(){
                                 :action => 'ical',
                                 :id => @call_list.call_list_calendar.id) %>";
   });
+
+  <% if @gotodate %>
+    $('#calendar').fullCalendar('gotoDate', new Date(<%= @gotodate %>));
+  <% end %>
 });
 
 function updateEvent(the_event) {

@@ -34,10 +34,12 @@ class OncallAssignmentsController < ApplicationController
 
   def destroy
     @call_list = CallList.find(params[:call_list_id])
-    OncallAssignment.find(params[:id]).destroy
+    oncall_assignment = OncallAssignment.find(params[:id])
+    @gotodate = oncall_assignment.starts_at.to_time.to_i * 1000
+    oncall_assignment.destroy
     respond_to do |format|
       format.html do
-        redirect_to @call_list
+        redirect_to :back
       end
       format.js { render 'update_listing', :layout => false }
     end

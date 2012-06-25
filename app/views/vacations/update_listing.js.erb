@@ -2,3 +2,4 @@ $("#vacation_calendar").html("<%= escape_javascript(render :partial => 'dashboar
 <% if @gotodate %>
   $('#calendar').fullCalendar('gotoDate', new Date(<%= @gotodate %>));
 <% end %>
+$.nmTop().close();

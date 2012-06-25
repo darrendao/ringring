@@ -4,3 +4,4 @@ $("#call_list_memberships").html("<%= escape_javascript(render :partial => 'call
 <% if @gotodate %>
   $('#calendar').fullCalendar('gotoDate', new Date(<%= @gotodate %>));
 <% end %>
+$.nmTop().close();
