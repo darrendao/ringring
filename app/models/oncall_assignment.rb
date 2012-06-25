@@ -25,8 +25,8 @@ class OncallAssignment < CallEscalation
 
   private
   def user_has_phone_and_sms_info
-    if user.phone_number_info.blank? or user.phone_number_info.number.blank? or user.phone_number_info.sms_gateway.blank?
-      errors.add(:phone_number_info, "is missing phone number and/or sms gateway")
+    if user.phone_number_info.blank? or user.phone_number_info.number.blank? or user.sms_email.blank?
+      errors.add(:phone_number_info, "is missing phone number and/or sms email")
     end
   end
   def check_oncall_datetime
