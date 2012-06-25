@@ -9,8 +9,8 @@ class CallListCalendarsController < ApplicationController
         event do
           description "oncall for #{oncall_assignment.call_list.name}"
           summary oncall_assignment.user.username
-          dtstart     oncall_assignment.starts_at
-          dtend       oncall_assignment.ends_at
+          dtstart     oncall_assignment.starts_at.to_date
+          dtend       oncall_assignment.ends_at.to_date
           uid "#{call_list_calendar.id }-#{oncall_assignment.id}"
         end
       end
