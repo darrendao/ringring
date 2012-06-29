@@ -10,3 +10,5 @@ en:
     formats:
       timeonly: "%l:%M %p"
       short_with_tz: "%F %R %z"
+      time_with_zone: "%l:%M %p %Z"
+      dateonly: "%b %e, %Y"

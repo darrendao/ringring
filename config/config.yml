@@ -11,6 +11,8 @@ common: &common
   business_hours: ["8:00", "18:00"]
   require_sms_gateway: true
   require_phone_number: true
+  oncall_assignments_gen:
+    from_now: 4 # generate oncalls for this number of weeks from today
   
   error_alerts:
     thresh_hold: 60 # minutes. Don't send alerts if one already sent within this period

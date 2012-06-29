@@ -5,6 +5,7 @@ module CallListsHelper
       call_list.call_list_owners.build
     end
 
+    call_list.oncall_assignments_gen ||= OncallAssignmentsGen.new
     call_list.call_list_calendar ||= CallListCalendar.new
 
     existing = []

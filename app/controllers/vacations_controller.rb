@@ -62,6 +62,7 @@ class VacationsController < ApplicationController
   # PUT /vacations/1.json
   def update
     @vacation = Vacation.find(params[:id])
+    set_tz_offset(:vacation)
 
     respond_to do |format|
       if @vacation.update_attributes(params[:vacation])

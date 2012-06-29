@@ -55,13 +55,48 @@
       from <%= ff.text_field :start_time, :value => fmt_time(ff.object.start_time), :class => 'timefield' %>
       to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield' %><br/>
     <% end %>
-    <script type="text/javascript">
-      $('.timefield').timepicker({});
-    </script>
   </div>
   <div class="clear"></div>
+
+  <br/>
+  <b>Oncall Assignments Automation</b> (optional & only for local oncall calendar)<br/>
+  <%= f.fields_for :oncall_assignments_gen do |ff| %>
+    <div class="field">
+      <%= ff.check_box :enable %>Automatically assign oncall assignments? <br/>
+      Oncall cycle begins and ends on <%= ff.select :cycle_day, day_options %>
+      <%= ff.text_field :cycle_time, :value => l(ff.object.cycle_time, :format => :timeonly) + " " + ff.object.formatted_timezone_offset, :class => 'timefield_with_zone' %>
+    </div>
+  <% end %>
+
   <br/>
   <div class="actions">
     <%= f.submit %>
   </div>
+  
 <% end %>
+
+<script type="text/javascript">
+   function get_time_zone_offset(date) {
+     var gmt_offset = -date.getTimezoneOffset( )/60;
+     return gmt_offset;
+   }
+   function get_timezone(date) {
+     var i = get_time_zone_offset(date);
+     var timezone = (i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00'
+     return timezone
+   }
+
+  $('.timefield').timepicker({
+                  ampm: true,
+  });
+
+  $('.timefield_with_zone').timepicker({
+                  ampm: true,
+                  stepMinute: 5,
+                  hour: 8,
+                  timeFormat: 'hh:mm tt z',
+                  showTimezone: true,
+                  timezoneList: my_timezone,
+                  timezone: get_timezone(new Date())
+  });
+</script>

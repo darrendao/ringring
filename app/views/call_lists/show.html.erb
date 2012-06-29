@@ -57,6 +57,17 @@
     <i>Tip: You can add and modify oncall assignments by directly clicking/dragging on the calendar.</i>
   <% end %>
   </div>
+<div class="clear"></div>
+<% if @call_list.oncall_assignments_gen %>
+<b>Oncall Auto-assignment</b><br/>
+<div class="grid_12 content_box">
+Enable: <%= @call_list.oncall_assignments_gen.enable == 1 ? 'yes' : 'no' %><br/>
+Oncall cycle begins and ends every: <%= Date::DAYNAMES[@call_list.oncall_assignments_gen.cycle_day] %> @ <%= l(@call_list.oncall_assignments_gen.cycle_time, :format => :timeonly) + " " + @call_list.oncall_assignments_gen.formatted_timezone_offset %>
+<br/>
+Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format => :dateonly) if @call_list.oncall_assignments_gen.last_gen %>
+</div>
+<% end %>
+
 <div class="clear" style="padding:7px"></div>
 <b>Call Escalations</b><br/>
 <div class="grid_12 content_box">

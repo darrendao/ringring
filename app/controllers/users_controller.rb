@@ -61,6 +61,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :assign_roles, @user if params[:user][:role_ids]
 
+    params[:user][:role_ids] ||= []
+
     if params[:user][:password].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)

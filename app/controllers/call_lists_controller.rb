@@ -49,6 +49,8 @@ class CallListsController < ApplicationController
   def create
     @call_list = CallList.new(params[:call_list])
 
+    params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
+
     respond_to do |format|
       if @call_list.save
         format.html { redirect_to @call_list, :notice => 'Call list was successfully created.' }
@@ -64,6 +66,7 @@ class CallListsController < ApplicationController
   # PUT /call_lists/1.json
   def update
     @call_list = CallList.find(params[:id])
+    params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
 
     respond_to do |format|
       if @call_list.update_attributes(params[:call_list])

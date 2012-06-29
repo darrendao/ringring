@@ -30,6 +30,13 @@ class CallList < ActiveRecord::Base
   has_many :call_list_memberships, :dependent => :destroy
   has_many :members, :through => :call_list_memberships, :source => :user
 
+  has_one :oncall_assignments_gen, :dependent => :destroy
+  accepts_nested_attributes_for :oncall_assignments_gen, :allow_destroy => true
+
+  def oncall_candidates
+    call_list_memberships.where(:oncall_candidate => 1)
+  end
+
   def sorted_memberships
     call_list_memberships.sort{|x,y| x.user.username <=> y.user.username}
   end
@@ -105,6 +112,27 @@ class CallList < ActiveRecord::Base
     results.compact
   end
 
+  def gen_oncall_assignments
+    raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == 1
+    raise "No available oncall candidate" if oncall_candidates.blank?
+
+    oncall_candidates_enum = oncall_candidates.cycle
+    start_date = oncall_assignments_gen.last_gen || DateTime.now
+
+    # Generate up to 4 weeks from now
+    while start_date < AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
+      end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
+      end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
+      oncall_candidate = oncall_candidates_enum.next
+
+      oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.user.id, :call_list_id => id, :starts_at => start_date, :ends_at => end_date)
+      oncall_assignment.save
+      oncall_assignments_gen.last_gen = end_date
+      oncall_assignments_gen.save
+      start_date = oncall_assignments_gen.last_gen
+    end
+  end
+
   private
   def must_have_owners
     if call_list_owners.empty?
@@ -116,4 +144,5 @@ class CallList < ActiveRecord::Base
       CallListMembership.find_or_create_by_call_list_id_and_user_id(self.id, owner.id)
     end
   end
+
 end
