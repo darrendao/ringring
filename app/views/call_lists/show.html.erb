@@ -61,7 +61,7 @@
 <% if @call_list.oncall_assignments_gen %>
 <b>Oncall Auto-assignment</b><br/>
 <div class="grid_12 content_box">
-Enable: <%= @call_list.oncall_assignments_gen.enable == 1 ? 'yes' : 'no' %><br/>
+Enable: <%= @call_list.oncall_assignments_gen.enable == true ? 'yes' : 'no' %><br/>
 Oncall cycle begins and ends every: <%= Date::DAYNAMES[@call_list.oncall_assignments_gen.cycle_day] %> @ <%= l(@call_list.oncall_assignments_gen.cycle_time, :format => :timeonly) + " " + @call_list.oncall_assignments_gen.formatted_timezone_offset %>
 <br/>
 Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format => :dateonly) if @call_list.oncall_assignments_gen.last_gen %>

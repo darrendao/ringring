@@ -34,7 +34,7 @@ class CallList < ActiveRecord::Base
   accepts_nested_attributes_for :oncall_assignments_gen, :allow_destroy => true
 
   def oncall_candidates
-    call_list_memberships.where(:oncall_candidate => 1)
+    call_list_memberships.where(:oncall_candidate => true)
   end
 
   def sorted_memberships
@@ -113,7 +113,7 @@ class CallList < ActiveRecord::Base
   end
 
   def gen_oncall_assignments
-    raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == 1
+    raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == true
     raise "No available oncall candidate" if oncall_candidates.blank?
 
     oncall_candidates_enum = oncall_candidates.cycle

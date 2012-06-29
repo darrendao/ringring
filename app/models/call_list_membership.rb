@@ -8,7 +8,7 @@ class CallListMembership < ActiveRecord::Base
 
   private
   def default_values
-    self.oncall_candidate = 1 if self.oncall_candidate.blank?
+    self.oncall_candidate = true if self.oncall_candidate.nil?
   end
 
   def cleanup_call_list

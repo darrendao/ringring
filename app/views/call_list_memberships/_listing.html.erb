@@ -14,7 +14,7 @@
     <td><%= link_to membership.user.username, membership.user %></td>
     <td><%= membership.user.email %></td>
     <td><%= membership.user.phone_number %></td>
-    <td><%= membership.oncall_candidate == 1 ? 'yes' : 'no' %></td>
+    <td><%= membership.oncall_candidate == true ? 'yes' : 'no' %></td>
     <td><%= link_to 'Remove', call_list_call_list_membership_path(membership.call_list.id, membership.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %></td>
   </tr>
 <% end %>

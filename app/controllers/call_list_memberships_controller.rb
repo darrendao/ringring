@@ -45,6 +45,7 @@ class CallListMembershipsController < ApplicationController
   # POST /call_list_memberships.json
   def create
     @call_list = CallList.find(params[:call_list_id])
+    params[:call_list_membership][:oncall_candidate] = false if params[:call_list_membership][:oncall_candidate] == 0
     @call_list_membership = @call_list.call_list_memberships.build(params[:call_list_membership])
 
     respond_to do |format|
@@ -64,6 +65,7 @@ class CallListMembershipsController < ApplicationController
   # PUT /call_list_memberships/1.json
   def update
     @call_list_membership = CallListMembership.find(params[:id])
+    params[:call_list_membership][:oncall_candidate] = false if params[:call_list_membership][:oncall_candidate] == 0
 
     respond_to do |format|
       if @call_list_membership.update_attributes(params[:call_list_membership])
