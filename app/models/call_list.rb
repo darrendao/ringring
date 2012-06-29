@@ -118,18 +118,18 @@ class CallList < ActiveRecord::Base
 
     oncall_candidates_enum = oncall_candidates.cycle
     start_date = oncall_assignments_gen.last_gen || DateTime.now
+    end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
+    end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
 
     # Generate up to 4 weeks from now
     while start_date < AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
-      end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
-      end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
       oncall_candidate = oncall_candidates_enum.next
-
       oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.user.id, :call_list_id => id, :starts_at => start_date, :ends_at => end_date)
       oncall_assignment.save
       oncall_assignments_gen.last_gen = end_date
       oncall_assignments_gen.save
       start_date = oncall_assignments_gen.last_gen
+      end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end
   end
 

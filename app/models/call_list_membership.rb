@@ -4,12 +4,12 @@ class CallListMembership < ActiveRecord::Base
   validates :user_id, :uniqueness => {:scope => :call_list_id}
   after_destroy :cleanup_call_list
 
-  after_initialize :default_values
+#  after_initialize :default_values
 
   private
-  def default_values
-    self.oncall_candidate = true if self.oncall_candidate.nil?
-  end
+#  def default_values
+#    self.oncall_candidate = true if self.oncall_candidate.nil?
+#  end
 
   def cleanup_call_list
     CallEscalation.where(:call_list_id => call_list_id, :user_id => user_id).destroy_all
