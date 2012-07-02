@@ -192,4 +192,10 @@ class CallListsController < ApplicationController
       end
     end
   end
+
+  def gen_oncall_assignments
+    @call_list = CallList.find(params[:call_list_id])
+    @call_list.gen_oncall_assignments
+    redirect_to @call_list
+  end
 end

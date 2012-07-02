@@ -22,6 +22,7 @@ Ringring::Application.routes.draw do
       get 'download_calendar'
       get 'mine'
       get 'members_vacations'
+      get 'gen_oncall_assignments'
     end
     resources :oncall_assignments do
       collection do
