@@ -65,6 +65,8 @@
       <%= ff.check_box :enable %>Automatically assign oncall assignments? <br/>
       Oncall cycle begins and ends on <%= ff.select :cycle_day, day_options %>
       <%= ff.text_field :cycle_time, :value => l(ff.object.cycle_time, :format => :timeonly) + " " + ff.object.formatted_timezone_offset, :class => 'timefield_with_zone' %>
+      <br/>
+      Start generating on: <%= ff.text_field :last_gen , :class => 'datetimefield' %>
     </div>
   <% end %>
 
@@ -99,4 +101,12 @@
                   timezoneList: my_timezone,
                   timezone: get_timezone(new Date())
   });
+  $('.datetimefield').datetimepicker({
+                  stepMinute: 5,
+                  hour: 8,
+                  timeFormat: 'hh:mm z',
+                  showTimezone: true,
+                  timezoneList: my_timezone,
+                  timezone: get_timezone(new Date())
+   });
 </script>

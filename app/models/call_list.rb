@@ -117,9 +117,22 @@ class CallList < ActiveRecord::Base
     raise "No available oncall candidate" if oncall_candidates.blank?
 
     oncall_candidates_enum = oncall_candidates.cycle
-    start_date = oncall_assignments_gen.last_gen || DateTime.now
+    start_date = oncall_assignments_gen.last_gen || Time.now
     end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
+    end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0
+
+    # Find the last person oncall. Then start with the next person
+    counter = 0
+    begin
+      oncall_candidate = oncall_candidates_enum.next
+      logger.info "#{oncall_candidate.inspect} vs #{last_oncall(start_date).inspect}"
+      if last_oncall(start_date) == oncall_candidate.user
+        break 
+      end
+   
+      counter += 1
+    end until counter >= oncall_candidates.size
 
     # Generate up to 4 weeks from now
     while start_date < AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
@@ -139,10 +152,20 @@ class CallList < ActiveRecord::Base
       errors.add(:call_list_owners, "must be specified")
     end
   end
+
   def add_call_list_membership
     owners.each do |owner|
       CallListMembership.find_or_create_by_call_list_id_and_user_id(self.id, owner.id)
     end
   end
 
+  # Given a date, find the last person oncall
+  def last_oncall(date, exclusive=false)
+    last_oncall_assignment = CallList.find(1).oncall_assignments.where('starts_at <= ?', Time.now).order('ends_at').last
+    if last_oncall_assignment
+      return last_oncall_assignment.user
+    else
+      return nil
+    end
+  end
 end
