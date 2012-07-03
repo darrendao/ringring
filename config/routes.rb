@@ -37,7 +37,11 @@ Ringring::Application.routes.draw do
         post 'sort'
       end
     end
-    resources :call_list_memberships
+    resources :call_list_memberships do
+      collection do
+        post 'sort'
+      end
+    end
     resources :smart_contact_lists
   end
 

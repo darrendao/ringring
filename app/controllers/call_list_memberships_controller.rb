@@ -91,4 +91,17 @@ class CallListMembershipsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def sort
+    @call_list_memberships = CallListMembership.all
+    @call_list_memberships.each do |call_list_membership|
+      next if params['call_list_membership'].index(call_list_membership.id.to_s).nil?
+      unless can? :sort, call_list_membership
+        raise "Bad user"
+      end
+      call_list_membership.position = params['call_list_membership'].index(call_list_membership.id.to_s) + 1
+      call_list_membership.save
+    end
+    render :nothing => true
+  end
 end

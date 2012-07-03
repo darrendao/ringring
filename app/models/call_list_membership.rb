@@ -1,4 +1,5 @@
 class CallListMembership < ActiveRecord::Base
+  default_scope :order => 'position'
   belongs_to :user
   belongs_to :call_list
   validates :user_id, :uniqueness => {:scope => :call_list_id}

@@ -114,7 +114,7 @@ Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format =
 <div class="clear"></div>
 <br/>
 <b>Members</b><br/>
-<div class="grid_12">
+<div class="grid_12 content_box">
 <div id="call_list_memberships">
   <% if @call_list.members.empty? %>
   Empty
@@ -151,6 +151,27 @@ $(document).ready(function(){
           })
        }
    });
+
+
+  $('#call_list_memberships').sortable({
+       axis: 'y',
+       dropOnEmpty: false,
+       cursor: 'crosshair',
+       items: 'li',
+       opacity: 0.4,
+       scroll: true,
+       update: function(){
+          $.ajax({
+              type: 'post',
+              data: $('#call_list_memberships').sortable('serialize'),
+              dataType: 'script',
+              complete: function(request){
+                 $('#call_list_memberships').effect('highlight');
+              },
+              url : "/call_lists/<%=@call_list.id%>/call_list_memberships/sort"
+          })
+       }
+  });
 
   $('#showcalendar').click(function() {
     $('#oncall_calendar').toggle();

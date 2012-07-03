@@ -1,3 +1,4 @@
+<!--
 <table class='styled datatable display' id='members_table'>
   <thead>
   <tr>
@@ -20,3 +21,12 @@
 <% end %>
   </tbody>
 </table>
+-->
+
+<ul id="call_list_memberships_ul" class="no_bullet_list no_indent"> <% @call_list.call_list_memberships.each do |call_list_membership| %>
+  <li id="call_list_membership_<%= call_list_membership.id %>" class="ui-state-default ui-corner-all">
+    <span class="ui-icon ui-icon-arrow-4" style="display:inline-block"></span>
+    <%= "#{call_list_membership.user.username} | #{call_list_membership.user.email} | #{call_list_membership.user.phone_number} | Oncall candidate? #{call_list_membership.oncall_candidate}" %> |
+    <%= link_to 'Remove', call_list_call_list_membership_path(call_list_membership.call_list.id, call_list_membership.id), :remote => true, :method => 'delete', :confirm => "Are you sure?" %>
+  </li>
+<% end %></ul>
