@@ -27,6 +27,13 @@ group :production do
   gem 'mysql2'
 end
 
+gem "rspec-rails", :group => [:test, :development]
+
+group :test do
+  gem "capybara"
+  gem 'machinist', '>= 2.0.0.beta2'
+end
+
 gem 'jquery-rails'
 gem 'acts_as_list'
 gem 'devise'

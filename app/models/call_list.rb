@@ -149,6 +149,7 @@ class CallList < ActiveRecord::Base
   private
   def must_have_owners
     if call_list_owners.empty?
+    #if owners.empty?
       errors.add(:call_list_owners, "must be specified")
     end
   end

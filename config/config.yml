@@ -22,7 +22,7 @@ common: &common
       phone: true
       sms: true
 
-development:
+development: &development
   <<: *common
   authentication_method: database_authenticatable
   use_ssl: false
@@ -30,3 +30,6 @@ development:
 production:
   authentication_method: ldap_authenticatable
   <<: *common
+
+test:
+  <<: *development
