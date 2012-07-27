@@ -36,7 +36,7 @@ class Ability
       can :manage, CallList do |call_list|
         call_list.owners.include? user
       end
-      # Call list owner manage the list membership, oncall_assignments and call_escalations
+      # Call list owner can manage the list membership, oncall_assignments and call_escalations
       can :manage, CallListMembership do |call_list_membership|
         call_list_membership.call_list.owners.include? user
       end

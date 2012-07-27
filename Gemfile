@@ -32,6 +32,7 @@ gem "rspec-rails", :group => [:test, :development]
 group :test do
   gem "capybara"
   gem 'machinist', '>= 2.0.0.beta2'
+  gem 'guard-rspec'
 end
 
 gem 'jquery-rails'
