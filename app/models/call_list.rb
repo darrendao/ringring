@@ -146,6 +146,16 @@ class CallList < ActiveRecord::Base
     end
   end
 
+  # Given a date, find the last person oncall
+  def last_oncall(date, exclusive=false)
+    last_oncall_assignment = oncall_assignments.where('starts_at <= ?', date).order('ends_at').last
+    if last_oncall_assignment
+      return last_oncall_assignment.user
+    else
+      return nil
+    end
+  end
+
   private
   def must_have_owners
     if call_list_owners.empty?
@@ -157,16 +167,6 @@ class CallList < ActiveRecord::Base
   def add_call_list_membership
     owners.each do |owner|
       CallListMembership.find_or_create_by_call_list_id_and_user_id(self.id, owner.id)
-    end
-  end
-
-  # Given a date, find the last person oncall
-  def last_oncall(date, exclusive=false)
-    last_oncall_assignment = CallList.find(1).oncall_assignments.where('starts_at <= ?', Time.now).order('ends_at').last
-    if last_oncall_assignment
-      return last_oncall_assignment.user
-    else
-      return nil
     end
   end
 end
