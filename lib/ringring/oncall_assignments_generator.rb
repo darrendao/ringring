@@ -17,7 +17,7 @@ class OncallAssignmentsGenerator
     counter = 0
     begin
       oncall_candidate = candidates_enum.next
-      if last_oncall_user == oncall_candidate.user
+      if last_oncall_user == oncall_candidate
         break
       end
  

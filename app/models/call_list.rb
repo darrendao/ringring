@@ -34,7 +34,7 @@ class CallList < ActiveRecord::Base
   accepts_nested_attributes_for :oncall_assignments_gen, :allow_destroy => true
 
   def oncall_candidates
-    call_list_memberships.where(:oncall_candidate => true)
+    call_list_memberships.where(:oncall_candidate => true).map{|m|m.user}
   end
 
   def sorted_memberships
@@ -116,28 +116,19 @@ class CallList < ActiveRecord::Base
     raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == true
     raise "No available oncall candidate" if oncall_candidates.blank?
 
-    oncall_candidates_enum = oncall_candidates.cycle
-    start_date = oncall_assignments_gen.last_gen || Time.now
+    start_date = oncall_assignments_gen.last_gen || Time.now.utc
     end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
     end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0
 
-    # Find the last person oncall. Then start with the next person
-    counter = 0
-    begin
-      oncall_candidate = oncall_candidates_enum.next
-      logger.info "#{oncall_candidate.inspect} vs #{last_oncall(start_date).inspect}"
-      if last_oncall(start_date) == oncall_candidate.user
-        break 
-      end
-   
-      counter += 1
-    end until counter >= oncall_candidates.size
+    oncall_candidates_enum = Ringring::OncallAssignmentsGenerator::gen_candidates_enum(oncall_candidates, last_oncall(start_date))
 
     # Generate up to 4 weeks from now
     while start_date < AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
       oncall_candidate = oncall_candidates_enum.next
-      oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.user.id, :call_list_id => id, :starts_at => start_date, :ends_at => end_date)
+      oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.id, :call_list_id => id, 
+                                               :starts_at => start_date, :ends_at => end_date,
+                                               :timezone_offset => oncall_assignments_gen.timezone_offset)
       oncall_assignment.save
       oncall_assignments_gen.last_gen = end_date
       oncall_assignments_gen.save
@@ -146,14 +137,19 @@ class CallList < ActiveRecord::Base
     end
   end
 
-  # Given a date, find the last person oncall
-  def last_oncall(date, exclusive=false)
+  # Given a date, find the last person oncall from that date
+  def last_oncall(date = DateTime.now)
     last_oncall_assignment = oncall_assignments.where('starts_at <= ?', date).order('ends_at').last
     if last_oncall_assignment
       return last_oncall_assignment.user
     else
       return nil
     end
+  end
+
+  # Given a date, find all users who are oncall
+  def whos_oncall(date = DateTime.now)
+    oncall_assignments.where("starts_at <= ? AND ends_at >= ?", date, date) | oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
   end
 
   private

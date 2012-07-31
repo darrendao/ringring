@@ -10,6 +10,6 @@ class OncallAssignmentsGen < ActiveRecord::Base
   private
   def default_values
     self.cycle_day ||= Date::ABBR_DAYNAMES.index('Mon') 
-    self.cycle_time ||= Time.parse(AppConfig.business_hours[0])
+    #self.cycle_time ||= Time.parse(AppConfig.business_hours[0])
   end
 end

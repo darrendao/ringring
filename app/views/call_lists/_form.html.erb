@@ -64,7 +64,10 @@
     <div class="field">
       <%= ff.check_box :enable %>Automatically assign oncall assignments? <br/>
       Oncall cycle begins and ends on <%= ff.select :cycle_day, day_options %>
-      <%= ff.text_field :cycle_time, :value => l(ff.object.cycle_time, :format => :timeonly) + " " + ff.object.formatted_timezone_offset, :class => 'timefield_with_zone' %>
+      <% if ff.object.cycle_time %>
+        <% cycle_time = l(ff.object.cycle_time, :format => :timeonly) + " " + ff.object.formatted_timezone_offset %>
+      <% end %>
+      <%= ff.text_field :cycle_time, :value =>  cycle_time, :class => 'timefield_with_zone' %>
       <br/>
       Start generating on: <%= ff.text_field :last_gen , :class => 'datetimefield' %>
     </div>
@@ -109,4 +112,7 @@
                   timezoneList: my_timezone,
                   timezone: get_timezone(new Date())
    });
+   if ($('#call_list_oncall_assignments_gen_attributes_cycle_time').val() == "") {
+     $('#call_list_oncall_assignments_gen_attributes_cycle_time').val('<%= AppConfig.business_hours[0] %> ' + get_timezone(new Date()));
+   }
 </script>

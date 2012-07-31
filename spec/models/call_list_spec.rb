@@ -74,4 +74,9 @@ describe CallList do
       @call_list.last_oncall(DateTime.now + 2).should eq(@user3)
     end
   end
+
+  describe "verify oncall auto-assignment" do
+    it "generates oncall assignments correctly for the first time"
+    it "generates oncall assignments subsequently"
+  end
 end
