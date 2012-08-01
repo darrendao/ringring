@@ -197,6 +197,7 @@ DEPENDENCIES
   machinist (>= 2.0.0.beta2)
   mysql2
   rails (= 3.2.1)
+  rake
   rest-client
   ri_cal
   rspec-rails
