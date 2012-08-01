@@ -28,3 +28,6 @@ RingRing is a Rails webapp that allows organizations to manage their oncall list
 ##Twilio Integration
 Login your Twilio account and update your number to have the Voice URL point to
         https://your_server:3000/twilio_call_escalations/call_list_menu.xml
+        
+##Usage
+Refer to the [wiki](https://github.com/darrendao/ringring/wiki)
