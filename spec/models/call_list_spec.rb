@@ -93,7 +93,7 @@ describe CallList do
       lambda {@call_list.gen_oncall_assignments}.should raise_error 
     end
 
-    it "generates oncall assignments correctly" do
+    it "generates oncall assignments correctly for the first time" do
       oncall_assignments_gen = OncallAssignmentsGen.make!
       @call_list.oncall_assignments_gen = oncall_assignments_gen
       @call_list.save
@@ -110,7 +110,21 @@ describe CallList do
         last_oncall = ass.user
       end
     end
-    it "only includes those who had been marked as candidate for oncalls" do
+
+    it "generates subsequent oncall assignments correctly" do
+      oncall_assignments_gen = OncallAssignmentsGen.make!
+      @call_list.oncall_assignments_gen = oncall_assignments_gen
+      @call_list.save
+      lambda {@call_list.gen_oncall_assignments(DateTime.now, 2)}.should_not raise_error
+      @call_list.oncall_assignments.size.should be == 3
+      @call_list.oncall_assignments.last.user.should eq(@user3)
+
+      lambda {@call_list.gen_oncall_assignments(nil, 3)}.should_not raise_error
+      @call_list.oncall_assignments.size.should be == 4
+      @call_list.oncall_assignments.last.user.should eq(@user1)
+    end
+
+    it "only includes those who had been marked as candidates for oncalls" do
       non_oncall_user = User.make!
       CallListMembership.create(:call_list_id => @call_list.id,
                                 :user_id => non_oncall_user.id,
