@@ -11,16 +11,16 @@ RingRing is a Rails webapp that allows organizations to manage their oncall list
 * Check out the code to your server
 * To install all the dependencies, run 
 
-    bundle install
+        bundle install
     
     
 * Run DB migration and populate DB with seed data
 
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
+        bundle exec rake db:migrate
+        bundle exec rake db:seed
     
 * Start the app
 
-    rails server
+        rails server
     
 * Browse to http://your_server:3000. Log in as admin/password
