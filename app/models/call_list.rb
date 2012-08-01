@@ -14,7 +14,7 @@ class CallList < ActiveRecord::Base
   has_one :call_list_calendar
   accepts_nested_attributes_for :call_list_calendar, :allow_destroy => true
 
-  has_many :oncall_assignments, :dependent => :destroy
+  has_many :oncall_assignments, :dependent => :destroy, :order => 'id ASC'
   has_many :oncalls, :through => :oncall_assignments, :source => :user
 
   has_one :error_notification, :as => :notifiable
@@ -112,21 +112,21 @@ class CallList < ActiveRecord::Base
     results.compact
   end
 
-  def gen_oncall_assignments
+  # Generate oncall assignments from start_date up to w numbers of weeks from now
+  def gen_oncall_assignments(start_date = nil, w = AppConfig.oncall_assignments_gen['from_now'])
     raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == true
     raise "No available oncall candidate" if oncall_candidates.blank?
 
-    start_date = oncall_assignments_gen.last_gen || Time.now.utc
+    start_date ||= oncall_assignments_gen.last_gen || Time.now.utc
     end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
     end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0
 
     oncall_candidates_enum = Ringring::OncallAssignmentsGenerator::gen_candidates_enum(oncall_candidates, last_oncall(start_date))
 
-    # Generate up to 4 weeks from now
-    while start_date < AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
+    while start_date < w.weeks.from_now
       oncall_candidate = oncall_candidates_enum.next
-      oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.id, :call_list_id => id, 
+      oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.id, :call_list_id => id,
                                                :starts_at => start_date, :ends_at => end_date,
                                                :timezone_offset => oncall_assignments_gen.timezone_offset)
       oncall_assignment.save

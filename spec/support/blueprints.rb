@@ -30,6 +30,13 @@ OncallAssignment.blueprint do
   timezone_offset { 0 }
 end
 
+OncallAssignmentsGen.blueprint do
+  enable { true }
+  cycle_day { 1 }
+  cycle_time { DateTime.parse("8:00") }
+  timezone_offset { 0 }
+end
+
 PhoneNumberInfo.blueprint do
   
 end

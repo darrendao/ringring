@@ -76,7 +76,62 @@ describe CallList do
   end
 
   describe "verify oncall auto-assignment" do
-    it "generates oncall assignments correctly for the first time"
-    it "generates oncall assignments subsequently"
+    before(:each) do
+      @user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
+      @user2 = User.make!(:email => 'auser2@example.com', :password => 'password')
+      @user3 = User.make!(:email => 'auser3@example.com', :password => 'password')
+      @users = [@user1, @user2, @user3]
+      @call_list = CallList.make!
+
+      @users.each do |user| 
+        CallListMembership.create(:call_list_id => @call_list.id,
+                                  :user_id => user.id,
+                                  :oncall_candidate => true)
+      end
+    end
+    it "raises exception if auto-assignment is not enabled" do 
+      lambda {@call_list.gen_oncall_assignments}.should raise_error 
+    end
+
+    it "generates oncall assignments correctly" do
+      oncall_assignments_gen = OncallAssignmentsGen.make!
+      @call_list.oncall_assignments_gen = oncall_assignments_gen
+      @call_list.save
+
+      lambda {@call_list.gen_oncall_assignments}.should_not raise_error 
+      @call_list.oncall_assignments.size.should be == AppConfig.oncall_assignments_gen['from_now'] + 1
+      @call_list.oncall_assignments_gen.last_gen.should be > AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
+      @call_list.oncall_assignments.last.starts_at.should_not be > AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
+      last_oncall = nil
+   
+      @call_list.oncall_assignments.first.user.should eq(@user1)
+      @call_list.oncall_assignments.each do |ass|
+        ass.user.should_not eq(last_oncall)
+        last_oncall = ass.user
+      end
+    end
+    it "only includes those who had been marked as candidate for oncalls" do
+      non_oncall_user = User.make!
+      CallListMembership.create(:call_list_id => @call_list.id,
+                                :user_id => non_oncall_user.id,
+                                :oncall_candidate => false)
+
+      oncall_assignments_gen = OncallAssignmentsGen.make!
+      @call_list.oncall_assignments_gen = oncall_assignments_gen
+      lambda {@call_list.gen_oncall_assignments}.should_not raise_error
+      @call_list.oncall_assignments.map{|ass|ass.user}.should_not include(non_oncall_user) 
+      @call_list.oncall_assignments.map{|ass|ass.user}.should include(@user1) 
+    end
+
+    it "has correct oncall_candidates default ordering based on position" do
+      call_list = CallList.make!
+      @users.each_with_index do |user, index|
+        CallListMembership.create(:call_list_id => call_list.id,
+                                  :user_id => user.id,
+                                  :position => @users.size - index,
+                                  :oncall_candidate => true)
+      end
+      call_list.oncall_candidates.first.should eq(@users.last)
+    end
   end
 end
