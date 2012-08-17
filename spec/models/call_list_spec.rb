@@ -148,4 +148,19 @@ describe CallList do
       call_list.oncall_candidates.first.should eq(@users.last)
     end
   end
+
+  describe "verify business hours" do
+    it "correctly determines if in business hour or off hour"
+  end
+
+  describe "oncall assignment" do
+    it "automatically add oncall user to membership list" do
+      user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
+      call_list = CallList.make!
+      oncall_assignment = OncallAssignment.make!(:user_id => user1.id,
+                                                 :call_list_id => call_list.id)
+      call_list.members.should include(user1)
+      call_list.oncall_candidates.should include(user1)
+    end
+  end
 end

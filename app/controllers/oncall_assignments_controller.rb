@@ -23,8 +23,10 @@ class OncallAssignmentsController < ApplicationController
     set_tz_offset
     @call_list = CallList.find(params[:call_list_id])
     @oncall_assignment = @call_list.oncall_assignments.build(params[:oncall_assignment]) 
+    @oncall_assignment.assigned_by = current_user.username
     respond_to do |format|
       if @oncall_assignment.save
+        logger.info "#{current_user.inspect} creates #{@oncall_assignment.inspect}"
         format.js { render 'update_listing', :layout => false }
       else
         format.js { render :partial => 'shared/error', :locals => {:target => @oncall_assignment} }
@@ -36,6 +38,7 @@ class OncallAssignmentsController < ApplicationController
     @call_list = CallList.find(params[:call_list_id])
     oncall_assignment = OncallAssignment.find(params[:id])
     @gotodate = oncall_assignment.starts_at.to_time.to_i * 1000
+    logger.info "#{current_user.inspect} deletes #{oncall_assignment.inspect}"
     oncall_assignment.destroy
     respond_to do |format|
       format.html do
@@ -73,14 +76,15 @@ class OncallAssignmentsController < ApplicationController
       params[:oncall_assignment][:starts_at] = DateTime.parse(params[:oncall_assignment][:starts_at].to_s) if params[:oncall_assignment][:starts_at]
       params[:oncall_assignment][:ends_at] = DateTime.parse(params[:oncall_assignment][:ends_at].to_s) if params[:oncall_assignment][:ends_at]
     end
+    params[:oncall_assignment][:assigned_by] = current_user.username
 
     respond_to do |format|
       if @oncall_assignment.update_attributes(params[:oncall_assignment])
+        logger.info "#{current_user.inspect} updates #{@oncall_assignment.inspect}"
         @call_list = CallList.find(params[:call_list_id])
         format.html { redirect_to(@oncall_assignment, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
         format.js { 
-          logger.info "HERE IS LIST #{@call_list.current_oncalls.inspect}"
           render 'update_listing', :layout => false 
         }
       else

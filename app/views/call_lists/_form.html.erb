@@ -52,8 +52,8 @@
   <div class="field">
     <%= f.fields_for :business_hours do |ff| %>
       <%= ff.select :wday, day_options %>
-      from <%= ff.text_field :start_time, :value => fmt_time(ff.object.start_time), :class => 'timefield' %>
-      to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield' %><br/>
+      from <%= ff.text_field :start_time, :value => fmt_time(ff.object.start_time), :class => 'timefield_with_zone' %>
+      to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield_with_zone' %><br/>
     <% end %>
   </div>
   <div class="clear"></div>
@@ -64,10 +64,7 @@
     <div class="field">
       <%= ff.check_box :enable %>Automatically assign oncall assignments? <br/>
       Oncall cycle begins and ends on <%= ff.select :cycle_day, day_options %>
-      <% if ff.object.cycle_time %>
-        <% cycle_time = l(ff.object.cycle_time, :format => :timeonly) + " " + ff.object.formatted_timezone_offset %>
-      <% end %>
-      <%= ff.text_field :cycle_time, :value =>  cycle_time, :class => 'timefield_with_zone' %>
+      <%= ff.text_field :cycle_time, :value => fmt_time(ff.object.cycle_time.in_time_zone), :class => 'timefield_with_zone' %>
       <br/>
       Start generating on: <%= ff.text_field :last_gen , :class => 'datetimefield' %>
     </div>
@@ -99,20 +96,19 @@
                   ampm: true,
                   stepMinute: 5,
                   hour: 8,
-                  timeFormat: 'hh:mm tt z',
-                  showTimezone: true,
+                  //timeFormat: 'hh:mm tt z',
+                  timeFormat: 'hh:mm tt',
+                  //showTimezone: true,
                   timezoneList: my_timezone,
-                  timezone: get_timezone(new Date())
+                  //timezone: get_timezone(new Date())
   });
   $('.datetimefield').datetimepicker({
                   stepMinute: 5,
                   hour: 8,
-                  timeFormat: 'hh:mm z',
-                  showTimezone: true,
+                  // timeFormat: 'hh:mm z',
+                  timeFormat: 'hh:mm',
+                  //showTimezone: true,
                   timezoneList: my_timezone,
-                  timezone: get_timezone(new Date())
+                  //timezone: get_timezone(new Date())
    });
-   if ($('#call_list_oncall_assignments_gen_attributes_cycle_time').val() == "") {
-     $('#call_list_oncall_assignments_gen_attributes_cycle_time').val('<%= AppConfig.business_hours[0] %> ' + get_timezone(new Date()));
-   }
 </script>

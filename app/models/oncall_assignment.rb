@@ -53,6 +53,8 @@ class OncallAssignment < CallEscalation
     end
   end
   def add_call_list_membership
-    CallListMembership.find_or_create_by_call_list_id_and_user_id(call_list.id, user.id)
+    membership = CallListMembership.find_or_create_by_call_list_id_and_user_id(call_list.id, user.id)
+    membership.oncall_candidate = true
+    membership.save
   end
 end

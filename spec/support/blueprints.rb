@@ -19,8 +19,9 @@ end
 
 User.blueprint do
   email { "username#{sn}@example.com" }
-  password { "password#{sn}" } 
+  password { "password#{sn}" }
   sms_email { "sms@example.com" }
+  time_zone { "Central Time (US & Canada)" }
   phone_number_info { PhoneNumberInfo.make(:number => "123456789", :user => object) }
 end
 
@@ -28,6 +29,7 @@ OncallAssignment.blueprint do
   starts_at { DateTime.now - 7 }
   ends_at { DateTime.now + 7 }
   timezone_offset { 0 }
+  assigned_by { 'test' }
 end
 
 OncallAssignmentsGen.blueprint do

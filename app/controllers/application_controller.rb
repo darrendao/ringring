@@ -8,6 +8,12 @@ module ActiveSupport
 end
 
 class ApplicationController < ActionController::Base
+  before_filter :set_timezone
+
+  def set_timezone
+    Time.zone = current_user.time_zone if current_user
+  end
+
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end

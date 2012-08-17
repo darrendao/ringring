@@ -49,7 +49,7 @@ class CallListsController < ApplicationController
   def create
     @call_list = CallList.new(params[:call_list])
     params[:call_list][:oncall_assignments_gen_attributes][:enable] = false if params[:call_list][:oncall_assignments_gen_attributes][:enable] == 0
-    params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
+    @call_list.oncall_assignments_gen.cycle_time = Time.zone.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time])
 
     respond_to do |format|
       if @call_list.save
@@ -68,6 +68,7 @@ class CallListsController < ApplicationController
     @call_list = CallList.find(params[:id])
     params[:call_list][:oncall_assignments_gen_attributes][:enable] = false if params[:call_list][:oncall_assignments_gen_attributes][:enable] == 0
     params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
+    params[:call_list][:oncall_assignments_gen_attributes][:cycle_time] = Time.zone.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time])
 
     respond_to do |format|
       if @call_list.update_attributes(params[:call_list])

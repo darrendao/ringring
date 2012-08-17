@@ -22,8 +22,9 @@ class User < ActiveRecord::Base
 
   #attr_accessor :login
 
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :role_ids, :phonetic_name, :phone_number_info_attributes, :sms_email
+  attr_accessible :time_zone, :email, :password, :password_confirmation, :remember_me, :username, :first_name, :last_name, :role_ids, :phonetic_name, :phone_number_info_attributes, :sms_email
 
   def role?(role)
     return !!self.roles.find_by_name(role.to_s.camelize)

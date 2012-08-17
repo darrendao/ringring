@@ -14,12 +14,17 @@
 
 <p>
   <b>Starts at:</b>
-  <%= @oncall_assignment.starts_at_local %>
+  <%= l(@oncall_assignment.starts_at, :format => :short_with_tz) if @oncall_assignment.starts_at%>
 </p>
 
 <p>
   <b>Ends at:</b>
-  <%= @oncall_assignment.ends_at_local %>
+  <%= l(@oncall_assignment.ends_at, :format => :short_with_tz) if @oncall_assignment.ends_at%>
+</p>
+
+<p>
+  <b>Assigned by:</b>
+  <%= @oncall_assignment.assigned_by %>
 </p>
 
 <%= link_to 'Back to Call List', @oncall_assignment.call_list %> |

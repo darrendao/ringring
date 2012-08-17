@@ -9,6 +9,7 @@ class DashboardController < ApplicationController
 
     @call_lists.uniq!
     @call_lists.compact!
+    @call_lists.sort!{|x,y| x.name <=> y.name}
 
     @oncall_assignments = current_user.oncall_assignments.where("ends_at > ?", DateTime.now).order('ends_at')
   end

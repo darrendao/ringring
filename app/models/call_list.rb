@@ -21,7 +21,7 @@ class CallList < ActiveRecord::Base
 
   has_many :business_hours, :dependent => :destroy
   accepts_nested_attributes_for :business_hours, :allow_destroy => true,
-                                                 :reject_if => :all_blank
+    :reject_if => proc{|attrs| attrs[:start_time].blank? or attrs[:end_time].blank?}
 
   has_many :smart_contact_lists, :dependent => :destroy
   accepts_nested_attributes_for :smart_contact_lists, :allow_destroy => true,
@@ -55,19 +55,13 @@ class CallList < ActiveRecord::Base
      [owners, escalations].compact.flatten.uniq
   end
 
-  def in_business_hours?
+  def in_business_hours?(now = Time.zone.now, date = Time.zone.now)
     return false if business_hours.nil? or business_hours.empty?
 
-    now = Time.now
-    date = Date.today
     business_hours.each do |business_hour|
       next if business_hour.wday != date.wday
-      Rails.logger.info business_hour.start_time.to_s
-      Rails.logger.info Time.parse(business_hour.start_time.to_s)
-
       return false if business_hour.start_time.nil? or business_hour.end_time.nil?
-
-      return true if Time.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.parse(business_hour.end_time.strftime("%H:%M"))
+      return true if Time.zone.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.zone.parse(business_hour.end_time.strftime("%H:%M"))
     end
     return false
   end
@@ -120,7 +114,7 @@ class CallList < ActiveRecord::Base
     start_date ||= oncall_assignments_gen.last_gen || Time.now.utc
     end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
-    end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0
+    #end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0
 
     oncall_candidates_enum = Ringring::OncallAssignmentsGenerator::gen_candidates_enum(oncall_candidates, last_oncall(start_date))
 
@@ -128,7 +122,9 @@ class CallList < ActiveRecord::Base
       oncall_candidate = oncall_candidates_enum.next
       oncall_assignment = OncallAssignment.new(:user_id => oncall_candidate.id, :call_list_id => id,
                                                :starts_at => start_date, :ends_at => end_date,
-                                               :timezone_offset => oncall_assignments_gen.timezone_offset)
+                                               :timezone_offset => oncall_assignments_gen.timezone_offset,
+                                               :assigned_by => 'auto-assigned'
+                                              )
       oncall_assignment.save
       oncall_assignments_gen.last_gen = end_date
       oncall_assignments_gen.save

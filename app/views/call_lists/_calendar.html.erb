@@ -20,8 +20,9 @@ $(document).ready(function(){
     selectHelper: true,
     select: function(start, end, allDay) {
       $('.nyroModal').nmCall();
-      $('#oncall_assignment_starts_at').val(start.format('m/d/Y 08:00 O'));
-      $('#oncall_assignment_ends_at').val(end.format('m/d/Y 08:00 O'));
+      // $('#oncall_assignment_starts_at').val(start.format('m/d/Y 08:00 O'));
+      $('#oncall_assignment_starts_at').val(start.format('m/d/Y 08:00'));
+      $('#oncall_assignment_ends_at').val(end.format('m/d/Y 08:00'));
     },
 
     //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
@@ -45,13 +46,13 @@ $(document).ready(function(){
         url: '<%= call_list_oncall_assignments_url @call_list %>',
         color: 'blue',
         textColor: 'white',
-        ignoreTimezone: false
+        ignoreTimezone: true
       },
       {
         url: '<%= url_for :controller => :call_lists, :action =>  'members_vacations', :id => @call_list.id %>',
         color: 'lightblue',
         textColor: 'black',
-        ignoreTimezone: false,
+        ignoreTimezone: true,
         editable: false
       }
     ]

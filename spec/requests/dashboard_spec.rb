@@ -21,7 +21,6 @@ describe "Dash Board" do
     click_button "Sign in"
 
     page.should_not have_content("Logged in as admin")
-    
   end
 
   it "displays call lists that the user belongs to" do

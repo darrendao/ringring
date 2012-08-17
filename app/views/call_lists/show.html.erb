@@ -62,7 +62,7 @@
 <b>Oncall Auto-assignment</b><br/>
 <div class="grid_12 content_box">
 Enable: <%= @call_list.oncall_assignments_gen.enable == true ? 'yes' : 'no' %><br/>
-Oncall cycle begins and ends every: <%= Date::DAYNAMES[@call_list.oncall_assignments_gen.cycle_day] %> @ <%= l(@call_list.oncall_assignments_gen.cycle_time, :format => :timeonly) + " " + @call_list.oncall_assignments_gen.formatted_timezone_offset %>
+Oncall cycle begins and ends every: <%= Date::DAYNAMES[@call_list.oncall_assignments_gen.cycle_day] %> @ <%= l(@call_list.oncall_assignments_gen.cycle_time, :format => :time_with_zone) %>
 <br/>
 Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format => :dateonly) if @call_list.oncall_assignments_gen.last_gen %>
 <br/>
@@ -93,7 +93,7 @@ Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format =
 <div class="grid_12 content_box">
 <% @call_list.business_hours.each do |business_hour| %>
   <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= fmt_time(business_hour.start_time) %>
-    to <%= fmt_time(business_hour.end_time) %><br/>
+  to <%= l(business_hour.end_time.in_time_zone, :format => :time_with_zone) if business_hour.end_time %><br/>
 <% end %>
 </div>
 <div class="clear" style="padding:7px"></div>

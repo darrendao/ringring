@@ -56,6 +56,10 @@
     <%= f.label :sms_email %> (e.g. 1234567890@txt.att.net)<br />
     <%= f.text_field :sms_email %>
   </div>
+  <div class="field">
+    <%= f.label :time_zone %><br />
+    <%= f.time_zone_select('time_zone', ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)") %>
+  </div>
   <% if can? :assign_roles, @user %>
   <% for role in Role.find(:all) %>
     <div>

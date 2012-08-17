@@ -7,12 +7,12 @@
 
 <p>
   <b>Starts at:</b>
-  <%= @vacation.starts_at %>
+  <%= l(@vacation.starts_at, :format => :short_with_tz) %>
 </p>
 
 <p>
   <b>Ends at:</b>
-  <%= @vacation.ends_at %>
+  <%= l(@vacation.ends_at, :format => :short_with_tz) %>
 </p>
 
 <%= link_to 'Delete', user_vacation_path(@vacation.user.id, @vacation.id), :confirm => 'Are you sure?', :method => :delete, :remote => true %></td>
