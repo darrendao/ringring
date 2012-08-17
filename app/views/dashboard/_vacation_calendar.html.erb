@@ -20,8 +20,8 @@ $(document).ready(function(){
     selectHelper: true,
     select: function(start, end, allDay) {
       $('#addvacationlink').nmCall();
-      $('#vacation_starts_at').val(start.format('m/d/Y 08:00 O'));
-      $('#vacation_ends_at').val(end.format('m/d/Y 08:00 O'));
+      $('#vacation_starts_at').val(start.format('m/d/Y 08:00'));
+      $('#vacation_ends_at').val(end.format('m/d/Y 08:00'));
     },
 
     //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/

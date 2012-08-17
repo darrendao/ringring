@@ -79,6 +79,9 @@ class Ability
         vacation.user == user
       end
 
+      # People should be able to view other user's vacations
+      can :members_vacations, CallList
+
       # User can update their own account
       can :update, User, :id => user.id
 
