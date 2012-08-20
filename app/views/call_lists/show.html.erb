@@ -65,8 +65,7 @@ Enable: <%= @call_list.oncall_assignments_gen.enable == true ? 'yes' : 'no' %><b
 Oncall cycle begins and ends every: <%= Date::DAYNAMES[@call_list.oncall_assignments_gen.cycle_day] %> @ <%= l(@call_list.oncall_assignments_gen.cycle_time, :format => :time_with_zone) %>
 <br/>
 Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format => :dateonly) if @call_list.oncall_assignments_gen.last_gen %>
-<br/>
-<%= link_to "Run oncall auto-assignment now", :action => 'gen_oncall_assignments', :call_list_id => @call_list.id  %>
+<%= link_to jquery_ui_button_icon("Run oncall auto-assignment now", "ui-icon-shuffle", "view_smart_contacts").html_safe, :action => 'gen_oncall_assignments', :call_list_id => @call_list.id  %>
 </div>
 <% end %>
 

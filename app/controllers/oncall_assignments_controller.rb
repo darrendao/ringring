@@ -26,7 +26,7 @@ class OncallAssignmentsController < ApplicationController
     @oncall_assignment.assigned_by = current_user.username
     respond_to do |format|
       if @oncall_assignment.save
-        logger.info "#{current_user.inspect} creates #{@oncall_assignment.inspect}"
+        logger.info "#{current_user.username} creates #{@oncall_assignment.inspect}"
         format.js { render 'update_listing', :layout => false }
       else
         format.js { render :partial => 'shared/error', :locals => {:target => @oncall_assignment} }
@@ -38,7 +38,7 @@ class OncallAssignmentsController < ApplicationController
     @call_list = CallList.find(params[:call_list_id])
     oncall_assignment = OncallAssignment.find(params[:id])
     @gotodate = oncall_assignment.starts_at.to_time.to_i * 1000
-    logger.info "#{current_user.inspect} deletes #{oncall_assignment.inspect}"
+    logger.info "#{current_user.username} deletes #{oncall_assignment.inspect}"
     oncall_assignment.destroy
     respond_to do |format|
       format.html do
@@ -80,7 +80,7 @@ class OncallAssignmentsController < ApplicationController
 
     respond_to do |format|
       if @oncall_assignment.update_attributes(params[:oncall_assignment])
-        logger.info "#{current_user.inspect} updates #{@oncall_assignment.inspect}"
+        logger.info "#{current_user.username} updates #{@oncall_assignment.inspect}"
         @call_list = CallList.find(params[:call_list_id])
         format.html { redirect_to(@oncall_assignment, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
