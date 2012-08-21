@@ -27,27 +27,45 @@ describe "Call Lists" do
       page.should have_content("calllist3")
     end
 
-    it "creates and displays call list with correct time display" do
+    it "creates and displays call list with correct oncall cycle time" do
+      @admin_user.time_zone = "Mountain Time (US & Canada)"
+      @admin_user.save
+      visit new_call_list_path
+      fill_in "call_list[name]", :with => 'calllist3'
+      fill_in "call_list[oncall_assignments_gen_attributes][cycle_time]", :with => "1:23 AM"
+      click_button "Create Call list"
+      call_list_id = File.basename(current_path)
+      page.should have_content('1:23')
+
+      @admin_user.time_zone = "Central Time (US & Canada)"
+      @admin_user.save
+
+      visit(current_path)
+      page.should have_content('2:23')
+    end
+
+    it "creates and displays call list with correct business hours" do
       @admin_user.time_zone = "Mountain Time (US & Canada)"
       @admin_user.save
       visit new_call_list_path
       fill_in "call_list[name]", :with => 'calllist3'
       fill_in "call_list[business_hours_attributes][0][start_time]", :with => "9:15 AM"
       fill_in "call_list[business_hours_attributes][0][end_time]", :with => "7:32 PM"
-      fill_in "call_list[oncall_assignments_gen_attributes][cycle_time]", :with => "1:23 AM"
+      select @admin_user.time_zone, :from => "call_list[business_time_zone]"
       click_button "Create Call list"
       call_list_id = File.basename(current_path)
       page.should have_content('9:15')
       page.should have_content('7:32')
-      page.should have_content('1:23')
 
-      @admin_user.time_zone = "Central Time (US & Canada)"
-      @admin_user.save
+      call_list = CallList.find(call_list_id)
+      call_list.business_time_zone = "Central Time (US & Canada)"
+      call_list.save
+
       visit(current_path)
       page.should have_content('10:15')
       page.should have_content('8:32')
-      page.should have_content('2:23')
 
+      # No longer valid since business time has its own time zone now
       actual_time = CallList.find(call_list_id).business_hours.first.start_time.in_time_zone('Mountain Time (US & Canada)')
       utc_time = Time.parse('9:15 UTC')
       assert actual_time == utc_time - actual_time.utc_offset

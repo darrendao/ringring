@@ -40,7 +40,7 @@ class CallList < ActiveRecord::Base
   def sorted_memberships
     call_list_memberships.sort{|x,y| x.user.username <=> y.user.username}
   end
-  
+
   def owners_names
     owners.map{|o|o.username}
   end
@@ -55,13 +55,15 @@ class CallList < ActiveRecord::Base
      [owners, escalations].compact.flatten.uniq
   end
 
-  def in_business_hours?(now = Time.zone.now, date = Time.zone.now)
+  def in_business_hours?(now = Time.now)
     return false if business_hours.nil? or business_hours.empty?
 
+    now = now.in_time_zone(business_time_zone)
+
     business_hours.each do |business_hour|
-      next if business_hour.wday != date.wday
+      next if business_hour.wday != now.wday
       return false if business_hour.start_time.nil? or business_hour.end_time.nil?
-      return true if Time.zone.parse(business_hour.start_time.strftime("%H:%M")) <= now &&  now <= Time.zone.parse(business_hour.end_time.strftime("%H:%M"))
+      return true if business_hour.start_time.in_time_zone(business_time_zone).strftime("%H:%M") <= now.strftime("%H:%M") && now.strftime("%H:%M") <= business_hour.end_time.in_time_zone(business_time_zone).strftime("%H:%M")
     end
     return false
   end

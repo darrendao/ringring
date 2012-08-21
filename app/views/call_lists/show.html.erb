@@ -91,8 +91,8 @@ Last generated date: <%= l(@call_list.oncall_assignments_gen.last_gen, :format =
 <b>Business Hours</b><br/>
 <div class="grid_12 content_box">
 <% @call_list.business_hours.each do |business_hour| %>
-  <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= fmt_time(business_hour.start_time) %>
-  to <%= l(business_hour.end_time.in_time_zone, :format => :time_with_zone) if business_hour.end_time %><br/>
+  <%= Date::ABBR_DAYNAMES[business_hour.wday] %> from <%= l(business_hour.start_time.in_time_zone(@call_list.business_time_zone), :format => :time_with_zone) %>
+  to <%= l(business_hour.end_time.in_time_zone(@call_list.business_time_zone), :format => :time_with_zone) if business_hour.end_time %><br/>
 <% end %>
 </div>
 <div class="clear" style="padding:7px"></div>

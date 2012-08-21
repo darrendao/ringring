@@ -70,6 +70,14 @@ class CallListsController < ApplicationController
     params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
     params[:call_list][:oncall_assignments_gen_attributes][:cycle_time] = Time.zone.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time])
 
+    old_zone = Time.zone
+    params[:call_list][:business_hours_attributes].each do |wday, biz_hr|
+      Time.zone = params[:call_list][:business_time_zone]
+      biz_hr[:start_time] = Time.zone.parse(biz_hr[:start_time])
+      biz_hr[:end_time] = Time.zone.parse(biz_hr[:end_time])
+    end
+    Time.zone = old_zone
+
     respond_to do |format|
       if @call_list.update_attributes(params[:call_list])
         format.html { redirect_to @call_list, :notice => 'Call list was successfully updated.' }

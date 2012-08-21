@@ -56,6 +56,10 @@
       to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield_with_zone' %><br/>
     <% end %>
   </div>
+  <div class="field">
+    <%= f.label :business_time_zone %>
+    <%= f.time_zone_select('business_time_zone', ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)") %>
+  </div>
   <div class="clear"></div>
 
   <br/>

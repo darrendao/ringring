@@ -150,7 +150,26 @@ describe CallList do
   end
 
   describe "verify business hours" do
-    it "correctly determines if in business hour or off hour"
+    it "is not in business hour if no business hours are defined" do
+      call_list = CallList.make!
+      call_list.in_business_hours?.should be_false
+    end
+    it "correctly determines if in business hour for UTC time" do
+      call_list = CallList.make!(:business_time_zone => 'UTC')
+      (0..6).each do |wday|
+        call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM +0000"),
+                                        :end_time => Time.parse("8:00 PM +0000"))
+      end
+      call_list.in_business_hours?(Time.parse("9:00 AM +0000")).should be_true
+    end
+    it "correctly determines if in business hour for non UTC time" do
+      call_list = CallList.make!(:business_time_zone => 'Arizona')
+      (0..6).each do |wday|
+        call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM -0700"),
+                                        :end_time => Time.parse("8:00 PM -0700"))
+      end
+      call_list.in_business_hours?(Time.parse("9:00 AM -0700")).should be_true
+    end
   end
 
   describe "oncall assignment" do

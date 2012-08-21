@@ -8,6 +8,8 @@ module CallListsHelper
     call_list.oncall_assignments_gen ||= OncallAssignmentsGen.new
     call_list.call_list_calendar ||= CallListCalendar.new
 
+    call_list.business_time_zone ||= current_user.time_zone
+
     existing = []
     call_list.business_hours.each do |i|
       existing << i.wday
