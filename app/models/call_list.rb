@@ -139,7 +139,9 @@ class CallList < ActiveRecord::Base
 
   # Given a date, find the last person oncall from that date
   def last_oncall(date = DateTime.now)
-    last_oncall_assignment = oncall_assignments.where('starts_at <= ?', date).order('ends_at').last
+    # Explicitly sort it ourselves rather than using activerecord order method since there can be some
+    # default scope laying around that messes up the sorting
+    last_oncall_assignment = oncall_assignments.where('starts_at <= ?', date).sort{|x,y| x.ends_at <=> y.ends_at}.last
     if last_oncall_assignment
       return last_oncall_assignment.user
     else
