@@ -63,7 +63,12 @@ class CallList < ActiveRecord::Base
     business_hours.each do |business_hour|
       next if business_hour.wday != now.wday
       return false if business_hour.start_time.nil? or business_hour.end_time.nil?
-      return true if business_hour.start_time.in_time_zone(business_time_zone).strftime("%H:%M") <= now.strftime("%H:%M") && now.strftime("%H:%M") <= business_hour.end_time.in_time_zone(business_time_zone).strftime("%H:%M")
+
+      # FIXME: this is kind of hacky. It won't work for hours that span across days
+      start_time_str = business_hour.start_time.in_time_zone(business_time_zone).strftime("%H:%M")
+      now_str = now.strftime("%H:%M")
+      end_time_str = business_hour.end_time.in_time_zone(business_time_zone).strftime("%H:%M")
+      return true if start_time_str <= now_str && now_str <= end_time_str
     end
     return false
   end
