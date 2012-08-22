@@ -55,13 +55,17 @@ describe CallList do
                                                 )
       @call_list.last_oncall(DateTime.now).should eq(@user2)
 
+      oncall_assignment = OncallAssignment.make!(:user_id => @user3.id,
+                                                 :call_list_id => @call_list.id,
+                                                 :starts_at => DateTime.now - 7,
+                                                 :ends_at => DateTime.now + 3)
+
       oncall_assignment = OncallAssignment.make!(:user_id => @user1.id,
                                                  :call_list_id => @call_list.id,
                                                  :starts_at => DateTime.now - 7,
                                                  :ends_at => DateTime.now + 2
                                                 )
-      @call_list.last_oncall(DateTime.now).should eq(@user1)
-      @call_list.last_oncall(DateTime.now).should eq(@user1)
+      @call_list.last_oncall(DateTime.now).should eq(@user3)
     end
 
     it "returns last oncall correctly when passing in datetime in future" do
