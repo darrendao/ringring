@@ -166,12 +166,17 @@ class CallListsController < ApplicationController
 
   def smart_contacts
     call_list = params['call_list']
+    separator = params['separator']
     if call_list.blank?
       render :text => "Need to specify call_list"
       return
     end
     @call_list = CallList.where(:name => call_list).first
-    render :text => @call_list.smart_contacts.join("\n")
+    sep_value = "\n" if separator == "newline" || separator.blank?
+    sep_value = ","  if separator == "comma"
+    sep_value = "\t" if separator == "tab"
+    sep_value = "\s" if separator == "space"
+    render :text => @call_list.smart_contacts.join(sep_value)
   end
 
   def download_calendar
