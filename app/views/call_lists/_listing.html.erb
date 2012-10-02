@@ -1,7 +1,7 @@
 <table>
   <thead>
   <tr>
-    <th>ID</th>
+    <th>Twilio List ID</th>
     <th>Name</th>
     <th>Owner(s)</th>
     <th>Oncall(s)</th>
@@ -12,7 +12,7 @@
   <tbody>
 <% @call_lists.each do |call_list| %>
   <tr>
-    <td class='cell_link'><%= link_to call_list.id, call_list %></td>
+    <td class='cell_link'><%= link_to call_list.twilio_list_id, call_list %></td>
     <td class='cell_link'><%= link_to call_list.name, call_list %></td>
     <td><%= call_list.owners_names.join(", ") %></td>
     <td><%= call_list.current_oncalls.map{|o|o.user.username}.join(", ") %></td>
