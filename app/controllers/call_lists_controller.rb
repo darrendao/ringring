@@ -5,7 +5,7 @@ class CallListsController < ApplicationController
   # GET /call_lists
   # GET /call_lists.json
   def index
-    @call_lists = CallList.all
+    @call_lists = CallList.order(:twilio_list_id)
 
     respond_to do |format|
       format.html # index.html.erb
