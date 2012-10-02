@@ -2,6 +2,7 @@ class CallList < ActiveRecord::Base
   after_save :add_call_list_membership
   validates :name, :uniqueness => true, :presence => true
   validate :must_have_owners
+  validates :twilio_list_id, :uniqueness => true, :presence => true, :numericality => {:only_integer => true}
 
   has_many :call_list_owners, :dependent => :destroy
   has_many :owners, :through => :call_list_owners, :source => :user
