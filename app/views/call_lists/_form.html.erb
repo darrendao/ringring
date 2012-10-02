@@ -59,7 +59,11 @@
     <%= f.fields_for :business_hours do |ff| %>
       <%= ff.select :wday, day_options %>
       from <%= ff.text_field :start_time, :value => fmt_time(ff.object.start_time), :class => 'timefield_with_zone' %>
-      to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield_with_zone' %><br/>
+      to  <%= ff.text_field :end_time, :value => fmt_time(ff.object.end_time), :class => 'timefield_with_zone' %>
+      <% unless ff.object.new_record? %>
+        <%= ff.check_box '_destroy' %>
+        <%= ff.label '_destroy', 'Remove' %>
+      <% end %><br />
     <% end %>
   </div>
   <div class="field">
