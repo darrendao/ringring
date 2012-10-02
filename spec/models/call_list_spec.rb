@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CallList do
   describe "default factory creation" do
     it "can be created" do
-      call_list = CallList.make
+      call_list = CallList.make(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
       #call_list.valid?
       #puts call_list.errors.full_messages.inspect
       call_list.should be_valid
@@ -22,10 +22,15 @@ describe CallList do
     end
 
     it "cannot have same name as existing call list" do
-      CallList.make!(:name => "calllist1")
+      CallList.make!(:name => "calllist1", :twilio_list_id => (rand * 2132).to_i)
       call_list = CallList.make(:name => "calllist1")
       call_list.should_not be_valid
       call_list.should have(1).errors_on(:name)
+    end
+
+    it "needs to have a twilio id specified" do
+      call_list = CallList.make(:twilio_list_id => nil)
+      call_list.should have(2).errors_on(:twilio_list_id)
     end
   end
 
@@ -34,7 +39,7 @@ describe CallList do
       @user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
       @user2 = User.make!(:email => 'auser2@example.com', :password => 'password')
       @user3 = User.make!(:email => 'auser3@example.com', :password => 'password')
-      @call_list = CallList.make!
+      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
     end
     
     it "returns nil if there is no oncall assignments in the past" do
@@ -85,7 +90,7 @@ describe CallList do
       @user2 = User.make!(:email => 'auser2@example.com', :password => 'password')
       @user3 = User.make!(:email => 'auser3@example.com', :password => 'password')
       @users = [@user1, @user2, @user3]
-      @call_list = CallList.make!
+      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
 
       @users.each do |user| 
         CallListMembership.create(:call_list_id => @call_list.id,
@@ -109,6 +114,7 @@ describe CallList do
       last_oncall = nil
    
       @call_list.oncall_assignments.first.user.should eq(@user1)
+      # heh
       @call_list.oncall_assignments.each do |ass|
         ass.user.should_not eq(last_oncall)
         last_oncall = ass.user
@@ -142,7 +148,7 @@ describe CallList do
     end
 
     it "has correct oncall_candidates default ordering based on position" do
-      call_list = CallList.make!
+      call_list = CallList.make!(:name => 'testlist2', :twilio_list_id => (rand * 2132).to_i)
       @users.each_with_index do |user, index|
         CallListMembership.create(:call_list_id => call_list.id,
                                   :user_id => user.id,
@@ -155,11 +161,11 @@ describe CallList do
 
   describe "verify business hours" do
     it "is not in business hour if no business hours are defined" do
-      call_list = CallList.make!
+      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
       call_list.in_business_hours?.should be_false
     end
     it "correctly determines if in business hour for UTC time" do
-      call_list = CallList.make!(:business_time_zone => 'UTC')
+      call_list = CallList.make!(:business_time_zone => 'UTC', :twilio_list_id => (rand * 2132).to_i)
       (0..6).each do |wday|
         call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM +0000"),
                                         :end_time => Time.parse("8:00 PM +0000"))
@@ -167,7 +173,7 @@ describe CallList do
       call_list.in_business_hours?(Time.parse("9:00 AM +0000")).should be_true
     end
     it "correctly determines if in business hour for non UTC time" do
-      call_list = CallList.make!(:business_time_zone => 'Arizona')
+      call_list = CallList.make!(:business_time_zone => 'Arizona', :twilio_list_id => (rand * 2132).to_i)
       (0..6).each do |wday|
         call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM -0700"),
                                         :end_time => Time.parse("8:00 PM -0700"))
@@ -179,7 +185,7 @@ describe CallList do
   describe "oncall assignment" do
     it "automatically add oncall user to membership list" do
       user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
-      call_list = CallList.make!
+      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
       oncall_assignment = OncallAssignment.make!(:user_id => user1.id,
                                                  :call_list_id => call_list.id)
       call_list.members.should include(user1)
