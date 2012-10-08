@@ -1,4 +1,7 @@
 class CallList < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   after_save :add_call_list_membership
   validates :name, :uniqueness => true, :presence => true
   validate :must_have_owners

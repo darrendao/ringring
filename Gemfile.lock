@@ -64,6 +64,7 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     ffi (1.1.0)
+    friendly_id (4.0.8)
     guard (1.2.3)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
@@ -191,6 +192,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable
   execjs
+  friendly_id
   guard-rspec
   jquery-rails
   json
