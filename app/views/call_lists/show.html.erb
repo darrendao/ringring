@@ -58,7 +58,7 @@
   <% end %>
   </div>
 <div class="clear"></div>
-<% if @call_list.oncall_assignments_gen %>
+<% if @call_list.oncall_assignments_gen.enable %>
 <b>Oncall Auto-assignment</b><br/>
 <div class="grid_12 content_box">
 Enable: <%= @call_list.oncall_assignments_gen.enable == true ? 'yes' : 'no' %><br/>
