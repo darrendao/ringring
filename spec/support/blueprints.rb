@@ -26,8 +26,8 @@ User.blueprint do
 end
 
 OncallAssignment.blueprint do
-  starts_at { DateTime.now - 7 }
-  ends_at { DateTime.now + 7 }
+  starts_at { Time.zone.now - 7 }
+  ends_at { Time.zone.now + 7 }
   timezone_offset { 0 }
   assigned_by { 'test' }
 end
@@ -35,7 +35,7 @@ end
 OncallAssignmentsGen.blueprint do
   enable { true }
   cycle_day { 1 }
-  cycle_time { DateTime.parse("8:00") }
+  cycle_time { Time.zone.parse("8:00") }
   timezone_offset { 0 }
 end
 

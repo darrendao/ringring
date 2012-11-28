@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CallList do
   describe "default factory creation" do
     it "can be created" do
-      call_list = CallList.make(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make(:name => 'testlist1', :twilio_list_id => (rand(2132)).to_i)
       #call_list.valid?
       #puts call_list.errors.full_messages.inspect
       call_list.should be_valid
@@ -22,7 +22,7 @@ describe CallList do
     end
 
     it "cannot have same name as existing call list" do
-      CallList.make!(:name => "calllist1", :twilio_list_id => (rand * 2132).to_i)
+      CallList.make!(:name => "calllist1", :twilio_list_id => (rand(2132)).to_i)
       call_list = CallList.make(:name => "calllist1")
       call_list.should_not be_valid
       call_list.should have(1).errors_on(:name)
@@ -39,48 +39,48 @@ describe CallList do
       @user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
       @user2 = User.make!(:email => 'auser2@example.com', :password => 'password')
       @user3 = User.make!(:email => 'auser3@example.com', :password => 'password')
-      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
+      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand(2132)).to_i)
     end
     
     it "returns nil if there is no oncall assignments in the past" do
       # assignment that is in the future
       oncall_assignment = OncallAssignment.make!(:user_id => @user3.id,
                                                  :call_list_id => @call_list.id,
-                                                 :starts_at => DateTime.now + 1,
-                                                 :ends_at => DateTime.now + 3
+                                                 :starts_at => Time.zone.now + 1,
+                                                 :ends_at => Time.zone.now + 3
                                                 )
-      @call_list.last_oncall(DateTime.now).should equal(nil)
+      @call_list.last_oncall(Time.zone.now).should equal(nil)
     end
 
     it "returns last oncall correctly" do
       oncall_assignment = OncallAssignment.make!(:user_id => @user2.id,
                                                  :call_list_id => @call_list.id,
-                                                 :starts_at => DateTime.now - 7,
-                                                 :ends_at => DateTime.now - 2
+                                                 :starts_at => Time.zone.now - 7,
+                                                 :ends_at => Time.zone.now - 2
                                                 )
-      @call_list.last_oncall(DateTime.now).should eq(@user2)
+      @call_list.last_oncall(Time.zone.now).should eq(@user2)
 
       oncall_assignment = OncallAssignment.make!(:user_id => @user3.id,
                                                  :call_list_id => @call_list.id,
-                                                 :starts_at => DateTime.now - 7,
-                                                 :ends_at => DateTime.now + 3)
+                                                 :starts_at => Time.zone.now - 7,
+                                                 :ends_at => Time.zone.now + 3)
 
       oncall_assignment = OncallAssignment.make!(:user_id => @user1.id,
                                                  :call_list_id => @call_list.id,
-                                                 :starts_at => DateTime.now - 7,
-                                                 :ends_at => DateTime.now + 2
+                                                 :starts_at => Time.zone.now - 7,
+                                                 :ends_at => Time.zone.now + 2
                                                 )
-      @call_list.last_oncall(DateTime.now).should eq(@user3)
+      @call_list.last_oncall(Time.zone.now).should eq(@user3)
     end
 
     it "returns last oncall correctly when passing in datetime in future" do
       # assignment that is in the future
       oncall_assignment = OncallAssignment.make!(:user_id => @user3.id,
                                                  :call_list_id => @call_list.id,
-                                                 :starts_at => DateTime.now + 1,
-                                                 :ends_at => DateTime.now + 3
+                                                 :starts_at => Time.zone.now + 1,
+                                                 :ends_at => Time.zone.now + 3
                                                 )
-      @call_list.last_oncall(DateTime.now + 2).should eq(@user3)
+      @call_list.last_oncall(Time.zone.now + 2).should eq(@user3)
     end
   end
 
@@ -90,7 +90,7 @@ describe CallList do
       @user2 = User.make!(:email => 'auser2@example.com', :password => 'password')
       @user3 = User.make!(:email => 'auser3@example.com', :password => 'password')
       @users = [@user1, @user2, @user3]
-      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
+      @call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand(2132)).to_i)
 
       @users.each do |user| 
         CallListMembership.create(:call_list_id => @call_list.id,
@@ -107,7 +107,7 @@ describe CallList do
       @call_list.oncall_assignments_gen = oncall_assignments_gen
       @call_list.save
 
-      lambda {@call_list.gen_oncall_assignments}.should_not raise_error 
+      lambda { @call_list.gen_oncall_assignments }.should_not raise_error 
       @call_list.oncall_assignments.size.should be == AppConfig.oncall_assignments_gen['from_now'] + 1
       @call_list.oncall_assignments_gen.last_gen.should be > AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
       @call_list.oncall_assignments.last.starts_at.should_not be > AppConfig.oncall_assignments_gen['from_now'].weeks.from_now
@@ -125,7 +125,7 @@ describe CallList do
       oncall_assignments_gen = OncallAssignmentsGen.make!
       @call_list.oncall_assignments_gen = oncall_assignments_gen
       @call_list.save
-      lambda {@call_list.gen_oncall_assignments(DateTime.now, 2)}.should_not raise_error
+      lambda {@call_list.gen_oncall_assignments(Time.zone.now, 2)}.should_not raise_error
       @call_list.oncall_assignments.size.should be == 3
       @call_list.oncall_assignments.last.user.should eq(@user3)
 
@@ -148,7 +148,7 @@ describe CallList do
     end
 
     it "has correct oncall_candidates default ordering based on position" do
-      call_list = CallList.make!(:name => 'testlist2', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make!(:name => 'testlist2', :twilio_list_id => (rand(2132)).to_i)
       @users.each_with_index do |user, index|
         CallListMembership.create(:call_list_id => call_list.id,
                                   :user_id => user.id,
@@ -161,11 +161,11 @@ describe CallList do
 
   describe "verify business hours" do
     it "is not in business hour if no business hours are defined" do
-      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand(2132)).to_i)
       call_list.in_business_hours?.should be_false
     end
     it "correctly determines if in business hour for UTC time" do
-      call_list = CallList.make!(:business_time_zone => 'UTC', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make!(:business_time_zone => 'UTC', :twilio_list_id => (rand(2132)).to_i)
       (0..6).each do |wday|
         call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM +0000"),
                                         :end_time => Time.parse("8:00 PM +0000"))
@@ -173,7 +173,7 @@ describe CallList do
       call_list.in_business_hours?(Time.parse("9:00 AM +0000")).should be_true
     end
     it "correctly determines if in business hour for non UTC time" do
-      call_list = CallList.make!(:business_time_zone => 'Arizona', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make!(:business_time_zone => 'Arizona', :twilio_list_id => (rand(2132)).to_i)
       (0..6).each do |wday|
         call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM -0700"),
                                         :end_time => Time.parse("8:00 PM -0700"))
@@ -185,7 +185,7 @@ describe CallList do
   describe "oncall assignment" do
     it "automatically add oncall user to membership list" do
       user1 = User.make!(:email => 'auser1@example.com', :password => 'password')
-      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand * 2132).to_i)
+      call_list = CallList.make!(:name => 'testlist1', :twilio_list_id => (rand(2132)).to_i)
       oncall_assignment = OncallAssignment.make!(:user_id => user1.id,
                                                  :call_list_id => call_list.id)
       call_list.members.should include(user1)

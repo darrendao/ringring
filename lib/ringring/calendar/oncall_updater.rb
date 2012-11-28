@@ -14,7 +14,7 @@ class OncallUpdater
       return FETCH_CALENDAR_ERR
     end
 
-    new_oncalls = ConfluenceIcal::find_oncall(call_list_calendar.url, DateTime.now)
+    new_oncalls = ConfluenceIcal::find_oncall(call_list_calendar.url, Time.zone.now)
     
     if new_oncalls.nil? or new_oncalls.empty?
       return FETCH_CALENDAR_ERR

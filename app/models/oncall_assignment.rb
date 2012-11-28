@@ -1,5 +1,5 @@
 class OncallAssignment < CallEscalation
-  set_table_name 'oncall_assignments'
+  self.table_name = 'oncall_assignments'
   validate :check_oncall_datetime
   after_save :add_call_list_membership
 

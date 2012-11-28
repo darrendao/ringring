@@ -78,7 +78,7 @@ class CallList < ActiveRecord::Base
   end
 
   def current_oncalls
-    [] | self.oncall_assignments.where("starts_at < ? AND ends_at > ?", DateTime.now, DateTime.now) | self.oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
+    [] | self.oncall_assignments.where("starts_at < ? AND ends_at > ?", Time.zone.now, Time.zone.now) | self.oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
   end
 
   def contact_types
@@ -145,7 +145,7 @@ class CallList < ActiveRecord::Base
   end
 
   # Given a date, find the last person oncall from that date
-  def last_oncall(date = DateTime.now)
+  def last_oncall(date = Time.zone.now)
     # Explicitly sort it ourselves rather than using activerecord order method since there can be some
     # default scope laying around that messes up the sorting
     last_oncall_assignment = oncall_assignments.where('starts_at <= ?', date).sort{|x,y| x.ends_at <=> y.ends_at}.last
@@ -157,7 +157,7 @@ class CallList < ActiveRecord::Base
   end
 
   # Given a date, find all users who are oncall
-  def whos_oncall(date = DateTime.now)
+  def whos_oncall(date = Time.zone.now)
     oncall_assignments.where("starts_at <= ? AND ends_at >= ?", date, date) | oncall_assignments.where("starts_at is NULL AND ends_at is NULL")
   end
 
