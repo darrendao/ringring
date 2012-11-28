@@ -27,11 +27,11 @@ group :production do
   gem 'mysql2'
 end
 
-gem "rspec-rails", :group => [:test, :development]
 
-group :test do
+group :development, :test do
   gem 'rake'
   gem "capybara"
+  gem "rspec-rails"
   gem 'machinist', '>= 2.0.0.beta2'
   gem 'guard-rspec'
 end
