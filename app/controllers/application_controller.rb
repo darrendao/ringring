@@ -2,6 +2,7 @@ module ActiveSupport
   class TimeWithZone
     def zone=(new_zone = ::Time.zone)
       # Reinitialize with the new zone and the local time
+      # FIXME: ::Time has no .get_zone ?
       initialize(nil, ::Time.__send__(:get_zone, new_zone), time)
     end
   end
@@ -34,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   def set_tz_offset(attr)
     if params[attr] && params[attr][:starts_at]
-      params[attr][:timezone_offset] = DateTime.parse(params[attr][:starts_at]).utc_offset
+      params[attr][:timezone_offset] = Time.zone.parse(params[attr][:starts_at]).utc_offset
     end
   end
 end

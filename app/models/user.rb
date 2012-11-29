@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def on_vacation?
-    now = Time.now
+    now = Time.zone.now
     vacations.each do |vacation|
       return true if vacation.starts_at <= now && now <= vacation.ends_at
     end

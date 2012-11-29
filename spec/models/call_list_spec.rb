@@ -167,18 +167,18 @@ describe CallList do
     it "correctly determines if in business hour for UTC time" do
       call_list = CallList.make!(:business_time_zone => 'UTC', :twilio_list_id => (rand(2132)).to_i)
       (0..6).each do |wday|
-        call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM +0000"),
-                                        :end_time => Time.parse("8:00 PM +0000"))
+        call_list.business_hours.create(:wday => wday, :start_time => Time.zone.parse("8:00 AM +0000"),
+                                        :end_time => Time.zone.parse("8:00 PM +0000"))
       end
-      call_list.in_business_hours?(Time.parse("9:00 AM +0000")).should be_true
+      call_list.in_business_hours?(Time.zone.parse("9:00 AM +0000")).should be_true
     end
     it "correctly determines if in business hour for non UTC time" do
       call_list = CallList.make!(:business_time_zone => 'Arizona', :twilio_list_id => (rand(2132)).to_i)
       (0..6).each do |wday|
-        call_list.business_hours.create(:wday => wday, :start_time => Time.parse("8:00 AM -0700"),
-                                        :end_time => Time.parse("8:00 PM -0700"))
+        call_list.business_hours.create(:wday => wday, :start_time => Time.zone.parse("8:00 AM -0700"),
+                                        :end_time => Time.zone.parse("8:00 PM -0700"))
       end
-      call_list.in_business_hours?(Time.parse("9:00 AM -0700")).should be_true
+      call_list.in_business_hours?(Time.zone.parse("9:00 AM -0700")).should be_true
     end
   end
 

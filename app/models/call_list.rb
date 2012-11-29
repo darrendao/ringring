@@ -59,7 +59,7 @@ class CallList < ActiveRecord::Base
      [owners, escalations].compact.flatten.uniq
   end
 
-  def in_business_hours?(now = Time.now)
+  def in_business_hours?(now = Time.zone.now)
     return false if business_hours.nil? or business_hours.empty?
 
     now = now.in_time_zone(business_time_zone)
@@ -122,7 +122,7 @@ class CallList < ActiveRecord::Base
     raise "Need to enable automatic oncall assignments feature" unless oncall_assignments_gen && oncall_assignments_gen.enable == true
     raise "No available oncall candidate" if oncall_candidates.blank?
 
-    start_date ||= oncall_assignments_gen.last_gen || Time.now.utc
+    start_date ||= oncall_assignments_gen.last_gen || Time.zone.now.utc
     end_date = Ringring::OncallAssignmentsGenerator::next_oncall_cycle(start_date, oncall_assignments_gen.cycle_day)
     end_date = end_date.change(:hour => oncall_assignments_gen.cycle_time.hour, :min => oncall_assignments_gen.cycle_time.min)
     #end_date -= oncall_assignments_gen.timezone_offset if end_date.utc_offset == 0

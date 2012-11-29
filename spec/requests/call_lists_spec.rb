@@ -72,8 +72,8 @@ describe "Call Lists" do
 
       # No longer valid since business time has its own time zone now
       actual_time = CallList.find(call_list_id).business_hours.first.start_time.in_time_zone('Mountain Time (US & Canada)')
-      utc_time = Time.parse('9:15 UTC')
-      assert actual_time == utc_time - actual_time.utc_offset
+      utc_time = Time.zone.parse('9:15 UTC')
+      actual_time.should == utc_time - actual_time.utc_offset
     end
   end
 
