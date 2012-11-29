@@ -34,6 +34,8 @@ describe "Call Lists" do
       visit new_call_list_path
       fill_in "call_list[name]", :with => 'calllist3'
       fill_in "call_list[twilio_list_id]", :with => (rand(2132)).to_i
+      # NOTE: oncall assignment does not show on view unless enabled
+      check "call_list[oncall_assignments_gen_attributes][enable]"
       fill_in "call_list[oncall_assignments_gen_attributes][cycle_time]", :with => "1:23 AM"
       click_button "Create Call list"
       call_list_id = File.basename(current_path)
