@@ -5,6 +5,10 @@ gem 'rails', '3.2.1'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# https://github.com/jeremyevans/ruby-american_date exists to make ruby 
+# versions greater than 1.8 parse american-style month/day/year dates 
+# correctly. It can also be used on ruby 1.8, but it is basically a noop there.
+gem 'american_date'
 
 gem 'json'
 

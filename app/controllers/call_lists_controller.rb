@@ -67,7 +67,7 @@ class CallListsController < ApplicationController
   def update
     @call_list = CallList.find(params[:id])
     params[:call_list][:oncall_assignments_gen_attributes][:enable] = false if params[:call_list][:oncall_assignments_gen_attributes][:enable] == 0
-    params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  DateTime.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
+    params[:call_list][:oncall_assignments_gen_attributes][:timezone_offset] =  Time.zone.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time]).utc_offset
     params[:call_list][:oncall_assignments_gen_attributes][:cycle_time] = Time.zone.parse(params[:call_list][:oncall_assignments_gen_attributes][:cycle_time])
 
     old_zone = Time.zone
@@ -186,8 +186,8 @@ class CallListsController < ApplicationController
     cal = RiCal.Calendar do
       event do
         description "ops oncall"
-        dtstart     DateTime.parse("3/20/2012 14:47:39")
-        dtend       DateTime.parse("3/21/2012 19:43:02")
+        dtstart     Time.zone.parse("3/20/2012 14:47:39")
+        dtend       Time.zone.parse("3/21/2012 19:43:02")
       end
     end
     render :text => cal 

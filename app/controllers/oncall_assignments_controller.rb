@@ -18,7 +18,7 @@ class OncallAssignmentsController < ApplicationController
   end
   
   def create
-    @gotodate = params[:oncall_assignment][:starts_at].to_time.to_i * 1000
+    @gotodate = Time.zone.parse(params[:oncall_assignment][:starts_at]).to_time.to_i * 1000
 
     set_tz_offset
     @call_list = CallList.find(params[:call_list_id])
@@ -63,7 +63,7 @@ class OncallAssignmentsController < ApplicationController
   # it on the week or day view), this method will be called to update the values.
   # viv la REST!
   def update
-    @gotodate = params[:oncall_assignment][:starts_at].to_time.to_i * 1000
+    @gotodate = Time.zone.parse(params[:oncall_assignment][:starts_at]).to_time.to_i * 1000
 
     set_tz_offset
     @oncall_assignment = OncallAssignment.find(params[:id])
@@ -73,8 +73,8 @@ class OncallAssignmentsController < ApplicationController
         params[:oncall_assignment][:user_id] = user_id.id if user_id
         params[:oncall_assignment].delete(:oncall)
       end
-      params[:oncall_assignment][:starts_at] = DateTime.parse(params[:oncall_assignment][:starts_at].to_s) if params[:oncall_assignment][:starts_at]
-      params[:oncall_assignment][:ends_at] = DateTime.parse(params[:oncall_assignment][:ends_at].to_s) if params[:oncall_assignment][:ends_at]
+      params[:oncall_assignment][:starts_at] = Time.zone.parse(params[:oncall_assignment][:starts_at].to_s) if params[:oncall_assignment][:starts_at]
+      params[:oncall_assignment][:ends_at] = Time.zone.parse(params[:oncall_assignment][:ends_at].to_s) if params[:oncall_assignment][:ends_at]
     end
     params[:oncall_assignment][:assigned_by] = current_user.username
 
@@ -103,7 +103,7 @@ class OncallAssignmentsController < ApplicationController
   private
   def set_tz_offset
     if params[:oncall_assignment] && params[:oncall_assignment][:starts_at]
-      params[:oncall_assignment][:timezone_offset] = DateTime.parse(params[:oncall_assignment][:starts_at]).utc_offset
+      params[:oncall_assignment][:timezone_offset] = Time.zone.parse(params[:oncall_assignment][:starts_at]).utc_offset
     end 
   end
 end
